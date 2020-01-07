@@ -29,7 +29,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var activity = await this.mediator.Send(new ActivityDetailsQuery(id));
             if (activity == null)
