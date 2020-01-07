@@ -7,17 +7,15 @@ using Persistence;
 
 namespace Application.Activities.Details
 {
-    public class Handler : IRequestHandler<Query, Activity>
+    public class Handler : HandlerBase, IRequestHandler<Query, Activity>
     {
-        private readonly DataContext context;
-
-        public Handler(DataContext context)
+        public Handler(DataContext context) : base(context)
         {
-            this.context = context;
         }
+
         public async Task<Activity> Handle(Query request, CancellationToken cancellationToken)
         {
-            var activity = await this.context.Activities.FindAsync(request.Id);
+            var activity = await this.Context.Activities.FindAsync(request.Id);
 
             return activity;
         }

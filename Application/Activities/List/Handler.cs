@@ -8,18 +8,15 @@ using Persistence;
 
 namespace Application.Activities.List
 {
-    public class Handler : IRequestHandler<Query, List<Activity>>
+    public class Handler : HandlerBase, IRequestHandler<Query, List<Activity>>
     {
-        private readonly DataContext context;
-
-        public Handler(DataContext context)
+        public Handler(DataContext context) : base(context)
         {
-            this.context = context;
         }
 
         public async Task<List<Activity>> Handle(Query request, CancellationToken cancellationToken)
         {
-            return await context.Activities.ToListAsync(cancellationToken);
+            return await this.Context.Activities.ToListAsync(cancellationToken);
         }
     }
 }
