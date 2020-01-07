@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using System.Collections.Generic;
 using Domain;
+using System;
 
 namespace API.Controllers
 {
     using ActivitiesQuery = Application.Activities.List.Query;
+    using ActivityDetailsQuery = Application.Activities.Details.Query;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -24,6 +26,18 @@ namespace API.Controllers
             var activities = await this.mediator.Send(new ActivitiesQuery());
 
             return Ok(activities);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var activity = await this.mediator.Send(new ActivityDetailsQuery(id));
+            if (activity == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(activity);
         }
     }
 }
