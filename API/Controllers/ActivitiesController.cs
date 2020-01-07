@@ -4,6 +4,7 @@ using MediatR;
 using System.Collections.Generic;
 using Domain;
 using System;
+using Application.Activities.Create;
 
 namespace API.Controllers
 {
@@ -35,6 +36,18 @@ namespace API.Controllers
             if (activity == null)
             {
                 return NotFound();
+            }
+
+            return Ok(activity);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(CreateActivityCommand activityCommand)
+        {
+            var activity = await this.mediator.Send(activityCommand);
+            if (activity == null)
+            {
+                return BadRequest();
             }
 
             return Ok(activity);
