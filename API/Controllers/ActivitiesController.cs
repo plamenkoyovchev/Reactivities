@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Domain;
 using System;
 using Application.Activities.Create;
+using Application.Activities.Delete;
 
 namespace API.Controllers
 {
@@ -51,6 +52,12 @@ namespace API.Controllers
             }
 
             return Ok(activity);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            return Ok(await this.mediator.Send(new DeleteActivityCommand(id)));
         }
     }
 }
