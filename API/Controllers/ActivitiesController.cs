@@ -6,6 +6,7 @@ using Domain;
 using System;
 using Application.Activities.Create;
 using Application.Activities.Delete;
+using Application.Activities.Edit;
 
 namespace API.Controllers
 {
@@ -58,6 +59,15 @@ namespace API.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             return Ok(await this.mediator.Send(new DeleteActivityCommand(id)));
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, EditActivityCommand editActivityCommand)
+        {
+            editActivityCommand.Id = id;
+            var activity = await this.mediator.Send(editActivityCommand);
+
+            return Ok(activity);
         }
     }
 }
