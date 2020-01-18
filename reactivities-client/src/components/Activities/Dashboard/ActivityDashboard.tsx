@@ -10,6 +10,16 @@ import ActivityForm from "../Form/ActivityForm";
 
 const ActivityDashboard = () => {
   const [activities, setActivities] = useState<IActivity[]>([]);
+  const [selectedActivity, setSelectedActivity] = useState<IActivity | null>(
+    null
+  );
+
+  const selectActivityHandler = (id: string) => {
+    var selectedItem = activities.find(a => a.id === id);
+    if (selectedItem) {
+      setSelectedActivity(selectedItem);
+    }
+  };
 
   useEffect(() => {
     axios
@@ -22,10 +32,15 @@ const ActivityDashboard = () => {
     <div>
       <Grid>
         <Grid.Column width={10}>
-          <ActivityList activities={activities} />
+          <ActivityList
+            activities={activities}
+            selectActivity={selectActivityHandler}
+          />
         </Grid.Column>
         <Grid.Column width={6}>
-          <ActivityDetails />
+          {selectedActivity && (
+            <ActivityDetails selectedActivity={selectedActivity} />
+          )}
           <ActivityForm />
         </Grid.Column>
       </Grid>
