@@ -6,9 +6,7 @@ import axios from "axios";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 import ActivityList from "../List/ActivityList";
 
-interface IProps {}
-
-const ActivityDashboard: React.FC<IProps> = props => {
+const ActivityDashboard = () => {
   const [activities, setActivities] = useState<IActivity[]>([]);
 
   useEffect(() => {
