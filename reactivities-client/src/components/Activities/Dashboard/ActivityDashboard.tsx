@@ -4,6 +4,7 @@ import "./ActivityDashboard.scss";
 import { Grid, List } from "semantic-ui-react";
 import axios from "axios";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
+import ActivityList from "../List/ActivityList";
 
 interface IProps {}
 
@@ -21,11 +22,7 @@ const ActivityDashboard: React.FC<IProps> = props => {
     <div>
       <Grid>
         <Grid.Column width={10}>
-          <List>
-            {activities.map(({ id, title }) => (
-              <List.Item key={id}>{title}</List.Item>
-            ))}
-          </List>
+          <ActivityList activities={activities} />
         </Grid.Column>
       </Grid>
     </div>
