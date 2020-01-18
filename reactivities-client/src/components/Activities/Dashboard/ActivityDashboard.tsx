@@ -6,6 +6,7 @@ import axios from "axios";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 import ActivityList from "../List/ActivityList";
 import ActivityDetails from "../Details/ActivityDetails";
+import ActivityForm from "../Form/ActivityForm";
 
 const ActivityDashboard = () => {
   const [activities, setActivities] = useState<IActivity[]>([]);
@@ -25,6 +26,7 @@ const ActivityDashboard = () => {
         </Grid.Column>
         <Grid.Column width={6}>
           <ActivityDetails />
+          <ActivityForm />
         </Grid.Column>
       </Grid>
     </div>
