@@ -27,9 +27,7 @@ const ActivityListItem: React.FC<IProps> = ({ activity, selectActivity }) => {
             color="blue"
             onClick={() => selectActivity(id)}
           />
-          <Label basic content="Category">
-            {category}
-          </Label>
+          <Label basic content={category} />>
         </Item.Extra>
       </Item.Content>
     </Item>
