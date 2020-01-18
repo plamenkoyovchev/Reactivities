@@ -31,6 +31,10 @@ const ActivityDashboard = () => {
 
   const deleteActivityHandler = (id: string) => {
     setActivities([...activities.filter(a => a.id !== id)]);
+    if (selectedActivity && selectedActivity.id === id) {
+      setSelectedActivity(null);
+      setEditMode(false);
+    }
   };
 
   const submitActivityHandler = (activity: IActivity) => {

@@ -20,14 +20,16 @@ const ActivityList: React.FC<IProps> = ({
     <div>
       <Segment clearing>
         <Item.Group divided>
-          {activities.map(activity => (
-            <ActivityListItem
-              key={activity.id}
-              activity={activity}
-              selectActivity={selectActivity}
-              deleteActivity={deleteActivity}
-            />
-          ))}
+          {activities.length > 0
+            ? activities.map(activity => (
+                <ActivityListItem
+                  key={activity.id}
+                  activity={activity}
+                  selectActivity={selectActivity}
+                  deleteActivity={deleteActivity}
+                />
+              ))
+            : "No activities"}
         </Item.Group>
       </Segment>
     </div>
