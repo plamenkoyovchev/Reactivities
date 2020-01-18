@@ -13,6 +13,7 @@ const ActivityDashboard = () => {
   const [selectedActivity, setSelectedActivity] = useState<IActivity | null>(
     null
   );
+  const [editMode, setEditMode] = useState(false);
 
   const selectActivityHandler = (id: string) => {
     var selectedItem = activities.find(a => a.id === id);
@@ -38,10 +39,13 @@ const ActivityDashboard = () => {
           />
         </Grid.Column>
         <Grid.Column width={6}>
-          {selectedActivity && (
-            <ActivityDetails selectedActivity={selectedActivity} />
+          {selectedActivity && !editMode && (
+            <ActivityDetails
+              selectedActivity={selectedActivity}
+              setEditMode={setEditMode}
+            />
           )}
-          <ActivityForm />
+          {editMode && <ActivityForm />}
         </Grid.Column>
       </Grid>
     </div>
