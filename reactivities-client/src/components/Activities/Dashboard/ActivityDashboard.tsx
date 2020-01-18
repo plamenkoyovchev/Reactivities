@@ -20,6 +20,7 @@ const ActivityDashboard = () => {
     var selectedItem = activities.find(a => a.id === id);
     if (selectedItem) {
       setSelectedActivity(selectedItem);
+      setEditMode(false);
     }
   };
 
@@ -79,6 +80,7 @@ const ActivityDashboard = () => {
             )}
             {editMode && (
               <ActivityForm
+                key={(selectedActivity && selectedActivity.id) || 0}
                 setEditMode={setEditMode}
                 selectedActivity={selectedActivity}
                 saveActivity={submitActivityHandler}
