@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import "./ActivityDashboard.scss";
-import { Grid, List } from "semantic-ui-react";
+import { Grid, List, Button } from "semantic-ui-react";
 import axios from "axios";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 import ActivityList from "../List/ActivityList";
@@ -22,6 +22,11 @@ const ActivityDashboard = () => {
     }
   };
 
+  const createActivityHandler = () => {
+    setEditMode(true);
+    setSelectedActivity(null);
+  };
+
   useEffect(() => {
     axios
       .get<IActivity[]>("http://localhost:5000/api/activities")
@@ -32,21 +37,33 @@ const ActivityDashboard = () => {
   return (
     <div>
       <Grid>
-        <Grid.Column width={10}>
-          <ActivityList
-            activities={activities}
-            selectActivity={selectActivityHandler}
-          />
-        </Grid.Column>
-        <Grid.Column width={6}>
-          {selectedActivity && !editMode && (
-            <ActivityDetails
-              selectedActivity={selectedActivity}
-              setEditMode={setEditMode}
+        <Grid.Row>
+          <Grid.Column width={16}>
+            <Button
+              onClick={createActivityHandler}
+              positive
+              content="Create Activity"
+            ></Button>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={10}>
+            <ActivityList
+              activities={activities}
+              selectActivity={selectActivityHandler}
             />
-          )}
-          {editMode && <ActivityForm />}
-        </Grid.Column>
+          </Grid.Column>
+          <Grid.Column width={6}>
+            {selectedActivity && !editMode && (
+              <ActivityDetails
+                selectedActivity={selectedActivity}
+                setEditMode={setEditMode}
+                setSelectedActivity={setSelectedActivity}
+              />
+            )}
+            {editMode && <ActivityForm setEditMode={setEditMode} />}
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
     </div>
   );

@@ -13,9 +13,6 @@ const Navigation = () => {
             Reactivities
           </Menu.Item>
           <Menu.Item name="Activities"></Menu.Item>
-          <Menu.Item name="friends">
-            <Button positive content="Create Activity"></Button>
-          </Menu.Item>
         </Container>
       </Menu>
     </div>
