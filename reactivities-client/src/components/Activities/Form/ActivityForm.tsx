@@ -31,9 +31,11 @@ const ActivityForm: React.FC<IProps> = ({ setEditMode, selectedActivity }) => {
     setActivity({ ...activity, [name]: value });
   };
 
+  const submitHandler = () => {};
+
   return (
     <Segment clearing>
-      <Form>
+      <Form onSubmit={submitHandler}>
         <Form.Input
           placeholder="Title"
           value={activity.title}
