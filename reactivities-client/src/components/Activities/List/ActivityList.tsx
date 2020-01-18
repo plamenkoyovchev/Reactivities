@@ -1,16 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import "./ActivityList.scss";
 
-import { Item, Image, Button, Label, Segment } from "semantic-ui-react";
+import { Item, Segment } from "semantic-ui-react";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 import ActivityListItem from "./ListItem/ActivityListItem";
 
 interface IProps {
   activities: IActivity[];
   selectActivity: (id: string) => void;
+  deleteActivity: (id: string) => void;
 }
 
-const ActivityList: React.FC<IProps> = ({ activities, selectActivity }) => {
+const ActivityList: React.FC<IProps> = ({
+  activities,
+  selectActivity,
+  deleteActivity
+}) => {
   return (
     <div>
       <Segment clearing>
@@ -20,6 +25,7 @@ const ActivityList: React.FC<IProps> = ({ activities, selectActivity }) => {
               key={activity.id}
               activity={activity}
               selectActivity={selectActivity}
+              deleteActivity={deleteActivity}
             />
           ))}
         </Item.Group>

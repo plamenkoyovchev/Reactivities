@@ -1,7 +1,7 @@
-import React, { Fragment } from "react";
+import React from "react";
 import "./Navigation.scss";
 
-import { Menu, Container, Button } from "semantic-ui-react";
+import { Menu, Container } from "semantic-ui-react";
 
 const Navigation = () => {
   return (

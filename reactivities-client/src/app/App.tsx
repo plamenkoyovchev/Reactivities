@@ -2,7 +2,7 @@ import React from "react";
 import "./App.scss";
 import Navigation from "../components/Navigation/Navigation";
 
-import { Container, List } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import ActivityDashboard from "../components/Activities/Dashboard/ActivityDashboard";
 
 const App: React.FC = () => {

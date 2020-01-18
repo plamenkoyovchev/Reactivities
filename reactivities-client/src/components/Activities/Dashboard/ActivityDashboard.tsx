@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import "./ActivityDashboard.scss";
-import { Grid, List, Button } from "semantic-ui-react";
+import { Grid, Button } from "semantic-ui-react";
 import axios from "axios";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 import ActivityList from "../List/ActivityList";
@@ -27,6 +27,10 @@ const ActivityDashboard = () => {
   const createActivityHandler = () => {
     setEditMode(true);
     setSelectedActivity(null);
+  };
+
+  const deleteActivityHandler = (id: string) => {
+    setActivities([...activities.filter(a => a.id !== id)]);
   };
 
   const submitActivityHandler = (activity: IActivity) => {
@@ -78,6 +82,7 @@ const ActivityDashboard = () => {
             <ActivityList
               activities={activities}
               selectActivity={selectActivityHandler}
+              deleteActivity={deleteActivityHandler}
             />
           </Grid.Column>
           <Grid.Column width={6}>
