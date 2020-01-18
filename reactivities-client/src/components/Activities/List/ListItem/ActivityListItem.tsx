@@ -8,7 +8,7 @@ interface IProps {
 }
 
 const ActivityListItem: React.FC<IProps> = ({ activity, selectActivity }) => {
-  const { id, title, date, description, city, venue } = activity;
+  const { id, title, date, description, city, venue, category } = activity;
   return (
     <Item>
       <Item.Content>
@@ -27,7 +27,9 @@ const ActivityListItem: React.FC<IProps> = ({ activity, selectActivity }) => {
             color="blue"
             onClick={() => selectActivity(id)}
           />
-          <Label basic content="Category" />
+          <Label basic content="Category">
+            {category}
+          </Label>
         </Item.Extra>
       </Item.Content>
     </Item>

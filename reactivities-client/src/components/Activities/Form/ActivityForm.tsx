@@ -6,9 +6,14 @@ import { IActivity } from "../../../app/Models/Activity/IActivity";
 interface IProps {
   setEditMode: (editMode: boolean) => void;
   selectedActivity: IActivity | null;
+  saveActivity: (activity: IActivity) => void;
 }
 
-const ActivityForm: React.FC<IProps> = ({ setEditMode, selectedActivity }) => {
+const ActivityForm: React.FC<IProps> = ({
+  setEditMode,
+  selectedActivity,
+  saveActivity
+}) => {
   const initializeForm = () => {
     if (selectedActivity) {
       return selectedActivity;
@@ -31,7 +36,13 @@ const ActivityForm: React.FC<IProps> = ({ setEditMode, selectedActivity }) => {
     setActivity({ ...activity, [name]: value });
   };
 
-  const submitHandler = () => {};
+  const submitHandler = () => {
+    const activityToSave = {
+      ...activity
+    };
+
+    saveActivity(activityToSave);
+  };
 
   return (
     <Segment clearing>

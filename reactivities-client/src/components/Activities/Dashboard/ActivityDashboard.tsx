@@ -7,6 +7,7 @@ import { IActivity } from "../../../app/Models/Activity/IActivity";
 import ActivityList from "../List/ActivityList";
 import ActivityDetails from "../Details/ActivityDetails";
 import ActivityForm from "../Form/ActivityForm";
+import { v4 as uuid } from "uuid";
 
 const ActivityDashboard = () => {
   const [activities, setActivities] = useState<IActivity[]>([]);
@@ -25,6 +26,21 @@ const ActivityDashboard = () => {
   const createActivityHandler = () => {
     setEditMode(true);
     setSelectedActivity(null);
+  };
+
+  const submitActivityHandler = (activity: IActivity) => {
+    if (activity.id !== "") {
+      setActivities([
+        ...activities.filter(a => a.id !== activity.id),
+        activity
+      ]);
+    } else {
+      activity.id = uuid();
+      setActivities([activity, ...activities]);
+    }
+
+    setSelectedActivity(activity);
+    setEditMode(false);
   };
 
   useEffect(() => {
@@ -65,6 +81,7 @@ const ActivityDashboard = () => {
               <ActivityForm
                 setEditMode={setEditMode}
                 selectedActivity={selectedActivity}
+                saveActivity={submitActivityHandler}
               />
             )}
           </Grid.Column>
