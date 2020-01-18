@@ -61,7 +61,12 @@ const ActivityDashboard = () => {
                 setSelectedActivity={setSelectedActivity}
               />
             )}
-            {editMode && <ActivityForm setEditMode={setEditMode} />}
+            {editMode && (
+              <ActivityForm
+                setEditMode={setEditMode}
+                selectedActivity={selectedActivity}
+              />
+            )}
           </Grid.Column>
         </Grid.Row>
       </Grid>
