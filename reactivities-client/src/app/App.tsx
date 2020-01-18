@@ -1,10 +1,11 @@
 import React from "react";
 import "./App.css";
+import Navigation from "../components/Navigation/Navigation";
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <h1>Reactivities</h1>
+      <Navigation />
     </div>
   );
 };
