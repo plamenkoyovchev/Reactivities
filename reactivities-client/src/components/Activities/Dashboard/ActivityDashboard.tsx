@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-
 import "./ActivityDashboard.scss";
+
 import { Grid, Button } from "semantic-ui-react";
-import axios from "axios";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 import ActivityList from "../List/ActivityList";
 import ActivityDetails from "../Details/ActivityDetails";
 import ActivityForm from "../Form/ActivityForm";
 import { v4 as uuid } from "uuid";
+
+import httpRequester from "../../../shared/axios/httpRequester";
 
 const ActivityDashboard = () => {
   const [activities, setActivities] = useState<IActivity[]>([]);
@@ -53,18 +54,15 @@ const ActivityDashboard = () => {
   };
 
   useEffect(() => {
-    axios
-      .get<IActivity[]>("http://localhost:5000/api/activities")
-      .then(response => {
-        const activities: IActivity[] = [];
-        if (response.data) {
-          response.data.forEach(activity => {
-            activity.date = activity.date.split(".")[0];
-            activities.push(activity);
-          });
+    httpRequester.activities
+      .get()
+      .then(activities => {
+        activities = activities.map(activity => {
+          activity.date = activity.date.split(".")[0];
+          return activity;
+        });
 
-          setActivities(activities);
-        }
+        setActivities(activities);
       })
       .catch(err => console.warn(err));
   }, []);
