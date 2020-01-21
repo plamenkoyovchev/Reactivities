@@ -31,22 +31,35 @@ const ActivityDashboard = () => {
   };
 
   const deleteActivityHandler = (id: string) => {
-    setActivities([...activities.filter(a => a.id !== id)]);
-    if (selectedActivity && selectedActivity.id === id) {
-      setSelectedActivity(null);
-      setEditMode(false);
-    }
+    httpRequester.activities
+      .delete(id)
+      .then(() => {
+        setActivities([...activities.filter(a => a.id !== id)]);
+        if (selectedActivity && selectedActivity.id === id) {
+          setSelectedActivity(null);
+          setEditMode(false);
+        }
+      })
+      .catch(err => console.warn(err));
   };
 
   const submitActivityHandler = (activity: IActivity) => {
     if (activity.id !== "") {
-      setActivities([
-        ...activities.filter(a => a.id !== activity.id),
-        activity
-      ]);
+      httpRequester.activities
+        .update(activity)
+        .then(() => {
+          setActivities([
+            ...activities.filter(a => a.id !== activity.id),
+            activity
+          ]);
+        })
+        .catch(err => console.warn(err));
     } else {
       activity.id = uuid();
-      setActivities([activity, ...activities]);
+      httpRequester.activities
+        .create(activity)
+        .then(() => setActivities([activity, ...activities]))
+        .catch(err => console.warn(err));
     }
 
     setSelectedActivity(activity);
