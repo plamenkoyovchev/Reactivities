@@ -47,6 +47,7 @@ const ActivityDashboard = () => {
   };
 
   const submitActivityHandler = (activity: IActivity) => {
+    setLoading(true);
     if (activity.id !== "") {
       httpRequester.activities
         .update(activity)
@@ -55,16 +56,24 @@ const ActivityDashboard = () => {
             ...activities.filter(a => a.id !== activity.id),
             activity
           ]);
+          resetEditForm(activity);
         })
-        .catch(err => console.warn(err));
+        .catch(err => console.warn(err))
+        .finally(() => setLoading(false));
     } else {
       activity.id = uuid();
       httpRequester.activities
         .create(activity)
-        .then(() => setActivities([activity, ...activities]))
-        .catch(err => console.warn(err));
+        .then(() => {
+          setActivities([activity, ...activities]);
+          resetEditForm(activity);
+        })
+        .catch(err => console.warn(err))
+        .finally(() => setLoading(false));
     }
+  };
 
+  const resetEditForm = (activity: IActivity) => {
     setSelectedActivity(activity);
     setEditMode(false);
   };
