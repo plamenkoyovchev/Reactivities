@@ -10,12 +10,15 @@ import { v4 as uuid } from "uuid";
 
 import httpRequester from "../../../shared/axios/httpRequester";
 
+import Loader from "../../UI/Loader/Loader";
+
 const ActivityDashboard = () => {
   const [activities, setActivities] = useState<IActivity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<IActivity | null>(
     null
   );
   const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const selectActivityHandler = (id: string) => {
     var selectedItem = activities.find(a => a.id === id);
@@ -77,8 +80,13 @@ const ActivityDashboard = () => {
 
         setActivities(activities);
       })
-      .catch(err => console.warn(err));
+      .catch(err => console.warn(err))
+      .finally(() => setLoading(false));
   }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div>
