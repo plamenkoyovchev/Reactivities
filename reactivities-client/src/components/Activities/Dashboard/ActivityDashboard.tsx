@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, SyntheticEvent } from "react";
 import "./ActivityDashboard.scss";
 
 import { Grid, Button } from "semantic-ui-react";
@@ -19,6 +19,7 @@ const ActivityDashboard = () => {
   );
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [target, setTarget] = useState("");
 
   const selectActivityHandler = (id: string) => {
     var selectedItem = activities.find(a => a.id === id);
@@ -33,7 +34,12 @@ const ActivityDashboard = () => {
     setSelectedActivity(null);
   };
 
-  const deleteActivityHandler = (id: string) => {
+  const deleteActivityHandler = (
+    event: SyntheticEvent<HTMLButtonElement>,
+    id: string
+  ) => {
+    setLoading(true);
+    setTarget(event.currentTarget.name);
     httpRequester.activities
       .delete(id)
       .then(() => {
@@ -43,7 +49,8 @@ const ActivityDashboard = () => {
           setEditMode(false);
         }
       })
-      .catch(err => console.warn(err));
+      .catch(err => console.warn(err))
+      .finally(() => setLoading(false));
   };
 
   const submitActivityHandler = (activity: IActivity) => {
@@ -115,6 +122,8 @@ const ActivityDashboard = () => {
               activities={activities}
               selectActivity={selectActivityHandler}
               deleteActivity={deleteActivityHandler}
+              target={target}
+              loading={loading}
             />
           </Grid.Column>
           <Grid.Column width={6}>

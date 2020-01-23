@@ -1,4 +1,4 @@
-import React from "react";
+import React, { SyntheticEvent } from "react";
 import "./ActivityList.scss";
 
 import { Item, Segment } from "semantic-ui-react";
@@ -8,13 +8,20 @@ import ActivityListItem from "./ListItem/ActivityListItem";
 interface IProps {
   activities: IActivity[];
   selectActivity: (id: string) => void;
-  deleteActivity: (id: string) => void;
+  deleteActivity: (
+    event: SyntheticEvent<HTMLButtonElement>,
+    id: string
+  ) => void;
+  target: string;
+  loading: boolean;
 }
 
 const ActivityList: React.FC<IProps> = ({
   activities,
   selectActivity,
-  deleteActivity
+  deleteActivity,
+  target,
+  loading
 }) => {
   return (
     <div>
@@ -27,6 +34,8 @@ const ActivityList: React.FC<IProps> = ({
                   activity={activity}
                   selectActivity={selectActivity}
                   deleteActivity={deleteActivity}
+                  target={target}
+                  loading={loading}
                 />
               ))
             : "No activities"}
