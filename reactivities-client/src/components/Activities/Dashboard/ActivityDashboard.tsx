@@ -1,5 +1,8 @@
-import React, { useState, useEffect, SyntheticEvent } from "react";
+import React, { useState, useEffect, useContext, SyntheticEvent } from "react";
 import "./ActivityDashboard.scss";
+import { observer } from "mobx-react-lite";
+
+import ActivityStore from "../../../shared/stores/activity/activityStore";
 
 import { Grid, Button } from "semantic-ui-react";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
@@ -13,12 +16,14 @@ import httpRequester from "../../../shared/axios/httpRequester";
 import Loader from "../../UI/Loader/Loader";
 
 const ActivityDashboard = () => {
+  const activityStore = useContext(ActivityStore);
+
   const [activities, setActivities] = useState<IActivity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<IActivity | null>(
     null
   );
   const [editMode, setEditMode] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [target, setTarget] = useState("");
 
   const selectActivityHandler = (id: string) => {
@@ -86,21 +91,10 @@ const ActivityDashboard = () => {
   };
 
   useEffect(() => {
-    httpRequester.activities
-      .get()
-      .then(activities => {
-        activities = activities.map(activity => {
-          activity.date = activity.date.split(".")[0];
-          return activity;
-        });
+    activityStore.loadActivities();
+  }, [activityStore]);
 
-        setActivities(activities);
-      })
-      .catch(err => console.warn(err))
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) {
+  if (activityStore.loading) {
     return <Loader />;
   }
 
@@ -119,7 +113,7 @@ const ActivityDashboard = () => {
         <Grid.Row>
           <Grid.Column width={10}>
             <ActivityList
-              activities={activities}
+              activities={activityStore.activities}
               selectActivity={selectActivityHandler}
               deleteActivity={deleteActivityHandler}
               target={target}
@@ -149,4 +143,4 @@ const ActivityDashboard = () => {
   );
 };
 
-export default ActivityDashboard;
+export default observer(ActivityDashboard);
