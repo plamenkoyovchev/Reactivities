@@ -33,6 +33,7 @@ class ActivityStore {
   }
 
   @action selectActivity = (id: string) => {
+    this.editMode = false;
     this.selectedActivity = this.activities.find(a => a.id === id) || null;
   };
 
@@ -49,6 +50,7 @@ class ActivityStore {
         this.selectedActivity = null;
         this.editMode = false;
         this.submitting = false;
+        this.target = "";
       }
     } catch (error) {
       console.warn(error);
