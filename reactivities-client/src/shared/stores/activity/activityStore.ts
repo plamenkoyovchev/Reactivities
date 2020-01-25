@@ -27,9 +27,9 @@ class ActivityStore {
   };
 
   @computed get activitiesByDateAsc() {
-    return this.activities.sort(
-      (a, b) => Date.parse(a.date) - Date.parse(b.date)
-    );
+    return this.activities
+      .slice()
+      .sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
   }
 
   @action selectActivity = (id: string) => {
@@ -56,17 +56,9 @@ class ActivityStore {
     }
   };
 
-  @action deselectActivity = () => {
-    this.selectedActivity = null;
-  };
-
   @action openCreateActivityForm = () => {
     this.editMode = true;
     this.selectedActivity = null;
-  };
-
-  @action setEditMode = (on: boolean) => {
-    this.editMode = on;
   };
 
   @action saveActivity = async (activity: IActivity) => {
@@ -92,6 +84,14 @@ class ActivityStore {
 
     this.editMode = false;
     this.submitting = false;
+  };
+
+  @action setEditMode = (on: boolean) => {
+    this.editMode = on;
+  };
+
+  @action deselectActivity = () => {
+    this.selectedActivity = null;
   };
 }
 
