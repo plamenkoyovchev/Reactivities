@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, SyntheticEvent } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./ActivityDashboard.scss";
 import { observer } from "mobx-react-lite";
 
@@ -17,45 +17,16 @@ import Loader from "../../UI/Loader/Loader";
 
 const ActivityDashboard = () => {
   const activityStore = useContext(ActivityStore);
+  const { selectedActivity } = activityStore;
 
   const [activities, setActivities] = useState<IActivity[]>([]);
-  const [selectedActivity, setSelectedActivity] = useState<IActivity | null>(
-    null
-  );
+
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [target, setTarget] = useState("");
-
-  const selectActivityHandler = (id: string) => {
-    var selectedItem = activities.find(a => a.id === id);
-    if (selectedItem) {
-      setSelectedActivity(selectedItem);
-      setEditMode(false);
-    }
-  };
 
   const createActivityHandler = () => {
     setEditMode(true);
-    setSelectedActivity(null);
-  };
-
-  const deleteActivityHandler = (
-    event: SyntheticEvent<HTMLButtonElement>,
-    id: string
-  ) => {
-    setLoading(true);
-    setTarget(event.currentTarget.name);
-    httpRequester.activities
-      .delete(id)
-      .then(() => {
-        setActivities([...activities.filter(a => a.id !== id)]);
-        if (selectedActivity && selectedActivity.id === id) {
-          setSelectedActivity(null);
-          setEditMode(false);
-        }
-      })
-      .catch(err => console.warn(err))
-      .finally(() => setLoading(false));
+    //setSelectedActivity(null);
   };
 
   const submitActivityHandler = (activity: IActivity) => {
@@ -86,7 +57,7 @@ const ActivityDashboard = () => {
   };
 
   const resetEditForm = (activity: IActivity) => {
-    setSelectedActivity(activity);
+    //setSelectedActivity(activity);
     setEditMode(false);
   };
 
@@ -112,20 +83,13 @@ const ActivityDashboard = () => {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column width={10}>
-            <ActivityList
-              activities={activityStore.activities}
-              selectActivity={selectActivityHandler}
-              deleteActivity={deleteActivityHandler}
-              target={target}
-              loading={loading}
-            />
+            <ActivityList activities={activityStore.activities} />
           </Grid.Column>
           <Grid.Column width={6}>
             {selectedActivity && !editMode && (
               <ActivityDetails
                 selectedActivity={selectedActivity}
                 setEditMode={setEditMode}
-                setSelectedActivity={setSelectedActivity}
               />
             )}
             {editMode && (
