@@ -13,7 +13,12 @@ import Loader from "../../UI/Loader/Loader";
 
 const ActivityDashboard = () => {
   const activityStore = useContext(ActivityStore);
-  const { selectedActivity, openCreateActivityForm, editMode } = activityStore;
+  const {
+    selectedActivity,
+    openCreateActivityForm,
+    editMode,
+    activitiesByDateAsc
+  } = activityStore;
 
   useEffect(() => {
     activityStore.loadActivities();
@@ -37,7 +42,7 @@ const ActivityDashboard = () => {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column width={10}>
-            <ActivityList activities={activityStore.activities} />
+            <ActivityList activities={activitiesByDateAsc} />
           </Grid.Column>
           <Grid.Column width={6}>
             {selectedActivity && !editMode && <ActivityDetails />}

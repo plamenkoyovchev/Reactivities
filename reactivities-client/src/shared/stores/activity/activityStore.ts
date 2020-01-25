@@ -1,4 +1,4 @@
-import { observable, action } from "mobx";
+import { observable, action, computed } from "mobx";
 import { createContext, SyntheticEvent } from "react";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 import httpRequester from "../../axios/httpRequester";
@@ -25,6 +25,12 @@ class ActivityStore {
       .catch(err => console.warn(err))
       .finally(() => (this.loading = false));
   };
+
+  @computed get activitiesByDateAsc() {
+    return this.activities.sort(
+      (a, b) => Date.parse(a.date) - Date.parse(b.date)
+    );
+  }
 
   @action selectActivity = (id: string) => {
     this.selectedActivity = this.activities.find(a => a.id === id) || null;
