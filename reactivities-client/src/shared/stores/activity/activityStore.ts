@@ -2,6 +2,7 @@ import { observable, action } from "mobx";
 import { createContext, SyntheticEvent } from "react";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 import httpRequester from "../../axios/httpRequester";
+import { v4 as uuid } from "uuid";
 
 class ActivityStore {
   @observable activities: IActivity[] = [];
@@ -9,6 +10,7 @@ class ActivityStore {
   @observable selectedActivity: IActivity | null = null;
   @observable editMode = false;
   @observable target = "";
+  @observable submitting = false;
 
   @action loadActivities = () => {
     this.loading = true;
@@ -28,29 +30,62 @@ class ActivityStore {
     this.selectedActivity = this.activities.find(a => a.id === id) || null;
   };
 
-  @action deleteActivity = (
+  @action deleteActivity = async (
     event: SyntheticEvent<HTMLButtonElement>,
     id: string
   ) => {
-    this.loading = true;
+    this.submitting = true;
     this.target = event.currentTarget.name;
-    httpRequester.activities
-      .delete(id)
-      .then(() => {
-        this.activities = this.activities.filter(a => a.id !== id);
-        if (this.selectedActivity && this.selectedActivity.id === id) {
-          this.selectedActivity = null;
-          this.editMode = false;
-        }
-      })
-      .catch(err => console.warn(err))
-      .finally(() => {
-        this.loading = false;
-      });
+    try {
+      await httpRequester.activities.delete(id);
+      this.activities = this.activities.filter(a => a.id !== id);
+      if (this.selectedActivity && this.selectedActivity.id === id) {
+        this.selectedActivity = null;
+        this.editMode = false;
+        this.submitting = false;
+      }
+    } catch (error) {
+      console.warn(error);
+      this.submitting = false;
+    }
   };
 
   @action deselectActivity = () => {
     this.selectedActivity = null;
+  };
+
+  @action openCreateActivityForm = () => {
+    this.editMode = true;
+    this.selectedActivity = null;
+  };
+
+  @action setEditMode = (on: boolean) => {
+    this.editMode = on;
+  };
+
+  @action saveActivity = async (activity: IActivity) => {
+    this.submitting = true;
+    try {
+      if (activity.id !== "") {
+        await httpRequester.activities.update(activity);
+        this.activities = [
+          ...this.activities.filter(a => a.id !== activity.id),
+          activity
+        ];
+      } else {
+        activity.id = uuid();
+        await httpRequester.activities.create(activity);
+        this.activities = [activity, ...this.activities];
+      }
+
+      this.selectedActivity = activity;
+    } catch (error) {
+      console.warn(error);
+      this.selectedActivity = null;
+    }
+
+    this.editMode = false;
+    this.submitting = false;
   };
 }
 

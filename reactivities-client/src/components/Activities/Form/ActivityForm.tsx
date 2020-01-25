@@ -1,19 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./ActivityForm.scss";
 import { Segment, Form, Button } from "semantic-ui-react";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 
-interface IProps {
-  setEditMode: (editMode: boolean) => void;
-  selectedActivity: IActivity | null;
-  saveActivity: (activity: IActivity) => void;
-}
+import ActivityStore from "../../../shared/stores/activity/activityStore";
 
-const ActivityForm: React.FC<IProps> = ({
-  setEditMode,
-  selectedActivity,
-  saveActivity
-}) => {
+import { observer } from "mobx-react-lite";
+
+const ActivityForm = () => {
+  const activityStore = useContext(ActivityStore);
+  const {
+    selectedActivity,
+    setEditMode,
+    saveActivity,
+    submitting
+  } = activityStore;
   const initializeForm = () => {
     if (selectedActivity) {
       return selectedActivity;
@@ -46,7 +47,7 @@ const ActivityForm: React.FC<IProps> = ({
 
   return (
     <Segment clearing>
-      <Form onSubmit={submitHandler}>
+      <Form onSubmit={submitHandler} loading={submitting}>
         <Form.Input
           placeholder="Title"
           value={activity.title}
@@ -97,4 +98,4 @@ const ActivityForm: React.FC<IProps> = ({
   );
 };
 
-export default ActivityForm;
+export default observer(ActivityForm);

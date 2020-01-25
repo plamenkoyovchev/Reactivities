@@ -3,15 +3,17 @@ import ActivityStore from "../../../../shared/stores/activity/activityStore";
 import { Item, Button, Label } from "semantic-ui-react";
 import { IActivity } from "../../../../app/Models/Activity/IActivity";
 
+import { observer } from "mobx-react-lite";
+
 interface IProps {
   activity: IActivity;
 }
 
 const ActivityListItem: React.FC<IProps> = ({ activity }) => {
   const activityStore = useContext(ActivityStore);
-  const { selectActivity, deleteActivity, target, loading } = activityStore;
-
+  const { selectActivity, deleteActivity, target, submitting } = activityStore;
   const { id, title, date, description, city, venue, category } = activity;
+
   return (
     <Item>
       <Item.Content>
@@ -26,7 +28,7 @@ const ActivityListItem: React.FC<IProps> = ({ activity }) => {
         <Item.Extra>
           <Button
             name={id}
-            loading={target === id && loading}
+            loading={target === id && submitting}
             floated="right"
             content="Delete"
             color="red"
@@ -45,4 +47,4 @@ const ActivityListItem: React.FC<IProps> = ({ activity }) => {
   );
 };
 
-export default ActivityListItem;
+export default observer(ActivityListItem);
