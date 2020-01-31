@@ -5,6 +5,7 @@ import httpRequester from "../../axios/httpRequester";
 import { v4 as uuid } from "uuid";
 
 class ActivityStore {
+  @observable activityMap = new Map();
   @observable activities: IActivity[] = [];
   @observable loading = false;
   @observable selectedActivity: IActivity | null = null;
@@ -19,7 +20,7 @@ class ActivityStore {
       .then(activities => {
         activities.forEach(activity => {
           activity.date = activity.date.split(".")[0];
-          this.activities.push(activity);
+          this.activityMap.set(activity.id, activity);
         });
       })
       .catch(err => console.warn(err))
@@ -27,14 +28,14 @@ class ActivityStore {
   };
 
   @computed get activitiesByDateAsc() {
-    return this.activities
+    return Array.from(this.activityMap.values())
       .slice()
       .sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
   }
 
   @action selectActivity = (id: string) => {
     this.editMode = false;
-    this.selectedActivity = this.activities.find(a => a.id === id) || null;
+    this.selectedActivity = this.activityMap.get(id);
   };
 
   @action deleteActivity = async (
@@ -45,15 +46,15 @@ class ActivityStore {
     this.target = event.currentTarget.name;
     try {
       await httpRequester.activities.delete(id);
-      this.activities = this.activities.filter(a => a.id !== id);
+      this.activityMap.delete(id);
       if (this.selectedActivity && this.selectedActivity.id === id) {
         this.selectedActivity = null;
         this.editMode = false;
-        this.submitting = false;
         this.target = "";
       }
     } catch (error) {
       console.warn(error);
+    } finally {
       this.submitting = false;
     }
   };
@@ -68,14 +69,11 @@ class ActivityStore {
     try {
       if (activity.id !== "") {
         await httpRequester.activities.update(activity);
-        this.activities = [
-          ...this.activities.filter(a => a.id !== activity.id),
-          activity
-        ];
+        this.activityMap.set(activity.id, activity);
       } else {
         activity.id = uuid();
         await httpRequester.activities.create(activity);
-        this.activities = [activity, ...this.activities];
+        this.activityMap.set(activity.id, activity);
       }
 
       this.selectedActivity = activity;
