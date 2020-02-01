@@ -22,6 +22,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     activity: initialFormActivity,
     loading,
     loadActivity,
+    cleanActivity,
     saveActivity,
     submitting
   } = activityStore;
@@ -42,7 +43,17 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
         () => initialFormActivity && setActivity(initialFormActivity)
       );
     }
-  }, [match.params.id, activity.id.length, loadActivity, initialFormActivity]);
+
+    return () => {
+      cleanActivity();
+    };
+  }, [
+    match.params.id,
+    activity.id.length,
+    loadActivity,
+    initialFormActivity,
+    cleanActivity
+  ]);
 
   const inputChangeHandler = (event: any) => {
     const { name, value } = event.target;

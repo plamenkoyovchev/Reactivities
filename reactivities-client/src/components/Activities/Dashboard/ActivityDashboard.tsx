@@ -4,11 +4,10 @@ import { observer } from "mobx-react-lite";
 
 import ActivityStore from "../../../shared/stores/activity/activityStore";
 
-import { Grid, Button } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import ActivityList from "../List/ActivityList";
 
 import Loader from "../../UI/Loader/Loader";
-import { Link } from "react-router-dom";
 
 const ActivityDashboard = () => {
   const activityStore = useContext(ActivityStore);

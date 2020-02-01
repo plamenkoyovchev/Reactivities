@@ -48,6 +48,10 @@ class ActivityStore {
     }
   };
 
+  @action cleanActivity = () => {
+    this.activity = null;
+  };
+
   @action deleteActivity = async (
     event: SyntheticEvent<HTMLButtonElement>,
     id: string
