@@ -11,7 +11,6 @@ import Loader from "../../UI/Loader/Loader";
 
 const ActivityDashboard = () => {
   const activityStore = useContext(ActivityStore);
-  const { activitiesByDateAsc } = activityStore;
 
   useEffect(() => {
     activityStore.loadActivities();
@@ -26,7 +25,7 @@ const ActivityDashboard = () => {
       <Grid>
         <Grid.Row>
           <Grid.Column width={10}>
-            <ActivityList activities={activitiesByDateAsc} />
+            <ActivityList />
           </Grid.Column>
           <Grid.Column width={6}>
             <h2>Activity Filters</h2>
