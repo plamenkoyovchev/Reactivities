@@ -4,15 +4,20 @@ import Navigation from "../components/Navigation/Navigation";
 
 import { Container } from "semantic-ui-react";
 import ActivityDashboard from "../components/Activities/Dashboard/ActivityDashboard";
+import { Route } from "react-router-dom";
+import HomePage from "../pages/HomePage";
+import ActivityForm from "../components/Activities/Form/ActivityForm";
 
 const App: React.FC = () => {
   return (
-    <div className="App">
+    <>
       <Navigation />
       <Container className="Container">
-        <ActivityDashboard />
+        <Route exact path="/" component={HomePage} />
+        <Route path="/activities" component={ActivityDashboard} />
+        <Route path="/createActivity" componet={ActivityForm} />
       </Container>
-    </div>
+    </>
   );
 };
 
