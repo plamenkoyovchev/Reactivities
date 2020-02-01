@@ -15,7 +15,7 @@ const App: React.FC = () => {
       <Container className="Container">
         <Route exact path="/" component={HomePage} />
         <Route path="/activities" component={ActivityDashboard} />
-        <Route path="/createActivity" componet={ActivityForm} />
+        <Route path="/createActivity" component={ActivityForm} />
       </Container>
     </>
   );
