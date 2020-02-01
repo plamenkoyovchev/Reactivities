@@ -1,8 +1,8 @@
 import React from "react";
 import "./Navigation.scss";
 
-import { Menu, Container } from "semantic-ui-react";
-import { NavLink } from "react-router-dom";
+import { Menu, Container, Button } from "semantic-ui-react";
+import { NavLink, Link } from "react-router-dom";
 
 const Navigation = () => {
   return (
@@ -18,6 +18,14 @@ const Navigation = () => {
             as={NavLink}
             to="/activities"
           ></Menu.Item>
+          <Menu.Item>
+            <Button
+              as={Link}
+              to="/createActivity"
+              positive
+              content="Create Activity"
+            />
+          </Menu.Item>
         </Container>
       </Menu>
     </div>
