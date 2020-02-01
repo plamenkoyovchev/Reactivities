@@ -1,35 +1,36 @@
-import { observable, action, computed } from "mobx";
+import { observable, action, computed, runInAction } from "mobx";
 import { createContext, SyntheticEvent } from "react";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 import httpRequester from "../../axios/httpRequester";
-import { v4 as uuid } from "uuid";
 
 class ActivityStore {
   @observable activityMap = new Map();
-  @observable activities: IActivity[] = [];
   @observable loading = false;
   @observable activity: IActivity | null = null;
   @observable target = "";
   @observable submitting = false;
 
-  @action loadActivities = () => {
+  @action loadActivities = async () => {
     this.loading = true;
-    httpRequester.activities
-      .get()
-      .then(activities => {
+    try {
+      const activities = await httpRequester.activities.get();
+      runInAction(() => {
         activities.forEach(activity => {
           activity.date = activity.date.split(".")[0];
           this.activityMap.set(activity.id, activity);
         });
-      })
-      .catch(err => console.warn(err))
-      .finally(() => (this.loading = false));
+        this.loading = false;
+      });
+    } catch (error) {
+      this.loading = false;
+      console.warn(error);
+    }
   };
 
   @computed get activitiesByDateAsc() {
-    return Array.from(this.activityMap.values())
-      .slice()
-      .sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+    return Array.from(this.activityMap.values()).sort(
+      (a, b) => Date.parse(a.date) - Date.parse(b.date)
+    );
   }
 
   @action loadActivity = async (id: string) => {
@@ -79,12 +80,14 @@ class ActivityStore {
         await httpRequester.activities.update(activity);
         this.activityMap.set(activity.id, activity);
       } else {
-        activity.id = uuid();
-        await httpRequester.activities.create(activity);
+        let createdActivity = await httpRequester.activities.create(activity);
+        activity.id = createdActivity.id;
         this.activityMap.set(activity.id, activity);
       }
 
-      this.activity = activity;
+      runInAction(() => {
+        this.activity = activity;
+      });
     } catch (error) {
       console.warn(error);
       this.activity = null;
