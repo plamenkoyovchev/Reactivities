@@ -80,7 +80,7 @@ class ActivityStore {
         await httpRequester.activities.update(activity);
         this.activityMap.set(activity.id, activity);
       } else {
-        let createdActivity = await httpRequester.activities.create(activity);
+        const createdActivity = await httpRequester.activities.create(activity);
         activity.id = createdActivity.id;
         this.activityMap.set(activity.id, activity);
       }
