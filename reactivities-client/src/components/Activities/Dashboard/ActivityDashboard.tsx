@@ -26,16 +26,6 @@ const ActivityDashboard = () => {
     <div>
       <Grid>
         <Grid.Row>
-          <Grid.Column width={16}>
-            <Button
-              as={Link}
-              to="/createActivity"
-              positive
-              content="Create Activity"
-            ></Button>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
           <Grid.Column width={10}>
             <ActivityList activities={activitiesByDateAsc} />
           </Grid.Column>
