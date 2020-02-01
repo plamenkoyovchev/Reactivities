@@ -1,21 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./ActivityList.scss";
 
 import { Item, Segment } from "semantic-ui-react";
-import { IActivity } from "../../../app/Models/Activity/IActivity";
 import ActivityListItem from "./ListItem/ActivityListItem";
 
-interface IProps {
-  activities: IActivity[];
-}
+import ActivityStore from "../../../shared/stores/activity/activityStore";
+import { observer } from "mobx-react-lite";
 
-const ActivityList: React.FC<IProps> = ({ activities }) => {
+const ActivityList: React.FC = () => {
+  const activityStore = useContext(ActivityStore);
+  const { activitiesByDateAsc } = activityStore;
   return (
     <div>
       <Segment clearing>
         <Item.Group divided>
-          {activities.length > 0
-            ? activities.map(activity => (
+          {activitiesByDateAsc.length > 0
+            ? activitiesByDateAsc.map(activity => (
                 <ActivityListItem key={activity.id} activity={activity} />
               ))
             : "No activities"}
@@ -25,4 +25,4 @@ const ActivityList: React.FC<IProps> = ({ activities }) => {
   );
 };
 
-export default ActivityList;
+export default observer(ActivityList);
