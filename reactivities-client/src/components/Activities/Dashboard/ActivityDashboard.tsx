@@ -6,19 +6,13 @@ import ActivityStore from "../../../shared/stores/activity/activityStore";
 
 import { Grid, Button } from "semantic-ui-react";
 import ActivityList from "../List/ActivityList";
-import ActivityDetails from "../Details/ActivityDetails";
-import ActivityForm from "../Form/ActivityForm";
 
 import Loader from "../../UI/Loader/Loader";
+import { Link } from "react-router-dom";
 
 const ActivityDashboard = () => {
   const activityStore = useContext(ActivityStore);
-  const {
-    selectedActivity,
-    openCreateActivityForm,
-    editMode,
-    activitiesByDateAsc
-  } = activityStore;
+  const { activitiesByDateAsc } = activityStore;
 
   useEffect(() => {
     activityStore.loadActivities();
@@ -34,7 +28,8 @@ const ActivityDashboard = () => {
         <Grid.Row>
           <Grid.Column width={16}>
             <Button
-              onClick={openCreateActivityForm}
+              as={Link}
+              to="/createActivity"
               positive
               content="Create Activity"
             ></Button>
@@ -45,12 +40,7 @@ const ActivityDashboard = () => {
             <ActivityList activities={activitiesByDateAsc} />
           </Grid.Column>
           <Grid.Column width={6}>
-            {selectedActivity && !editMode && <ActivityDetails />}
-            {editMode && (
-              <ActivityForm
-                key={(selectedActivity && selectedActivity.id) || 0}
-              />
-            )}
+            <h2>Activity Filters</h2>
           </Grid.Column>
         </Grid.Row>
       </Grid>

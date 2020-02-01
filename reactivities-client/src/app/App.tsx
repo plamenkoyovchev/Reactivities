@@ -7,6 +7,7 @@ import ActivityDashboard from "../components/Activities/Dashboard/ActivityDashbo
 import { Route } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import ActivityForm from "../components/Activities/Form/ActivityForm";
+import ActivityDetails from "../components/Activities/Details/ActivityDetails";
 
 const App: React.FC = () => {
   return (
@@ -14,8 +15,12 @@ const App: React.FC = () => {
       <Navigation />
       <Container className="Container">
         <Route exact path="/" component={HomePage} />
-        <Route path="/activities" component={ActivityDashboard} />
-        <Route path="/createActivity" component={ActivityForm} />
+        <Route exact path="/activities" component={ActivityDashboard} />
+        <Route path="/activities/:id" component={ActivityDetails} />
+        <Route
+          path={["/createActivity", "/editActivity/:id"]}
+          component={ActivityForm}
+        />
       </Container>
     </>
   );

@@ -8,8 +8,7 @@ class ActivityStore {
   @observable activityMap = new Map();
   @observable activities: IActivity[] = [];
   @observable loading = false;
-  @observable selectedActivity: IActivity | null = null;
-  @observable editMode = false;
+  @observable activity: IActivity | null = null;
   @observable target = "";
   @observable submitting = false;
 
@@ -33,9 +32,20 @@ class ActivityStore {
       .sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
   }
 
-  @action selectActivity = (id: string) => {
-    this.editMode = false;
-    this.selectedActivity = this.activityMap.get(id);
+  @action loadActivity = async (id: string) => {
+    this.loading = true;
+    try {
+      let activity = this.activityMap.get(id);
+      if (!activity) {
+        activity = await httpRequester.activities.details(id);
+      }
+
+      this.activity = activity;
+    } catch (error) {
+      console.warn(error);
+    } finally {
+      this.loading = false;
+    }
   };
 
   @action deleteActivity = async (
@@ -47,9 +57,8 @@ class ActivityStore {
     try {
       await httpRequester.activities.delete(id);
       this.activityMap.delete(id);
-      if (this.selectedActivity && this.selectedActivity.id === id) {
-        this.selectedActivity = null;
-        this.editMode = false;
+      if (this.activity && this.activity.id === id) {
+        this.activity = null;
         this.target = "";
       }
     } catch (error) {
@@ -57,11 +66,6 @@ class ActivityStore {
     } finally {
       this.submitting = false;
     }
-  };
-
-  @action openCreateActivityForm = () => {
-    this.editMode = true;
-    this.selectedActivity = null;
   };
 
   @action saveActivity = async (activity: IActivity) => {
@@ -76,22 +80,13 @@ class ActivityStore {
         this.activityMap.set(activity.id, activity);
       }
 
-      this.selectedActivity = activity;
+      this.activity = activity;
     } catch (error) {
       console.warn(error);
-      this.selectedActivity = null;
+      this.activity = null;
     }
 
-    this.editMode = false;
     this.submitting = false;
-  };
-
-  @action setEditMode = (on: boolean) => {
-    this.editMode = on;
-  };
-
-  @action deselectActivity = () => {
-    this.selectedActivity = null;
   };
 }
 

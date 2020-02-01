@@ -4,6 +4,7 @@ import { Item, Button, Label } from "semantic-ui-react";
 import { IActivity } from "../../../../app/Models/Activity/IActivity";
 
 import { observer } from "mobx-react-lite";
+import { Link } from "react-router-dom";
 
 interface IProps {
   activity: IActivity;
@@ -11,7 +12,7 @@ interface IProps {
 
 const ActivityListItem: React.FC<IProps> = ({ activity }) => {
   const activityStore = useContext(ActivityStore);
-  const { selectActivity, deleteActivity, target, submitting } = activityStore;
+  const { deleteActivity, target, submitting } = activityStore;
   const { id, title, date, description, city, venue, category } = activity;
 
   return (
@@ -35,10 +36,11 @@ const ActivityListItem: React.FC<IProps> = ({ activity }) => {
             onClick={e => deleteActivity(e, id)}
           />
           <Button
+            as={Link}
+            to={`/activities/${id}`}
             floated="right"
             content="View"
             color="blue"
-            onClick={() => selectActivity(id)}
           />
           <Label basic content={category} />
         </Item.Extra>

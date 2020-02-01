@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./ActivityForm.scss";
 import { Segment, Form, Button } from "semantic-ui-react";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
@@ -6,31 +6,43 @@ import { IActivity } from "../../../app/Models/Activity/IActivity";
 import ActivityStore from "../../../shared/stores/activity/activityStore";
 
 import { observer } from "mobx-react-lite";
+import { RouteComponentProps } from "react-router-dom";
+import Loader from "../../UI/Loader/Loader";
 
-const ActivityForm = () => {
+interface DetailParams {
+  id: string;
+}
+
+const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
+  match,
+  history
+}) => {
   const activityStore = useContext(ActivityStore);
   const {
-    selectedActivity,
-    setEditMode,
+    activity: initialFormActivity,
+    loading,
+    loadActivity,
     saveActivity,
     submitting
   } = activityStore;
-  const initializeForm = () => {
-    if (selectedActivity) {
-      return selectedActivity;
-    } else {
-      return {
-        id: "",
-        title: "",
-        category: "",
-        description: "",
-        date: "",
-        city: "",
-        venue: ""
-      };
+
+  const [activity, setActivity] = useState<IActivity>({
+    id: "",
+    title: "",
+    category: "",
+    description: "",
+    date: "",
+    city: "",
+    venue: ""
+  });
+
+  useEffect(() => {
+    if (match.params.id && activity.id.length === 0) {
+      loadActivity(match.params.id).then(
+        () => initialFormActivity && setActivity(initialFormActivity)
+      );
     }
-  };
-  const [activity, setActivity] = useState<IActivity>(initializeForm);
+  }, [match.params.id, activity.id.length, loadActivity, initialFormActivity]);
 
   const inputChangeHandler = (event: any) => {
     const { name, value } = event.target;
@@ -44,6 +56,10 @@ const ActivityForm = () => {
 
     saveActivity(activityToSave);
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <Segment clearing>
@@ -88,7 +104,7 @@ const ActivityForm = () => {
         />
         <Button floated="left" positive type="submit" content="Submit" />
         <Button
-          onClick={() => setEditMode(false)}
+          onClick={() => history.push(`/activities/${activity.id}`)}
           floated="left"
           type="button"
           content="Cancel"
