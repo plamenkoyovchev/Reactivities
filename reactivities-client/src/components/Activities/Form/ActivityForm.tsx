@@ -65,7 +65,9 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
       ...activity
     };
 
-    saveActivity(activityToSave);
+    saveActivity(activityToSave).then(() => {
+      history.push(`/activities/${activityToSave.id}`);
+    });
   };
 
   if (loading) {
