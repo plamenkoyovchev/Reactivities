@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, Fragment } from "react";
 import "./ActivityList.scss";
 
-import { Item, Segment } from "semantic-ui-react";
+import { Item, Segment, Label } from "semantic-ui-react";
 import ActivityListItem from "./ListItem/ActivityListItem";
 
 import ActivityStore from "../../../shared/stores/activity/activityStore";
@@ -11,17 +11,20 @@ const ActivityList: React.FC = () => {
   const activityStore = useContext(ActivityStore);
   const { activitiesByDateAsc } = activityStore;
   return (
-    <div>
-      <Segment clearing>
-        <Item.Group divided>
-          {activitiesByDateAsc.length > 0
-            ? activitiesByDateAsc.map(activity => (
+    <>
+      {activitiesByDateAsc.map(([date, activities]) => (
+        <Fragment key={date}>
+          <Label size="large" color="blue" content={date} />
+          <Segment clearing>
+            <Item.Group divided>
+              {activities.map(activity => (
                 <ActivityListItem key={activity.id} activity={activity} />
-              ))
-            : "No activities"}
-        </Item.Group>
-      </Segment>
-    </div>
+              ))}
+            </Item.Group>
+          </Segment>
+        </Fragment>
+      ))}
+    </>
   );
 };
 
