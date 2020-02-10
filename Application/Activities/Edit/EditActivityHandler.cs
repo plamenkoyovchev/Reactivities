@@ -1,5 +1,7 @@
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Exceptions;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +20,10 @@ namespace Application.Activities.Edit
             var activityToEdit = await this.Context.Activities.FindAsync(request.Id);
             if (activityToEdit == null)
             {
-                return null;
+                throw new RestException(HttpStatusCode.NotFound, new
+                {
+                    activity = "Not found"
+                });
             }
 
             activityToEdit.Category = request.Category ?? activityToEdit.Category;
