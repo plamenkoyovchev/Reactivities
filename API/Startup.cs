@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Activities.Create;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,7 +31,6 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<DataContext>(options => options.UseMySql(Configuration.GetConnectionString("Reactivities")));
-            services.AddControllers();
             services.AddCors(opt => opt.AddPolicy("CorsPolicy", policy =>
             {
                 policy.AllowAnyHeader()
@@ -38,6 +39,12 @@ namespace API
             }));
 
             services.AddMediatR(typeof(Application.Activities.List.Handler).Assembly);
+            services
+                .AddControllers()
+                .AddFluentValidation(cfg =>
+                {
+                    cfg.RegisterValidatorsFromAssemblyContaining<CreateActivityCommandValidator>();
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
