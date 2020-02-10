@@ -6,9 +6,9 @@ namespace Application.Activities.Details
 {
     public class Query : IRequest<Activity>
     {
-        public Guid Id { get; private set; }
+        public string Id { get; private set; }
 
-        public Query(Guid id)
+        public Query(string id)
         {
             this.Id = id;
         }

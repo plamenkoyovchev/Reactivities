@@ -5,9 +5,9 @@ namespace Application.Activities.Delete
 {
     public class DeleteActivityCommand : IRequest
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
-        public DeleteActivityCommand(Guid id)
+        public DeleteActivityCommand(string id)
         {
             this.Id = id;
         }
