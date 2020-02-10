@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Domain;
@@ -16,6 +17,7 @@ namespace Application.Activities.Create
         {
             var newActivity = new Activity
             {
+                Id = Guid.NewGuid().ToString(),
                 Category = request.Category,
                 City = request.City,
                 Date = request.Date,
