@@ -11,7 +11,16 @@ const httpStatusCodes = {
 axios.defaults.baseURL = "http://localhost:5000/api";
 
 axios.interceptors.response.use(undefined, error => {
-  if (error.response.status === httpStatusCodes.NOT_FOUND) {
+  const { status, config, data } = error.response;
+  if (status === httpStatusCodes.NOT_FOUND) {
+    history.push("/notfound");
+  }
+
+  if (
+    status === httpStatusCodes.BAD_REQUEST &&
+    config.method.toLowerCase() === "get" &&
+    data.errors.hasOwnProperty("id")
+  ) {
     history.push("/notfound");
   }
 });
