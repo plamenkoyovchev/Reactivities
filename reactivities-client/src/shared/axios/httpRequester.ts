@@ -4,8 +4,8 @@ import { IActivity } from "../../app/Models/Activity/IActivity";
 import { history } from "../..";
 
 const httpStatusCodes = {
-  NOT_FOUND: 400,
-  BAD_REQUEST: 404
+  BAD_REQUEST: 400,
+  NOT_FOUND: 404
 };
 
 axios.defaults.baseURL = "http://localhost:5000/api";
