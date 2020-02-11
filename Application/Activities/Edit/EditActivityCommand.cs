@@ -5,6 +5,6 @@ namespace Application.Activities.Edit
 {
     public class EditActivityCommand : CreateActivityCommand
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
     }
 }
