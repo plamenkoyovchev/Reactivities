@@ -2,10 +2,12 @@ import axios, { AxiosResponse } from "axios";
 import { IActivity } from "../../app/Models/Activity/IActivity";
 
 import { history } from "../..";
+import { toast } from "react-toastify";
 
 const httpStatusCodes = {
   BAD_REQUEST: 400,
-  NOT_FOUND: 404
+  NOT_FOUND: 404,
+  SERVER_ERROR: 500
 };
 
 axios.defaults.baseURL = "http://localhost:5000/api";
@@ -14,6 +16,7 @@ axios.interceptors.response.use(undefined, error => {
   const { status, config, data } = error.response;
   if (status === httpStatusCodes.NOT_FOUND) {
     history.push("/notfound");
+    return;
   }
 
   if (
@@ -22,6 +25,11 @@ axios.interceptors.response.use(undefined, error => {
     data.errors.hasOwnProperty("id")
   ) {
     history.push("/notfound");
+    return;
+  }
+
+  if (status === httpStatusCodes.SERVER_ERROR) {
+    toast.error("Server error!");
   }
 });
 
