@@ -13,6 +13,11 @@ const httpStatusCodes = {
 axios.defaults.baseURL = "http://localhost:5000/api";
 
 axios.interceptors.response.use(undefined, error => {
+  if (error.message === "Network Error" && !error.response) {
+    toast.error("Network error - check your connectivity");
+    return;
+  }
+
   const { status, config, data } = error.response;
   if (status === httpStatusCodes.NOT_FOUND) {
     history.push("/notfound");
