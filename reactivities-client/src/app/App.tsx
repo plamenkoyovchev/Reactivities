@@ -21,7 +21,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
     <>
       <Navigation />
       <Container className="Container">
-        <ToastContainer />
+        <ToastContainer position="bottom-right" />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route exact path="/activities" component={ActivityDashboard} />
