@@ -2,6 +2,7 @@ import React from "react";
 import "./App.scss";
 import Navigation from "../components/Navigation/Navigation";
 
+import { ToastContainer } from "react-toastify";
 import { Container } from "semantic-ui-react";
 import ActivityDashboard from "../components/Activities/Dashboard/ActivityDashboard";
 import {
@@ -20,6 +21,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
     <>
       <Navigation />
       <Container className="Container">
+        <ToastContainer />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route exact path="/activities" component={ActivityDashboard} />
