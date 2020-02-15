@@ -23,8 +23,12 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
     loadActivity(match.params.id);
   }, [loadActivity, match.params.id]);
 
-  if (loading || !activity) {
+  if (loading) {
     return <Loader />;
+  }
+
+  if (!activity) {
+    return <h2>Activity not found!</h2>;
   }
 
   const cancelHandler = () => {

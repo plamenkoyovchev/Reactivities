@@ -1,7 +1,42 @@
 import axios, { AxiosResponse } from "axios";
 import { IActivity } from "../../app/Models/Activity/IActivity";
 
+import { history } from "../..";
+import { toast } from "react-toastify";
+
+const httpStatusCodes = {
+  BAD_REQUEST: 400,
+  NOT_FOUND: 404,
+  SERVER_ERROR: 500
+};
+
 axios.defaults.baseURL = "http://localhost:5000/api";
+
+axios.interceptors.response.use(undefined, error => {
+  if (error.message === "Network Error" && !error.response) {
+    toast.error("Network error - check your connectivity");
+    return;
+  }
+
+  const { status, config, data } = error.response;
+  if (status === httpStatusCodes.NOT_FOUND) {
+    history.push("/notfound");
+    return;
+  }
+
+  if (
+    status === httpStatusCodes.BAD_REQUEST &&
+    config.method.toLowerCase() === "get" &&
+    data.errors.hasOwnProperty("id")
+  ) {
+    history.push("/notfound");
+    return;
+  }
+
+  if (status === httpStatusCodes.SERVER_ERROR) {
+    toast.error("Server error!");
+  }
+});
 
 const responseBody = (response: AxiosResponse) => response.data;
 
