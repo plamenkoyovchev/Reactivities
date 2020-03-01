@@ -2,9 +2,7 @@ import React, { Fragment } from "react";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 import { Segment, Header, Form, Button, Comment } from "semantic-ui-react";
 
-const ActivityDetailedChat: React.FC<{ activity: IActivity }> = ({
-  activity
-}) => {
+const ActivityDetailedChat = () => {
   return (
     <Fragment>
       <Segment
