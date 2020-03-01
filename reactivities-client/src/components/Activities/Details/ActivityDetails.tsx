@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Card, Image, Button } from "semantic-ui-react";
+import { Card, Image, Button, Grid } from "semantic-ui-react";
 
 import ActivityStore from "../../../shared/stores/activity/activityStore";
 
@@ -7,6 +7,10 @@ import { observer } from "mobx-react-lite";
 import { RouteComponentProps, Link } from "react-router-dom";
 
 import Loader from "../../UI/Loader/Loader";
+import ActivityDetailsHeader from "./ActivityDetailsHeader";
+import ActivityDetailedInfo from "./ActivityDetailedInfo";
+import ActivityDetailedChat from "./ActivityDetailedChat";
+import ActivityDetailedSidebar from "./ActivityDetailedSidebar";
 
 interface DetailParams {
   id: string;
@@ -37,32 +41,16 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
 
   const { id, title, date, description, category } = activity!;
   return (
-    <Card fluid>
-      <Image
-        src={`/assets/categoryImages/${category}.jpg`}
-        wrapped
-        ui={false}
-      />
-      <Card.Content>
-        <Card.Header>{title}</Card.Header>
-        <Card.Meta>
-          <span className="date">{date}</span>
-        </Card.Meta>
-        <Card.Description>{description}</Card.Description>
-      </Card.Content>
-      <Card.Content extra>
-        <Button.Group widths={2}>
-          <Button
-            as={Link}
-            to={`/editActivity/${id}`}
-            basic
-            color="blue"
-            content="Edit"
-          />
-          <Button onClick={cancelHandler} basic color="grey" content="Cancel" />
-        </Button.Group>
-      </Card.Content>
-    </Card>
+    <Grid>
+      <Grid.Column width={10}>
+        <ActivityDetailsHeader />
+        <ActivityDetailedInfo />
+        <ActivityDetailedChat />
+      </Grid.Column>
+      <Grid.Column width={6}>
+        <ActivityDetailedSidebar />
+      </Grid.Column>
+    </Grid>
   );
 };
 
