@@ -1,7 +1,7 @@
 import React, { useContext, Fragment } from "react";
 import "./ActivityList.scss";
 
-import { Item, Segment, Label } from "semantic-ui-react";
+import { Item, Label } from "semantic-ui-react";
 import ActivityListItem from "./ListItem/ActivityListItem";
 
 import ActivityStore from "../../../shared/stores/activity/activityStore";

@@ -4,7 +4,7 @@ import { Grid } from "semantic-ui-react";
 import ActivityStore from "../../../shared/stores/activity/activityStore";
 
 import { observer } from "mobx-react-lite";
-import { RouteComponentProps, Link } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 
 import Loader from "../../UI/Loader/Loader";
 import ActivityDetailsHeader from "./ActivityDetailsHeader";
@@ -34,10 +34,6 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
   if (!activity) {
     return <h2>Activity not found!</h2>;
   }
-
-  const cancelHandler = () => {
-    history.push("/activities");
-  };
 
   return (
     <Grid>

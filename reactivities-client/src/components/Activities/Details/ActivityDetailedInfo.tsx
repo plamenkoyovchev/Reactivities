@@ -1,6 +1,5 @@
 import React from "react";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
-import { observable } from "mobx";
 import { Segment, Grid, Icon } from "semantic-ui-react";
 
 const ActivityDetailedInfo: React.FC<{ activity: IActivity }> = ({

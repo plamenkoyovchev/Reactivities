@@ -13,7 +13,7 @@ interface IProps {
 const ActivityListItem: React.FC<IProps> = ({ activity }) => {
   const activityStore = useContext(ActivityStore);
   const { deleteActivity, target, submitting } = activityStore;
-  const { id, title, date, description, city, venue, category } = activity;
+  const { id, title, date, description, venue, category } = activity;
 
   return (
     <Segment.Group>
