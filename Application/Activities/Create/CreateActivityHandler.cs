@@ -17,7 +17,6 @@ namespace Application.Activities.Create
         {
             var newActivity = new Activity
             {
-                Id = Guid.NewGuid().ToString(),
                 Category = request.Category,
                 City = request.City,
                 Date = request.Date,
