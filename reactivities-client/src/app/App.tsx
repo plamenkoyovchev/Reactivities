@@ -19,21 +19,28 @@ import ActivityDetails from "../components/Activities/Details/ActivityDetails";
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   return (
     <>
-      <Navigation />
-      <Container className="Container">
-        <ToastContainer position="bottom-right" />
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/activities" component={ActivityDashboard} />
-          <Route path="/activities/:id" component={ActivityDetails} />
-          <Route
-            key={location.key}
-            path={["/createActivity", "/editActivity/:id"]}
-            component={ActivityForm}
-          />
-          <Route component={NotFound} />
-        </Switch>
-      </Container>
+      <Route exact path="/" component={HomePage} />
+      <Route
+        path={"/(.+)"}
+        render={() => (
+          <>
+            <Navigation />
+            <Container className="Container">
+              <ToastContainer position="bottom-right" />
+              <Switch>
+                <Route exact path="/activities" component={ActivityDashboard} />
+                <Route path="/activities/:id" component={ActivityDetails} />
+                <Route
+                  key={location.key}
+                  path={["/createActivity", "/editActivity/:id"]}
+                  component={ActivityForm}
+                />
+                <Route component={NotFound} />
+              </Switch>
+            </Container>
+          </>
+        )}
+      />
     </>
   );
 };
