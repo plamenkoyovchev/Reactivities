@@ -39,11 +39,10 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
     history.push("/activities");
   };
 
-  const { id, title, date, description, category } = activity!;
   return (
     <Grid>
       <Grid.Column width={10}>
-        <ActivityDetailsHeader />
+        <ActivityDetailsHeader activity={activity} />
         <ActivityDetailedInfo />
         <ActivityDetailedChat />
       </Grid.Column>

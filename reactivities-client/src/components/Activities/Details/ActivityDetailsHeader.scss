@@ -1,0 +1,18 @@
+.activity-header {
+    .activity-image {
+        filter: brightness(30%);
+    }
+
+    .activity-image-text {
+        position: absolute;
+        bottom: 5%;
+        left: 5%;
+        width: 100%;
+        height: auto;
+        color: white;
+
+        #header-text {
+            color: white;
+        }
+    }
+}
