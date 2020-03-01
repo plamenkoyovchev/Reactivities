@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Card, Image, Button, Grid } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 
 import ActivityStore from "../../../shared/stores/activity/activityStore";
 
