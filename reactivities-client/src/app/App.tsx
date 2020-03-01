@@ -19,6 +19,7 @@ import ActivityDetails from "../components/Activities/Details/ActivityDetails";
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   return (
     <>
+      <ToastContainer position="bottom-right" />
       <Route exact path="/" component={HomePage} />
       <Route
         path={"/(.+)"}
@@ -26,7 +27,6 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
           <>
             <Navigation />
             <Container className="Container">
-              <ToastContainer position="bottom-right" />
               <Switch>
                 <Route exact path="/activities" component={ActivityDashboard} />
                 <Route path="/activities/:id" component={ActivityDetails} />
