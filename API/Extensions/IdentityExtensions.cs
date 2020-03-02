@@ -7,7 +7,7 @@ namespace API.Extensions
 {
     public static class IdentityExtensions
     {
-        public static void AddAspNetCoreIdentity(this IServiceCollection services)
+        public static void ConfigureAspNetCoreIdentity(this IServiceCollection services)
         {
             var builder = services.AddIdentityCore<ReactivityUser>();
 

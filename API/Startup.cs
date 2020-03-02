@@ -41,7 +41,7 @@ namespace API
                     cfg.RegisterValidatorsFromAssemblyContaining<CreateActivityCommandValidator>();
                 });
 
-            services.AddAspNetCoreIdentity();
+            services.ConfigureAspNetCoreIdentity();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
