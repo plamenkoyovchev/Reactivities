@@ -1,5 +1,6 @@
 ﻿using System;
 using Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence
@@ -17,6 +18,8 @@ namespace Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Value>()
                 .HasData(new Value[]
                 {
