@@ -1,17 +1,60 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Domain;
+using Microsoft.AspNetCore.Identity;
 
 namespace Persistence
 {
     public class Seeder
     {
-        public static void SeedData(DataContext context)
+        public static async Task SeedDataAsync(DataContext context, UserManager<ReactivityUser> userManager)
         {
+            if (!userManager.Users.Any())
+            {
+                await AddUsersAsync(context, userManager);
+            }
+
             if (!context.Activities.Any())
             {
-                var activities = new List<Activity>
+                AddActivities(context);
+            }
+        }
+
+        private static async Task AddUsersAsync(DataContext context, UserManager<ReactivityUser> userManager)
+        {
+            var users = new List<ReactivityUser>()
+            {
+                new ReactivityUser()
+                {
+                    DisplayName = "Pako",
+                    UserName = "pakata",
+                    Email = "pakata@abv.bg"
+                },
+                new ReactivityUser()
+                {
+                    DisplayName = "Sako",
+                    UserName = "sakata",
+                    Email = "sakata@abv.bg"
+                },
+                new ReactivityUser()
+                {
+                    DisplayName = "Cako",
+                    UserName = "cakata",
+                    Email = "cakata@abv.bg"
+                }
+            };
+
+            foreach (var user in users)
+            {
+                await userManager.CreateAsync(user, "Pa$$w0rd");
+            }
+        }
+
+        private static void AddActivities(DataContext context)
+        {
+            var activities = new List<Activity>
                 {
                     new Activity
                     {
@@ -105,9 +148,8 @@ namespace Persistence
                     }
                 };
 
-                context.Activities.AddRange(activities);
-                context.SaveChanges();
-            }
+            context.Activities.AddRange(activities);
+            context.SaveChanges();
         }
     }
 }

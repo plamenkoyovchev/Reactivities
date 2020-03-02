@@ -1,5 +1,7 @@
 using System;
+using Domain;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,7 +37,9 @@ namespace API
                 {
                     var context = services.GetRequiredService<DataContext>();
                     context.Database.Migrate();
-                    Seeder.SeedData(context);
+
+                    var userManager = services.GetRequiredService<UserManager<ReactivityUser>>();
+                    Seeder.SeedDataAsync(context, userManager).Wait();
                 }
                 catch (Exception ex)
                 {
