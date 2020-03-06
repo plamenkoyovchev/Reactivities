@@ -1,4 +1,4 @@
-using Application.ViewModels.User;
+using Application.Common.ViewModels.User;
 using Domain;
 using MediatR;
 

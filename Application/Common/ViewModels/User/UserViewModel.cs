@@ -1,7 +1,7 @@
 using Application.Common.Mappings;
 using Domain;
 
-namespace Application.ViewModels.User
+namespace Application.Common.ViewModels.User
 {
     public class UserViewModel : IMapFrom<ReactivityUser>
     {

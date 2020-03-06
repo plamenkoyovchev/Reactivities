@@ -2,7 +2,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
-using Application.ViewModels.User;
+using Application.Common.ViewModels.User;
 using AutoMapper;
 using Domain;
 using MediatR;

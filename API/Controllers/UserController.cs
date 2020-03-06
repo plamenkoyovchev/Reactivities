@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Application.Authentication.Login;
-using Application.ViewModels.User;
+using Application.Common.ViewModels.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
