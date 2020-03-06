@@ -2,13 +2,14 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Exceptions;
+using Application.ViewModels.User;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Authentication.Login
 {
-    public class LoginQueryHandler : IRequestHandler<LoginQuery, string>
+    public class LoginQueryHandler : IRequestHandler<LoginQuery, UserViewModel>
     {
         private readonly UserManager<ReactivityUser> userManager;
         private readonly SignInManager<ReactivityUser> signInManager;
@@ -19,7 +20,7 @@ namespace Application.Authentication.Login
             this.userManager = userManager;
         }
 
-        public async Task<string> Handle(LoginQuery request, CancellationToken cancellationToken)
+        public async Task<UserViewModel> Handle(LoginQuery request, CancellationToken cancellationToken)
         {
             var user = await this.userManager.FindByEmailAsync(request.Email);
             if (user != null)
@@ -28,7 +29,12 @@ namespace Application.Authentication.Login
                 if (signInResult.Succeeded)
                 {
                     // TODO generate token
-                    return user.DisplayName;
+                    return new UserViewModel
+                    {
+                        DisplayName = user.DisplayName,
+                        Username = user.UserName,
+                        EMail = user.Email
+                    };
                 }
             }
 
