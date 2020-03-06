@@ -5,7 +5,6 @@ using Application.Activities.Create;
 using Application.Common.Interfaces;
 using FluentValidation.AspNetCore;
 using Infrastructure.Security;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +45,6 @@ namespace API
                 });
 
             services.ConfigureAspNetCoreIdentity();
-            services.AddAuthentication();
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
         }
