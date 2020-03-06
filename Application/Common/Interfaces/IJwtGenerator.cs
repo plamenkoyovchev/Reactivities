@@ -4,6 +4,6 @@ namespace Application.Common.Interfaces
 {
     public interface IJwtGenerator
     {
-        string CreateUser(ReactivityUser user);
+        string CreateToken(ReactivityUser user);
     }
 }
