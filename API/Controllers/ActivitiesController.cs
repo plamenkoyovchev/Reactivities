@@ -4,6 +4,7 @@ using System;
 using Application.Activities.Create;
 using Application.Activities.Delete;
 using Application.Activities.Edit;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -20,6 +21,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> Get(Guid id)
         {
             var activity = await this.Mediator.Send(new ActivityDetailsQuery(id));
