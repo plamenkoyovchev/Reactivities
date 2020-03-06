@@ -2,6 +2,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using Application.Common.ViewModels.User;
 using AutoMapper;
 using Domain;
@@ -15,12 +16,18 @@ namespace Application.Authentication.Login
         private readonly UserManager<ReactivityUser> userManager;
         private readonly SignInManager<ReactivityUser> signInManager;
         private readonly IMapper mapper;
+        private readonly IJwtGenerator jwtGenerator;
 
-        public LoginQueryHandler(UserManager<ReactivityUser> userManager, SignInManager<ReactivityUser> signInManager, IMapper mapper)
+        public LoginQueryHandler(
+            UserManager<ReactivityUser> userManager,
+            SignInManager<ReactivityUser> signInManager,
+            IMapper mapper,
+            IJwtGenerator jwtGenerator)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.mapper = mapper;
+            this.jwtGenerator = jwtGenerator;
         }
 
         public async Task<UserViewModel> Handle(LoginQuery request, CancellationToken cancellationToken)
@@ -31,8 +38,9 @@ namespace Application.Authentication.Login
                 var signInResult = await this.signInManager.CheckPasswordSignInAsync(user, request.Password, false);
                 if (signInResult.Succeeded)
                 {
-                    // TODO generate token
-                    return mapper.Map<UserViewModel>(user);
+                    var loggedUser = mapper.Map<UserViewModel>(user);
+                    loggedUser.Token = this.jwtGenerator.CreateUser(user);
+                    return loggedUser;
                 }
             }
 
