@@ -1,5 +1,6 @@
 using API.Extensions;
 using API.Middleware;
+using Application;
 using Application.Activities.Create;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -25,6 +26,7 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplication();
             services.AddDbContextPool<DataContext>(options => options.UseMySql(Configuration.GetConnectionString("Reactivities")));
             services.AddCors(opt => opt.AddPolicy("CorsPolicy", policy =>
             {
@@ -33,7 +35,6 @@ namespace API
                       .WithOrigins("http://localhost:3000");
             }));
 
-            services.AddMediatR(typeof(Application.Activities.List.Handler).Assembly);
             services
                 .AddControllers()
                 .AddFluentValidation(cfg =>
