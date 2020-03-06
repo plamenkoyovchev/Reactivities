@@ -1,7 +1,8 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Exceptions;
+using Application.Common;
+using Application.Common.Exceptions;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

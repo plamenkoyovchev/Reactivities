@@ -1,6 +1,6 @@
 using Persistence;
 
-namespace Application
+namespace Application.Common
 {
     public abstract class HandlerBase
     {

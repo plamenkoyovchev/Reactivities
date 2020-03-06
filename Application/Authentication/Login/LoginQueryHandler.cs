@@ -1,7 +1,7 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Exceptions;
+using Application.Common.Exceptions;
 using Application.ViewModels.User;
 using AutoMapper;
 using Domain;
