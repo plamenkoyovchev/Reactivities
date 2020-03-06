@@ -39,7 +39,7 @@ namespace Application.Authentication.Login
                 if (signInResult.Succeeded)
                 {
                     var loggedUser = mapper.Map<UserViewModel>(user);
-                    loggedUser.Token = this.jwtGenerator.CreateUser(user);
+                    loggedUser.Token = this.jwtGenerator.CreateToken(user);
                     return loggedUser;
                 }
             }
