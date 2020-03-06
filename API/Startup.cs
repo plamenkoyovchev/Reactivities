@@ -31,8 +31,6 @@ namespace API
             services.AddApplication();
             services.AddDbContextPool<DataContext>(options => options.UseMySql(Configuration.GetConnectionString("Reactivities")));
 
-            services.AddScoped<IJwtGenerator, JwtGenerator>();
-
             services.AddCors(opt => opt.AddPolicy("CorsPolicy", policy =>
             {
                 policy.AllowAnyHeader()
@@ -49,6 +47,8 @@ namespace API
 
             services.ConfigureAspNetCoreIdentity();
             services.AddAuthentication();
+
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
