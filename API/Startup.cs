@@ -2,7 +2,9 @@ using API.Extensions;
 using API.Middleware;
 using Application;
 using Application.Activities.Create;
+using Application.Common.Interfaces;
 using FluentValidation.AspNetCore;
+using Infrastructure.Security;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +30,9 @@ namespace API
         {
             services.AddApplication();
             services.AddDbContextPool<DataContext>(options => options.UseMySql(Configuration.GetConnectionString("Reactivities")));
+
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
+
             services.AddCors(opt => opt.AddPolicy("CorsPolicy", policy =>
             {
                 policy.AllowAnyHeader()
