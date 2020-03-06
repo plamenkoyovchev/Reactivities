@@ -1,6 +1,9 @@
+using Application.Common.Mappings;
+using Domain;
+
 namespace Application.ViewModels.User
 {
-    public class UserViewModel
+    public class UserViewModel : IMapFrom<ReactivityUser>
     {
         public string DisplayName { get; set; }
 

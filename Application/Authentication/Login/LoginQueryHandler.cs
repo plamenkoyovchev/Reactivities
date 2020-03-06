@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Exceptions;
 using Application.ViewModels.User;
+using AutoMapper;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -13,11 +14,13 @@ namespace Application.Authentication.Login
     {
         private readonly UserManager<ReactivityUser> userManager;
         private readonly SignInManager<ReactivityUser> signInManager;
+        private readonly IMapper mapper;
 
-        public LoginQueryHandler(UserManager<ReactivityUser> userManager, SignInManager<ReactivityUser> signInManager)
+        public LoginQueryHandler(UserManager<ReactivityUser> userManager, SignInManager<ReactivityUser> signInManager, IMapper mapper)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.mapper = mapper;
         }
 
         public async Task<UserViewModel> Handle(LoginQuery request, CancellationToken cancellationToken)
@@ -29,12 +32,7 @@ namespace Application.Authentication.Login
                 if (signInResult.Succeeded)
                 {
                     // TODO generate token
-                    return new UserViewModel
-                    {
-                        DisplayName = user.DisplayName,
-                        Username = user.UserName,
-                        EMail = user.Email
-                    };
+                    return mapper.Map<UserViewModel>(user);
                 }
             }
 
