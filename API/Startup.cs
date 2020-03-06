@@ -58,9 +58,10 @@ namespace API
                 //app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors("CorsPolicy");
             app.UseRouting();
+            app.UseCors("CorsPolicy");
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
