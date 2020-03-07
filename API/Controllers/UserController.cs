@@ -8,23 +8,24 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     public class UserController : BaseController
     {
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<UserViewModel>> Login(LoginQuery query)
         {
             return await Mediator.Send(query);
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult<bool>> Register(RegisterCommand command)
         {
             return await Mediator.Send(command);
         }
 
-        [Authorize]
-        [HttpGet("user")]
+        [HttpGet]
         public async Task<ActionResult<UserViewModel>> GetCurrentUser()
         {
             return await this.Mediator.Send(new CurrentUserQuery());
