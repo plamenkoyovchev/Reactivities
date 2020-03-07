@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Application.Authentication.CurrentUser;
 using Application.Authentication.Login;
 using Application.Authentication.Register;
 using Application.Common.ViewModels.User;
@@ -20,6 +21,13 @@ namespace API.Controllers
         public async Task<ActionResult<bool>> Register(RegisterCommand command)
         {
             return await Mediator.Send(command);
+        }
+
+        [Authorize]
+        [HttpGet("user")]
+        public async Task<ActionResult<UserViewModel>> GetCurrentUser()
+        {
+            return await this.Mediator.Send(new CurrentUserQuery());
         }
     }
 }
