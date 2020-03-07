@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,13 +20,21 @@ namespace Application.Authentication.Register
 
         public async Task<bool> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var user = await this.userManager.FindByEmailAsync(request.Email);
-            if (user != null)
+            if (await this.userManager.FindByEmailAsync(request.Email) != null)
             {
                 throw new RestException(HttpStatusCode.BadRequest,
                 new
                 {
-                    user = "Invalid email"
+                    Email = "Invalid Email"
+                });
+            }
+
+            if (await this.userManager.FindByNameAsync(request.Username) != null)
+            {
+                throw new RestException(HttpStatusCode.BadRequest,
+                new
+                {
+                    Username = "Invalid Username"
                 });
             }
 
@@ -39,7 +48,12 @@ namespace Application.Authentication.Register
                 request.Password
             );
 
-            return result.Succeeded;
+            if (result.Succeeded)
+            {
+                return result.Succeeded;
+            }
+
+            throw new Exception("Problem occured during creating user");
         }
     }
 }
