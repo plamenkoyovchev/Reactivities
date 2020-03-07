@@ -3,14 +3,23 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Application.Common.Constants.System;
 using Application.Common.Interfaces;
 using Domain;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Security
 {
     public class JwtGenerator : IJwtGenerator
     {
+        private readonly IConfiguration config;
+
+        public JwtGenerator(IConfiguration config)
+        {
+            this.config = config;
+        }
+
         public string CreateToken(ReactivityUser user)
         {
             var claims = new List<Claim>()
@@ -35,7 +44,7 @@ namespace Infrastructure.Security
 
         private SigningCredentials CreateSigningCredentials()
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("should be secret"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config[ReactivitiesAppConstants.TokenKey]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             return credentials;

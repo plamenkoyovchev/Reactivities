@@ -45,6 +45,7 @@ namespace API
                 });
 
             services.ConfigureAspNetCoreIdentity();
+            services.ConfigureJwtAuthentication(Configuration);
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
         }
