@@ -15,6 +15,7 @@ namespace Application.Authentication.CurrentUser
         private readonly IUserAccessor userAccessor;
         private readonly IJwtGenerator jwtGenerator;
         private readonly IMapper mapper;
+
         public CurrentUserHandler(
             UserManager<ReactivityUser> userManager,
             IUserAccessor userAccessor,
@@ -26,6 +27,7 @@ namespace Application.Authentication.CurrentUser
             this.userAccessor = userAccessor;
             this.jwtGenerator = jwtGenerator;
         }
+
         public async Task<UserViewModel> Handle(CurrentUserQuery request, CancellationToken cancellationToken)
         {
             var user = await this.userManager.FindByNameAsync(this.userAccessor.GetUsername());
