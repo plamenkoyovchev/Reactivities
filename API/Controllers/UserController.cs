@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Application.Authentication.Login;
+using Application.Authentication.Register;
 using Application.Common.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,12 @@ namespace API.Controllers
         public async Task<ActionResult<UserViewModel>> Login(LoginQuery query)
         {
             return await Mediator.Send(query);
+        }
+
+        [HttpPost("register")]
+        public async Task<ActionResult<bool>> Register(RegisterCommand command)
+        {
+            return await Mediator.Send(command);
         }
     }
 }
