@@ -1,7 +1,9 @@
 using System.Text;
+using Application.Common.Constants.System;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
@@ -17,13 +19,11 @@ namespace API.Extensions
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
             identityBuilder.AddEntityFrameworkStores<DataContext>();
             identityBuilder.AddSignInManager<SignInManager<ReactivityUser>>();
-
-            ConfigureJwtOptions(services);
         }
 
-        private static void ConfigureJwtOptions(IServiceCollection services)
+        public static void ConfigureJwtAuthentication(this IServiceCollection services, IConfiguration config)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("should be secret"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config[ReactivitiesAppConstants.TokenKey]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>
                 {
