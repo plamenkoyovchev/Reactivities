@@ -2,15 +2,17 @@ using API.Extensions;
 using API.Middleware;
 using Application;
 using Application.Activities.Create;
+using Application.Common.Constants.System;
 using Application.Common.Interfaces;
 using FluentValidation.AspNetCore;
 using Infrastructure.Security;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Persistence;
 
 namespace API
@@ -28,21 +30,11 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplication();
-            services.AddDbContextPool<DataContext>(options => options.UseMySql(Configuration.GetConnectionString("Reactivities")));
+            services.AddDbContextPool<DataContext>(
+                opt => opt.UseMySql(Configuration.GetConnectionString(ReactivitiesAppConstants.CsKey)));
 
-            services.AddCors(opt => opt.AddPolicy("CorsPolicy", policy =>
-            {
-                policy.AllowAnyHeader()
-                      .AllowAnyMethod()
-                      .WithOrigins("http://localhost:3000");
-            }));
-
-            services
-                .AddControllers()
-                .AddFluentValidation(cfg =>
-                {
-                    cfg.RegisterValidatorsFromAssemblyContaining<CreateActivityCommandValidator>();
-                });
+            services.AllowCors();
+            services.AddControllersConfig();
 
             services.ConfigureAspNetCoreIdentity();
             services.ConfigureJwtAuthentication(Configuration);
