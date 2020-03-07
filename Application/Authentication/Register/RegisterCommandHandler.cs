@@ -32,7 +32,9 @@ namespace Application.Authentication.Register
             var result = await this.userManager.CreateAsync(
                 new ReactivityUser
                 {
-                    Email = request.Email
+                    Email = request.Email,
+                    UserName = request.Username,
+                    DisplayName = request.DisplayName
                 },
                 request.Password
             );
