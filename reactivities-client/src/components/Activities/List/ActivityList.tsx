@@ -4,12 +4,12 @@ import "./ActivityList.scss";
 import { Item, Label } from "semantic-ui-react";
 import ActivityListItem from "./ListItem/ActivityListItem";
 
-import ActivityStore from "../../../shared/stores/activity/activityStore";
+import RootStore from "../../../shared/stores/rootStore";
 import { observer } from "mobx-react-lite";
 
 const ActivityList: React.FC = () => {
-  const activityStore = useContext(ActivityStore);
-  const { activitiesByDateAsc } = activityStore;
+  const rootStore = useContext(RootStore);
+  const { activitiesByDateAsc } = rootStore.activityStore;
   return (
     <>
       {activitiesByDateAsc.map(([date, activities]) => (

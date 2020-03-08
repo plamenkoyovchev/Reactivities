@@ -1,5 +1,5 @@
 import { observable, action, computed, runInAction } from "mobx";
-import { createContext, SyntheticEvent } from "react";
+import { SyntheticEvent } from "react";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 import httpRequester from "../../axios/httpRequester";
 
@@ -111,4 +111,4 @@ class ActivityStore {
   };
 }
 
-export default createContext(new ActivityStore());
+export default ActivityStore;

@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from "react";
 import "./ActivityDashboard.scss";
 import { observer } from "mobx-react-lite";
 
-import ActivityStore from "../../../shared/stores/activity/activityStore";
+import RootStore from "../../../shared/stores/rootStore";
 
 import { Grid } from "semantic-ui-react";
 import ActivityList from "../List/ActivityList";
@@ -10,13 +10,14 @@ import ActivityList from "../List/ActivityList";
 import Loader from "../../UI/Loader/Loader";
 
 const ActivityDashboard = () => {
-  const activityStore = useContext(ActivityStore);
+  const rootStore = useContext(RootStore);
+  const { loadActivities, loading } = rootStore.activityStore;
 
   useEffect(() => {
-    activityStore.loadActivities();
-  }, [activityStore]);
+    loadActivities();
+  }, [loadActivities]);
 
-  if (activityStore.loading) {
+  if (loading) {
     return <Loader />;
   }
 

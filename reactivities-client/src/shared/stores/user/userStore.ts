@@ -1,5 +1,5 @@
 import { observable, action, computed, runInAction } from "mobx";
-import { createContext, SyntheticEvent } from "react";
+import { SyntheticEvent } from "react";
 import { IUser } from "../../../app/Models/User/IUser";
 import httpRequester from "../../axios/httpRequester";
 import { IUserFormValues } from "../../../app/Models/User/IUserFormValues";
@@ -50,4 +50,4 @@ class UserStore {
   };
 }
 
-export default createContext(new UserStore());
+export default UserStore;

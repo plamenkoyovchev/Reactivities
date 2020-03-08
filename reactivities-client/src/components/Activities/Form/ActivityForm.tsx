@@ -3,7 +3,7 @@ import "./ActivityForm.scss";
 import { Segment, Form, Button, Grid } from "semantic-ui-react";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 
-import ActivityStore from "../../../shared/stores/activity/activityStore";
+import RootStore from "../../../shared/stores/rootStore";
 
 import { observer } from "mobx-react-lite";
 import { RouteComponentProps } from "react-router-dom";
@@ -17,7 +17,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
   match,
   history
 }) => {
-  const activityStore = useContext(ActivityStore);
+  const rootStore = useContext(RootStore);
   const {
     activity: initialFormActivity,
     loading,
@@ -25,7 +25,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     cleanActivity,
     saveActivity,
     submitting
-  } = activityStore;
+  } = rootStore.activityStore;
 
   const [activity, setActivity] = useState<IActivity>({
     id: "",
