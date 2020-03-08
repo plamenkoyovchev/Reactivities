@@ -60,8 +60,10 @@ const activities = {
 
 const user = {
   getCurrent: (): Promise<IUser> => request.get("/user"),
-  register: (user: IUserFormValues) => request.post("/user/register", user),
-  login: (user: IUserFormValues) => request.post("/user/login", user)
+  register: (user: IUserFormValues): Promise<boolean> =>
+    request.post("/user/register", user),
+  login: (user: IUserFormValues): Promise<IUser> =>
+    request.post("/user/login", user)
 };
 
 export default {
