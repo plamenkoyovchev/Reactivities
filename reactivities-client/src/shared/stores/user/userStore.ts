@@ -2,11 +2,41 @@ import { observable, action, computed, runInAction } from "mobx";
 import { createContext, SyntheticEvent } from "react";
 import { IUser } from "../../../app/Models/User/IUser";
 import httpRequester from "../../axios/httpRequester";
+import { IUserFormValues } from "../../../app/Models/User/IUserFormValues";
 
 class UserStore {
   @observable loading = false;
   @observable currentUser: IUser | null = null;
   @observable submitting = false;
+
+  @computed get loggedIn() {
+    return !!this.currentUser;
+  }
+
+  @action register = async (userValues: IUserFormValues) => {
+    let registered = false;
+    this.submitting = true;
+    try {
+      registered = await httpRequester.user.register(userValues);
+    } catch (error) {
+      console.warn(error);
+    } finally {
+      this.submitting = false;
+    }
+
+    return registered;
+  };
+
+  @action login = async (userValues: IUserFormValues) => {
+    this.submitting = true;
+    try {
+      this.currentUser = await httpRequester.user.login(userValues);
+    } catch (error) {
+      console.warn(error);
+    } finally {
+      this.submitting = false;
+    }
+  };
 
   @action getCurrentUser = async () => {
     this.loading = true;
@@ -20,4 +50,4 @@ class UserStore {
   };
 }
 
-export default createContext(UserStore);
+export default createContext(new UserStore());
