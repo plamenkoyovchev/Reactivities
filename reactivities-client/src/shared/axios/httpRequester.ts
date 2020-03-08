@@ -3,6 +3,8 @@ import { IActivity } from "../../app/Models/Activity/IActivity";
 
 import { history } from "../..";
 import { toast } from "react-toastify";
+import { IUser } from "../../app/Models/User/IUser";
+import { IUserFormValues } from "../../app/Models/User/IUserFormValues";
 
 const httpStatusCodes = {
   BAD_REQUEST: 400,
@@ -40,7 +42,7 @@ axios.interceptors.response.use(undefined, error => {
 
 const responseBody = (response: AxiosResponse) => response.data;
 
-const requests = {
+const request = {
   get: (url: string) => axios.get(url).then(responseBody),
   post: (url: string, data: {}) => axios.post(url, data).then(responseBody),
   put: (url: string, data: {}) => axios.put(url, data).then(responseBody),
@@ -48,15 +50,21 @@ const requests = {
 };
 
 const activities = {
-  get: (): Promise<IActivity[]> => requests.get("/activities"),
-  details: (id: string): Promise<IActivity> =>
-    requests.get(`/activities/${id}`),
-  create: (activity: IActivity) => requests.post("/activities", activity),
+  get: (): Promise<IActivity[]> => request.get("/activities"),
+  details: (id: string): Promise<IActivity> => request.get(`/activities/${id}`),
+  create: (activity: IActivity) => request.post("/activities", activity),
   update: (activity: IActivity) =>
-    requests.put(`/activities/${activity.id}`, activity),
-  delete: (id: string) => requests.delete(`/activities/${id}`)
+    request.put(`/activities/${activity.id}`, activity),
+  delete: (id: string) => request.delete(`/activities/${id}`)
+};
+
+const user = {
+  getCurrent: (): Promise<IUser> => request.get("/user"),
+  register: (user: IUserFormValues) => request.post("/user/register", user),
+  login: (user: IUserFormValues) => request.post("/user/login", user)
 };
 
 export default {
-  activities
+  activities,
+  user
 };
