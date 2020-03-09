@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 import "./HomePage.scss";
 
-import RootStore from "../shared/stores/rootStore";
+import { RootStoreContext } from "../shared/stores/rootStore";
 
 import { Container, Segment, Header, Button, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 function HomePage() {
-  const rootStore = useContext(RootStore);
+  const rootStore = useContext(RootStoreContext);
   const { loggedIn, currentUser } = rootStore.userStore;
   const actionButtons =
     loggedIn && currentUser ? (
