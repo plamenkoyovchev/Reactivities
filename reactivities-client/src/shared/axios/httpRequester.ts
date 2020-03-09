@@ -14,6 +14,19 @@ const httpStatusCodes = {
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
+axios.interceptors.request.use(
+  config => {
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
+
 axios.interceptors.response.use(undefined, error => {
   if (error.message === "Network Error" && !error.response) {
     toast.error("Network error - check your connectivity");
