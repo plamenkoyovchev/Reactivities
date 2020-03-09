@@ -15,6 +15,7 @@ import HomePage from "../pages/HomePage";
 import NotFound from "../pages/NotFound";
 import ActivityForm from "../components/Activities/Form/ActivityForm";
 import ActivityDetails from "../components/Activities/Details/ActivityDetails";
+import LoginForm from "../components/User/LoginForm";
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   return (
@@ -35,6 +36,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
                   path={["/createActivity", "/editActivity/:id"]}
                   component={ActivityForm}
                 />
+                <Route path="/login" component={LoginForm} />
                 <Route component={NotFound} />
               </Switch>
             </Container>
