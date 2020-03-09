@@ -3,6 +3,7 @@ import { SyntheticEvent } from "react";
 import { IUser } from "../../../app/Models/User/IUser";
 import httpRequester from "../../axios/httpRequester";
 import { IUserFormValues } from "../../../app/Models/User/IUserFormValues";
+import { history } from "../../..";
 
 class UserStore {
   @observable loading = false;
@@ -31,6 +32,7 @@ class UserStore {
     this.submitting = true;
     try {
       this.currentUser = await httpRequester.user.login(userValues);
+      history.push("/activities");
     } catch (error) {
       console.warn(error);
     } finally {
