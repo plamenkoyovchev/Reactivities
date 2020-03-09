@@ -1,4 +1,4 @@
-import { createContext, Component } from "react";
+import { createContext } from "react";
 import ActivityStore from "./activity/activityStore";
 import UserStore from "./user/userStore";
 import CommonStore from "./common/commonStore";
