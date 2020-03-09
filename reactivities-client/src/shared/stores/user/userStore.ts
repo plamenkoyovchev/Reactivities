@@ -5,7 +5,15 @@ import httpRequester from "../../axios/httpRequester";
 import { IUserFormValues } from "../../../app/Models/User/IUserFormValues";
 import { history } from "../../..";
 
+import { RootStore } from "../rootStore";
+
 class UserStore {
+  rootStore: RootStore;
+
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
+  }
+
   @observable loading = false;
   @observable currentUser: IUser | null = null;
   @observable submitting = false;
@@ -32,12 +40,20 @@ class UserStore {
     this.submitting = true;
     try {
       this.currentUser = await httpRequester.user.login(userValues);
+      this.rootStore.commonStore.setToken(this.currentUser.token);
       history.push("/activities");
     } catch (error) {
       console.warn(error);
     } finally {
       this.submitting = false;
     }
+  };
+
+  @action logout = () => {
+    this.rootStore.commonStore.setToken(null);
+    this.currentUser = null;
+
+    history.push("/");
   };
 
   @action getCurrentUser = async () => {

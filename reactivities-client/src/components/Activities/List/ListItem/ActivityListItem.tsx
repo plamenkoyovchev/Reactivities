@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import RootStore from "../../../../shared/stores/rootStore";
+import { RootStoreContext } from "../../../../shared/stores/rootStore";
 import { Item, Button, Label, Segment, Icon } from "semantic-ui-react";
 import { IActivity } from "../../../../app/Models/Activity/IActivity";
 
@@ -11,7 +11,7 @@ interface IProps {
 }
 
 const ActivityListItem: React.FC<IProps> = ({ activity }) => {
-  const rootStore = useContext(RootStore);
+  const rootStore = useContext(RootStoreContext);
   const { deleteActivity, target, submitting } = rootStore.activityStore;
   const { id, title, date, description, venue, category } = activity;
 

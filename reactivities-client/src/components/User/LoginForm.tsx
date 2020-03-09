@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import { Form as FinalForm, Field } from "react-final-form";
 
-import RootStore from "../../shared/stores/rootStore";
+import { RootStoreContext } from "../../shared/stores/rootStore";
 import { IUserFormValues } from "../../app/Models/User/IUserFormValues";
 import { Form, Button } from "semantic-ui-react";
 import { observable } from "mobx";
 import { observer } from "mobx-react-lite";
 
 const LoginForm = () => {
-  const rootStore = useContext(RootStore);
+  const rootStore = useContext(RootStoreContext);
   const { login, submitting } = rootStore.userStore;
 
   return (

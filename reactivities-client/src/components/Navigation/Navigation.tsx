@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import "./Navigation.scss";
 
-import RootStore from "../../shared/stores/rootStore";
+import { RootStoreContext } from "../../shared/stores/rootStore";
 
 import { Menu, Container, Button, Image, Dropdown } from "semantic-ui-react";
 import { NavLink, Link } from "react-router-dom";
 
 const Navigation = () => {
-  const rootStore = useContext(RootStore);
-  const { loggedIn, currentUser } = rootStore.userStore;
+  const rootStore = useContext(RootStoreContext);
+  const { loggedIn, currentUser, logout } = rootStore.userStore;
   return (
     <div className="Navigation">
       <Menu fixed="top" inverted>
@@ -45,7 +45,7 @@ const Navigation = () => {
                     text="My proflie"
                     icon="user"
                   />
-                  <Dropdown.Item text="Logout" icon="power" />
+                  <Dropdown.Item onClick={logout} text="Logout" icon="power" />
                 </Dropdown.Menu>
               </Dropdown>
             </Menu.Item>
