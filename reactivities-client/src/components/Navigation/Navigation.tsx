@@ -44,7 +44,7 @@ const Navigation = () => {
                     to="/profile"
                     text="My proflie"
                     icon="user"
-                  ></Dropdown.Item>
+                  />
                   <Dropdown.Item text="Logout" icon="power" />
                 </Dropdown.Menu>
               </Dropdown>
