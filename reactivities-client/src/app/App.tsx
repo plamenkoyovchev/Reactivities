@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import "./App.scss";
 import Navigation from "../components/Navigation/Navigation";
 
@@ -16,8 +16,28 @@ import NotFound from "../pages/NotFound";
 import ActivityForm from "../components/Activities/Form/ActivityForm";
 import ActivityDetails from "../components/Activities/Details/ActivityDetails";
 import LoginForm from "../components/User/LoginForm";
+import { RootStoreContext } from "../shared/stores/rootStore";
+
+import { observer } from "mobx-react-lite";
+import Loader from "../components/UI/Loader/Loader";
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
+  const rootStore = useContext(RootStoreContext);
+  const { appLoaded, setAppLoaded, token } = rootStore.commonStore;
+  const { getCurrentUser } = rootStore.userStore;
+
+  useEffect(() => {
+    if (token) {
+      getCurrentUser().finally(() => setAppLoaded());
+    } else {
+      setAppLoaded();
+    }
+  }, [getCurrentUser, setAppLoaded, token]);
+
+  if (!appLoaded) {
+    return <Loader loadingText="Application is loading ..." />;
+  }
+
   return (
     <>
       <ToastContainer position="bottom-right" />
@@ -47,4 +67,4 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
   );
 };
 
-export default withRouter(App);
+export default withRouter(observer(App));
