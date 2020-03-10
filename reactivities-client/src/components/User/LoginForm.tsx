@@ -1,20 +1,40 @@
 import React, { useContext } from "react";
-import { Form as FinalForm, Field } from "react-final-form";
 
 import { RootStoreContext } from "../../shared/stores/rootStore";
 import { IUserFormValues } from "../../app/Models/User/IUserFormValues";
-import { Form, Button } from "semantic-ui-react";
+import { Form, Button, Label } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
+
+import { FORM_ERROR } from "final-form";
+import { Form as FinalForm, Field } from "react-final-form";
+import { combineValidators, isRequired } from "revalidate";
+
+const validate = combineValidators({
+  email: isRequired("email"),
+  password: isRequired("password")
+});
 
 const LoginForm = () => {
   const rootStore = useContext(RootStoreContext);
-  const { login, submitting } = rootStore.userStore;
+  const { login } = rootStore.userStore;
 
   return (
     <FinalForm
-      onSubmit={(values: IUserFormValues) => login(values)}
-      render={({ handleSubmit }) => (
-        <Form onSubmit={handleSubmit} loading={submitting}>
+      onSubmit={(values: IUserFormValues) =>
+        login(values).catch(error => ({
+          [FORM_ERROR]: error
+        }))
+      }
+      validate={validate}
+      render={({
+        handleSubmit,
+        submitting,
+        submitError,
+        invalid,
+        pristine,
+        dirtySinceLastSubmit
+      }) => (
+        <Form onSubmit={handleSubmit}>
           <Field name="email" placeholder="Email" component="input" />
           <Field
             name="password"
@@ -22,7 +42,16 @@ const LoginForm = () => {
             type="password"
             component="input"
           />
-          <Button positive content="Login" loading={submitting} />
+          {submitError && !dirtySinceLastSubmit && (
+            <Label color="red" basic content={submitError.statusText} />
+          )}
+          <br />
+          <Button
+            positive
+            content="Login"
+            loading={submitting}
+            disabled={(invalid && !dirtySinceLastSubmit) || pristine}
+          />
         </Form>
       )}
     />
