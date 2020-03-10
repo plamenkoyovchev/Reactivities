@@ -51,6 +51,8 @@ axios.interceptors.response.use(undefined, error => {
   if (status === httpStatusCodes.SERVER_ERROR) {
     toast.error("Server error!");
   }
+
+  throw error.response;
 });
 
 const responseBody = (response: AxiosResponse) => response.data;
