@@ -37,7 +37,7 @@ class UserStore {
       this.rootStore.commonStore.setToken(this.currentUser.token);
       history.push("/activities");
     } catch (error) {
-      console.warn(error);
+      throw error;
     }
   };
 
