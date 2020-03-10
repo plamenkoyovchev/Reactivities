@@ -15,7 +15,6 @@ class UserStore {
 
   @observable loading = false;
   @observable currentUser: IUser | null = null;
-  @observable submitting = false;
 
   @computed get loggedIn() {
     return !!this.currentUser;
@@ -23,28 +22,22 @@ class UserStore {
 
   @action register = async (userValues: IUserFormValues) => {
     let registered = false;
-    this.submitting = true;
     try {
       registered = await httpRequester.user.register(userValues);
     } catch (error) {
       console.warn(error);
-    } finally {
-      this.submitting = false;
     }
 
     return registered;
   };
 
   @action login = async (userValues: IUserFormValues) => {
-    this.submitting = true;
     try {
       this.currentUser = await httpRequester.user.login(userValues);
       this.rootStore.commonStore.setToken(this.currentUser.token);
       history.push("/activities");
     } catch (error) {
       console.warn(error);
-    } finally {
-      this.submitting = false;
     }
   };
 
