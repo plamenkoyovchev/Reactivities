@@ -5,8 +5,9 @@ import { IUserFormValues } from "../../app/Models/User/IUserFormValues";
 import { RootStoreContext } from "../../shared/stores/rootStore";
 import { FORM_ERROR } from "final-form";
 import { isRequired, combineValidators } from "revalidate";
-import { Form, Label, Button, Header } from "semantic-ui-react";
+import { Form, Button, Header } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
+import ErrorMessage from "../Common/ErrorMessage";
 
 const validate = combineValidators({
   username: isRequired("username"),
@@ -55,9 +56,6 @@ const RegisterForm = () => {
             placeholder="Password"
             component="input"
           />
-          {submitError && !dirtySinceLastSubmit && (
-            <Label color="red" basic content={submitError.statusText} />
-          )}
           <br />
           <Button
             positive
@@ -66,6 +64,10 @@ const RegisterForm = () => {
             disabled={(invalid && !dirtySinceLastSubmit) || pristine}
             fluid
           />
+          <br />
+          {submitError && !dirtySinceLastSubmit && (
+            <ErrorMessage error={submitError} />
+          )}
         </Form>
       )}
     />
