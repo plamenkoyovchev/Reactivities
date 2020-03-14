@@ -5,7 +5,7 @@ import { IUserFormValues } from "../../app/Models/User/IUserFormValues";
 import { RootStoreContext } from "../../shared/stores/rootStore";
 import { FORM_ERROR } from "final-form";
 import { isRequired, combineValidators } from "revalidate";
-import { Form, Label, Button } from "semantic-ui-react";
+import { Form, Label, Button, Header } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 
 const validate = combineValidators({
@@ -37,6 +37,11 @@ const RegisterForm = () => {
         dirtySinceLastSubmit
       }) => (
         <Form onSubmit={handleSubmit}>
+          <Header
+            as="h2"
+            content="Register for Reactivities"
+            textAlign="center"
+          />
           <Field name="email" placeholder="Email" component="input" />
           <Field name="username" placeholder="Username" component="input" />
           <Field
@@ -59,6 +64,7 @@ const RegisterForm = () => {
             content="Register"
             loading={submitting}
             disabled={(invalid && !dirtySinceLastSubmit) || pristine}
+            fluid
           />
         </Form>
       )}

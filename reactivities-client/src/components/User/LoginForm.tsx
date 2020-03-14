@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import { RootStoreContext } from "../../shared/stores/rootStore";
 import { IUserFormValues } from "../../app/Models/User/IUserFormValues";
-import { Form, Button, Label } from "semantic-ui-react";
+import { Form, Button, Label, Header } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 
 import { FORM_ERROR } from "final-form";
@@ -38,6 +38,7 @@ const LoginForm = () => {
         dirtySinceLastSubmit
       }) => (
         <Form onSubmit={handleSubmit}>
+          <Header as="h2" content="Login for Reactivities" textAlign="center" />
           <Field name="email" placeholder="Email" component="input" />
           <Field
             name="password"
@@ -54,6 +55,7 @@ const LoginForm = () => {
             content="Login"
             loading={submitting}
             disabled={(invalid && !dirtySinceLastSubmit) || pristine}
+            fluid
           />
         </Form>
       )}
