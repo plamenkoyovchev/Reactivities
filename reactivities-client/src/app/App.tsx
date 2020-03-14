@@ -20,6 +20,7 @@ import { RootStoreContext } from "../shared/stores/rootStore";
 
 import { observer } from "mobx-react-lite";
 import Loader from "../components/UI/Loader/Loader";
+import AppModal from "../components/UI/Modal/AppModal";
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   const rootStore = useContext(RootStoreContext);
@@ -40,6 +41,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
 
   return (
     <>
+      <AppModal />
       <ToastContainer position="bottom-right" />
       <Route exact path="/" component={HomePage} />
       <Route
@@ -56,7 +58,6 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
                   path={["/createActivity", "/editActivity/:id"]}
                   component={ActivityForm}
                 />
-                <Route path="/login" component={LoginForm} />
                 <Route component={NotFound} />
               </Switch>
             </Container>
