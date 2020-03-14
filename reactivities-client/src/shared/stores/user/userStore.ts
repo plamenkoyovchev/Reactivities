@@ -27,7 +27,7 @@ class UserStore {
       registered = await httpRequester.user.register(userValues);
       toast.success("Registration was successful! Please Login!");
     } catch (error) {
-      console.warn(error);
+      throw error;
     }
 
     return registered;
