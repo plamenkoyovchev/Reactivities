@@ -5,10 +5,13 @@ import { RootStoreContext } from "../shared/stores/rootStore";
 
 import { Container, Segment, Header, Button, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import LoginForm from "../components/User/LoginForm";
 
 function HomePage() {
   const rootStore = useContext(RootStoreContext);
   const { loggedIn, currentUser } = rootStore.userStore;
+  const { open } = rootStore.modalStore;
+
   const actionButtons =
     loggedIn && currentUser ? (
       <Button as={Link} to="/activities" size="huge" inverted>
@@ -16,7 +19,7 @@ function HomePage() {
       </Button>
     ) : (
       <>
-        <Button as={Link} to="/login" size="huge" inverted>
+        <Button onClick={() => open(<LoginForm />)} size="huge" inverted>
           Login
         </Button>
         <Button as={Link} to="/register" size="huge" inverted>
