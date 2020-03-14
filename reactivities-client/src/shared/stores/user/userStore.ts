@@ -5,6 +5,7 @@ import { IUserFormValues } from "../../../app/Models/User/IUserFormValues";
 import { history } from "../../..";
 
 import { RootStore } from "../rootStore";
+import { toast } from "react-toastify";
 
 class UserStore {
   rootStore: RootStore;
@@ -24,6 +25,7 @@ class UserStore {
     let registered = false;
     try {
       registered = await httpRequester.user.register(userValues);
+      toast.success("Registration was successful! Please Login!");
     } catch (error) {
       console.warn(error);
     }
