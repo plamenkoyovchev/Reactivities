@@ -15,7 +15,6 @@ import HomePage from "../pages/HomePage";
 import NotFound from "../pages/NotFound";
 import ActivityForm from "../components/Activities/Form/ActivityForm";
 import ActivityDetails from "../components/Activities/Details/ActivityDetails";
-import LoginForm from "../components/User/LoginForm";
 import { RootStoreContext } from "../shared/stores/rootStore";
 
 import { observer } from "mobx-react-lite";
@@ -42,7 +41,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
   return (
     <>
       <AppModal />
-      <ToastContainer position="bottom-right" />
+      <ToastContainer position="top-left" />
       <Route exact path="/" component={HomePage} />
       <Route
         path={"/(.+)"}
