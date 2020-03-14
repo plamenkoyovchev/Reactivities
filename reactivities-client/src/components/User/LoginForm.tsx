@@ -17,13 +17,16 @@ const validate = combineValidators({
 const LoginForm = () => {
   const rootStore = useContext(RootStoreContext);
   const { login } = rootStore.userStore;
+  const { close } = rootStore.modalStore;
 
   return (
     <FinalForm
       onSubmit={(values: IUserFormValues) =>
-        login(values).catch(error => ({
-          [FORM_ERROR]: error
-        }))
+        login(values)
+          .then(close)
+          .catch(error => ({
+            [FORM_ERROR]: error
+          }))
       }
       validate={validate}
       render={({
