@@ -8,6 +8,7 @@ import { observer } from "mobx-react-lite";
 import { FORM_ERROR } from "final-form";
 import { Form as FinalForm, Field } from "react-final-form";
 import { combineValidators, isRequired } from "revalidate";
+import ErrorMessage from "../Common/ErrorMessage";
 
 const validate = combineValidators({
   email: isRequired("email"),
@@ -47,7 +48,7 @@ const LoginForm = () => {
             component="input"
           />
           {submitError && !dirtySinceLastSubmit && (
-            <Label color="red" basic content={submitError.statusText} />
+            <ErrorMessage error={submitError} />
           )}
           <br />
           <Button
