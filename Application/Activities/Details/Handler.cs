@@ -2,22 +2,31 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common;
+using Application.Common.DTOs.Activities;
 using Application.Common.Exceptions;
+using AutoMapper;
 using Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Activities.Details
 {
-    public class Handler : HandlerBase, IRequestHandler<Query, Activity>
+    public class Handler : HandlerBase, IRequestHandler<Query, ActivityDTO>
     {
-        public Handler(DataContext context) : base(context)
+        private readonly IMapper mapper;
+
+        public Handler(DataContext context, IMapper mapper) : base(context)
         {
+            this.mapper = mapper;
         }
 
-        public async Task<Activity> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<ActivityDTO> Handle(Query request, CancellationToken cancellationToken)
         {
-            var activity = await this.Context.Activities.FindAsync(request.Id);
+            var activity = await this.Context.Activities
+                                                .Include(a => a.UserActivities)
+                                                .ThenInclude(u => u.ReactivityUser)
+                                                .FirstOrDefaultAsync(a => a.Id == request.Id);
             if (activity == null)
             {
                 throw new RestException(HttpStatusCode.NotFound, new
@@ -26,7 +35,7 @@ namespace Application.Activities.Details
                 });
             }
 
-            return activity;
+            return mapper.Map<ActivityDTO>(activity);
         }
     }
 }
