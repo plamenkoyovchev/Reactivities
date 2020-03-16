@@ -12,7 +12,7 @@ namespace Domain
 
         public Activity Activity { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
 
         public bool IsHost { get; set; }
     }

@@ -1,6 +1,8 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common;
+using Application.Common.Interfaces;
 using Domain;
 using MediatR;
 using Persistence;
@@ -9,8 +11,12 @@ namespace Application.Activities.Create
 {
     public class CreateActivityHandler : HandlerBase, IRequestHandler<CreateActivityCommand, Activity>
     {
-        public CreateActivityHandler(DataContext context) : base(context)
+        private readonly IUserAccessor userAccessor;
+
+        public CreateActivityHandler(DataContext context, IUserAccessor userAccessor)
+        : base(context)
         {
+            this.userAccessor = userAccessor;
         }
 
         public async Task<Activity> Handle(CreateActivityCommand request, CancellationToken cancellationToken)
@@ -26,8 +32,11 @@ namespace Application.Activities.Create
             };
 
             this.Context.Add(newActivity);
-            var success = await this.Context.SaveChangesAsync() > 0;
 
+            var user = this.Context.Users.FirstOrDefault(u => u.UserName == this.userAccessor.GetUsername());
+            this.Context.UserActivities.Add(new UserActivity() { Activity = newActivity, ReactivityUser = user, IsHost = true });
+
+            var success = await this.Context.SaveChangesAsync() > 0;
             if (!success)
             {
                 return null;
