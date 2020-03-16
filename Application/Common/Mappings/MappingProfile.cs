@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Application.Common.DTOs.Attendee;
 using AutoMapper;
+using Domain;
 
 namespace Application.Common.Mappings
 {
@@ -10,6 +12,7 @@ namespace Application.Common.Mappings
         public MappingProfile()
         {
             ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
+            CreateCustomMappings();
         }
 
         private void ApplyMappingsFromAssembly(Assembly assembly)
@@ -28,6 +31,13 @@ namespace Application.Common.Mappings
 
                 methodInfo?.Invoke(instance, new object[] { this });
             }
+        }
+
+        private void CreateCustomMappings()
+        {
+            CreateMap<UserActivity, AttendeeDTO>()
+                .ForMember(a => a.Username, o => o.MapFrom(x => x.ReactivityUser.UserName))
+                .ForMember(a => a.DisplayName, o => o.MapFrom(x => x.ReactivityUser.DisplayName));
         }
     }
 }
