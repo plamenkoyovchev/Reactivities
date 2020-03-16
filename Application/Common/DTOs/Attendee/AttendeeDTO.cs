@@ -1,9 +1,6 @@
-using Application.Common.Mappings;
-using Domain;
-
 namespace Application.Common.DTOs.Attendee
 {
-    public class AttendeeDTO : IMapFrom<UserActivity>
+    public class AttendeeDTO
     {
         public string Username { get; set; }
 
