@@ -11,10 +11,10 @@ using Persistence;
 
 namespace Application.Activities.Attend
 {
-    public class AttendCommandHandler : HandlerBase, IRequestHandler<AttendCommand>
+    public class AttendHandler : HandlerBase, IRequestHandler<AttendCommand>
     {
         private readonly IUserAccessor userAccessor;
-        public AttendCommandHandler(DataContext dataContext, IUserAccessor userAccessor)
+        public AttendHandler(DataContext dataContext, IUserAccessor userAccessor)
             : base(dataContext)
         {
             this.userAccessor = userAccessor;
