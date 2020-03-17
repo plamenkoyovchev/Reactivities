@@ -5,6 +5,7 @@ using Application.Activities.Create;
 using Application.Activities.Delete;
 using Application.Activities.Edit;
 using Microsoft.AspNetCore.Authorization;
+using Application.Activities.Attend;
 
 namespace API.Controllers
 {
@@ -58,6 +59,12 @@ namespace API.Controllers
             var activity = await this.Mediator.Send(editActivityCommand);
 
             return Ok(activity);
+        }
+
+        [HttpPost("{id}/attend")]
+        public async Task<IActionResult> Attend(Guid id)
+        {
+            return Ok(await this.Mediator.Send(new AttendCommand(id)));
         }
     }
 }
