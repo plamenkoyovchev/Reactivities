@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,7 +22,9 @@ namespace Application.Activities.Attend
         }
         public async Task<Unit> Handle(AttendCommand request, CancellationToken cancellationToken)
         {
-            var activity = await this.Context.Activities.FindAsync(request.ActivityId);
+            var activity = await this.Context.Activities
+                                    .Include(a => a.UserActivities)
+                                    .FirstOrDefaultAsync(a => a.Id == request.ActivityId);
             if (activity == null)
             {
                 throw new RestException(HttpStatusCode.NotFound, new { Activity = "Activity not found!" });
@@ -33,10 +36,7 @@ namespace Application.Activities.Attend
                 throw new RestException(HttpStatusCode.BadRequest, new { User = "Not found!" });
             }
 
-            var attendance = await this.Context.UserActivities
-                                               .Include(ua => ua.ReactivityUser)
-                                               .FirstOrDefaultAsync(x => x.ActivityId == request.ActivityId &&
-                                                                         x.ReactivityUser.UserName == user.UserName);
+            var attendance = activity.UserActivities.FirstOrDefault(at => at.ReactivityUserId == user.Id);
             if (attendance != null)
             {
                 throw new RestException(HttpStatusCode.BadRequest, new { Activity = "You have already attended this activity!" });
