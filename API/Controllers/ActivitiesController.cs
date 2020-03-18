@@ -6,6 +6,7 @@ using Application.Activities.Delete;
 using Application.Activities.Edit;
 using Microsoft.AspNetCore.Authorization;
 using Application.Activities.Attend;
+using Application.Activities.Unattend;
 
 namespace API.Controllers
 {
@@ -65,6 +66,12 @@ namespace API.Controllers
         public async Task<IActionResult> Attend(Guid id)
         {
             return Ok(await this.Mediator.Send(new AttendCommand(id)));
+        }
+
+        [HttpDelete("{id}/attend")]
+        public async Task<IActionResult> Unattend(Guid id)
+        {
+            return Ok(await this.Mediator.Send(new UnattendCommand(id)));
         }
     }
 }
