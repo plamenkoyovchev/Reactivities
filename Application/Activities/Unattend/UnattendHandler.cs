@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +23,9 @@ namespace Application.Activities.Unattend
 
         public async Task<Unit> Handle(UnattendCommand request, CancellationToken cancellationToken)
         {
-            var activity = await Context.Activities.FindAsync(request.ActivityId);
+            var activity = await Context.Activities
+                                        .Include(a => a.UserActivities)
+                                        .FirstOrDefaultAsync(a => a.Id == request.ActivityId);
             if (activity == null)
             {
                 throw new RestException(HttpStatusCode.NotFound, new { Activity = "Activity not found!" });
@@ -34,8 +37,7 @@ namespace Application.Activities.Unattend
                 throw new RestException(HttpStatusCode.BadRequest);
             }
 
-            var unattendCandidate = await Context.UserActivities
-                .FirstOrDefaultAsync(ua => ua.ActivityId == activity.Id && ua.ReactivityUserId == user.Id);
+            var unattendCandidate = activity.UserActivities.FirstOrDefault(ua => ua.ReactivityUserId == user.Id);
             if (unattendCandidate == null)
             {
                 throw new RestException(HttpStatusCode.BadRequest, new { Activity = "Activity is not attended!" });
