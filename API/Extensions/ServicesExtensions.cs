@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace API.Extensions
 {
@@ -21,6 +22,10 @@ namespace API.Extensions
                 .AddFluentValidation(cfg =>
                 {
                     cfg.RegisterValidatorsFromAssemblyContaining<CreateActivityCommandValidator>();
+                })
+                .AddNewtonsoftJson(opt =>
+                {
+                    opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
 
             return services;
