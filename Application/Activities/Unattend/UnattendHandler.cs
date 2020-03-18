@@ -1,14 +1,50 @@
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common;
+using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
 
 namespace Application.Activities.Unattend
 {
-    public class UnattendHandler : IRequestHandler<UnattendCommand>
+    public class UnattendHandler : HandlerBase, IRequestHandler<UnattendCommand>
     {
-        public Task<Unit> Handle(UnattendCommand request, CancellationToken cancellationToken)
+        private readonly IUserAccessor userAccessor;
+
+        public UnattendHandler(DataContext context, IUserAccessor userAccessor)
+            : base(context)
         {
-            throw new System.NotImplementedException();
+            this.userAccessor = userAccessor;
+        }
+
+        public async Task<Unit> Handle(UnattendCommand request, CancellationToken cancellationToken)
+        {
+            var activity = await Context.Activities.FindAsync(request.ActivityId);
+            if (activity == null)
+            {
+                throw new RestException(HttpStatusCode.NotFound, new { Activity = "Activity not found!" });
+            }
+
+            var user = await Context.Users.FirstOrDefaultAsync(u => u.UserName == this.userAccessor.GetUsername());
+            if (user == null)
+            {
+                throw new RestException(HttpStatusCode.BadRequest);
+            }
+
+            var unattendCandidate = await Context.UserActivities
+                .FirstOrDefaultAsync(ua => ua.ActivityId == activity.Id && ua.ReactivityUserId == user.Id);
+            if (unattendCandidate == null)
+            {
+                throw new RestException(HttpStatusCode.BadRequest, new { Activity = "Activity is not attended!" });
+            }
+
+            Context.UserActivities.Remove(unattendCandidate);
+            await Context.SaveChangesAsync();
+
+            return Unit.Value;
         }
     }
 }
