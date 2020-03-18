@@ -43,6 +43,11 @@ namespace Application.Activities.Unattend
                 throw new RestException(HttpStatusCode.BadRequest, new { Activity = "Activity is not attended!" });
             }
 
+            if (unattendCandidate.IsHost)
+            {
+                throw new RestException(HttpStatusCode.BadRequest, new { Attendance = "You cannot remove yourself since you are the host of the activity!" });
+            }
+
             Context.UserActivities.Remove(unattendCandidate);
             await Context.SaveChangesAsync();
 
