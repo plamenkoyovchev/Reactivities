@@ -10,6 +10,6 @@ namespace Application.Activities.Unattend
             this.ActivityId = activityId;
         }
 
-        public Guid ActivityId { get; set; }
+        public Guid ActivityId { get; }
     }
 }

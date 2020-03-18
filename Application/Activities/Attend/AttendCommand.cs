@@ -10,6 +10,6 @@ namespace Application.Activities.Attend
             this.ActivityId = activityId;
         }
 
-        public Guid ActivityId { get; set; }
+        public Guid ActivityId { get; }
     }
 }
