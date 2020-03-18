@@ -1,9 +1,9 @@
 using System;
-using Domain;
+using Application.Common.DTOs.Activities;
 using MediatR;
 namespace Application.Activities.Create
 {
-    public class CreateActivityCommand : IRequest<Activity>
+    public class CreateActivityCommand : IRequest<ActivityDTO>
     {
         public string Title { get; set; }
         public string Description { get; set; }

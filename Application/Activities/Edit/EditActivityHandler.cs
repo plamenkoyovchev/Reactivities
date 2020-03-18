@@ -3,8 +3,10 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common;
+using Application.Common.DTOs.Activities;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using AutoMapper;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,16 +14,19 @@ using Persistence;
 
 namespace Application.Activities.Edit
 {
-    public class EditActivityHandler : HandlerBase, IRequestHandler<EditActivityCommand, Activity>
+    public class EditActivityHandler : HandlerBase, IRequestHandler<EditActivityCommand, ActivityDTO>
     {
         private readonly IUserAccessor userAccessor;
+        private readonly IMapper mapper;
 
-        public EditActivityHandler(DataContext context, IUserAccessor userAccessor) : base(context)
+        public EditActivityHandler(DataContext context, IUserAccessor userAccessor, IMapper mapper)
+            : base(context)
         {
             this.userAccessor = userAccessor;
+            this.mapper = mapper;
         }
 
-        public async Task<Activity> Handle(EditActivityCommand request, CancellationToken cancellationToken)
+        public async Task<ActivityDTO> Handle(EditActivityCommand request, CancellationToken cancellationToken)
         {
             var activityToEdit = await this.Context.Activities
                                             .Include(a => a.UserActivities)
@@ -56,7 +61,7 @@ namespace Application.Activities.Edit
             this.Context.Entry(activityToEdit).State = EntityState.Modified;
             await this.Context.SaveChangesAsync();
 
-            return activityToEdit;
+            return mapper.Map<ActivityDTO>(activityToEdit);
         }
     }
 }

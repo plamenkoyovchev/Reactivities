@@ -2,24 +2,28 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common;
+using Application.Common.DTOs.Activities;
 using Application.Common.Interfaces;
+using AutoMapper;
 using Domain;
 using MediatR;
 using Persistence;
 
 namespace Application.Activities.Create
 {
-    public class CreateActivityHandler : HandlerBase, IRequestHandler<CreateActivityCommand, Activity>
+    public class CreateActivityHandler : HandlerBase, IRequestHandler<CreateActivityCommand, ActivityDTO>
     {
         private readonly IUserAccessor userAccessor;
+        private readonly IMapper mapper;
 
-        public CreateActivityHandler(DataContext context, IUserAccessor userAccessor)
+        public CreateActivityHandler(DataContext context, IUserAccessor userAccessor, IMapper mapper)
         : base(context)
         {
             this.userAccessor = userAccessor;
+            this.mapper = mapper;
         }
 
-        public async Task<Activity> Handle(CreateActivityCommand request, CancellationToken cancellationToken)
+        public async Task<ActivityDTO> Handle(CreateActivityCommand request, CancellationToken cancellationToken)
         {
             var newActivity = new Activity
             {
@@ -42,7 +46,7 @@ namespace Application.Activities.Create
                 return null;
             }
 
-            return newActivity;
+            return mapper.Map<ActivityDTO>(newActivity);
         }
     }
 }
