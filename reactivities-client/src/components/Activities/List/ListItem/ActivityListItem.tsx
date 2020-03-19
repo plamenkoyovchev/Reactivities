@@ -3,6 +3,8 @@ import { RootStoreContext } from "../../../../shared/stores/rootStore";
 import { Item, Button, Label, Segment, Icon } from "semantic-ui-react";
 import { IActivity } from "../../../../app/Models/Activity/IActivity";
 
+import AttendeeList from "../../../Attendees/AttendeeList";
+
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 
@@ -13,7 +15,7 @@ interface IProps {
 const ActivityListItem: React.FC<IProps> = ({ activity }) => {
   const rootStore = useContext(RootStoreContext);
   const { deleteActivity, target, submitting } = rootStore.activityStore;
-  const { id, title, date, description, venue, category } = activity;
+  const { id, title, date, description, venue, category, attendees } = activity;
 
   return (
     <Segment.Group>
@@ -25,7 +27,7 @@ const ActivityListItem: React.FC<IProps> = ({ activity }) => {
               <Item.Header as="a">{title}</Item.Header>
               <Item.Description>Hosted by Pako</Item.Description>
               <Item.Extra>
-                <Label basic content={category} />
+                {category && <Label basic content={category} />}
               </Item.Extra>
             </Item.Content>
           </Item>
@@ -35,7 +37,9 @@ const ActivityListItem: React.FC<IProps> = ({ activity }) => {
         <Icon name="clock" /> {date}
         <Icon name="marker" /> {venue}
       </Segment>
-      <Segment secondary>Attendees will go here</Segment>
+      <Segment secondary>
+        <AttendeeList attendees={attendees} />
+      </Segment>
       <Segment clearing>
         <span>{description}</span>
         <Button
