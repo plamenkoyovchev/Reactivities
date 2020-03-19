@@ -6,12 +6,20 @@ interface IProps {
   attendees: IAttendee[];
 }
 
-const AttendeeList: React.FC<IProps> = ({ attendees }) => (
-  <List horizontal relaxed>
-    {attendees.map(attendee => (
-      <AttendeeListItem key={attendee.username} attendee={attendee} />
-    ))}
-  </List>
-);
+const AttendeeList: React.FC<IProps> = ({ attendees }) => {
+  return (
+    <List horizontal relaxed>
+      {attendees.length > 0 ? (
+        attendees.map(attendee => (
+          <AttendeeListItem key={attendee.username} attendee={attendee} />
+        ))
+      ) : (
+        <List.Item>
+          <List.Header>There are no attendees yet!</List.Header>
+        </List.Item>
+      )}
+    </List>
+  );
+};
 
 export default AttendeeList;
