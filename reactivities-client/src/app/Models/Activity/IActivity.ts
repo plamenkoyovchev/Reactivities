@@ -1,3 +1,5 @@
+import { IAttendee } from "./../Attendee/IAttendee";
+
 export interface IActivity {
   id: string;
   title: string;
@@ -6,4 +8,5 @@ export interface IActivity {
   date: string;
   city: string;
   venue: string;
+  attendees: IAttendee[];
 }
