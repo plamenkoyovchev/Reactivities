@@ -6,6 +6,7 @@ import { IActivity } from "../../../../app/Models/Activity/IActivity";
 import AttendeeList from "../../../Attendees/AttendeeList";
 
 import { observer } from "mobx-react-lite";
+import { toJS } from "mobx";
 import { Link } from "react-router-dom";
 
 interface IProps {
@@ -15,7 +16,19 @@ interface IProps {
 const ActivityListItem: React.FC<IProps> = ({ activity }) => {
   const rootStore = useContext(RootStoreContext);
   const { deleteActivity, target, submitting } = rootStore.activityStore;
-  const { id, title, date, description, venue, category, attendees } = activity;
+  const {
+    id,
+    title,
+    date,
+    description,
+    venue,
+    category,
+    attendees,
+    isGoing,
+    isHosting
+  } = activity;
+
+  const host = attendees.filter(a => a.isHost)[0];
 
   return (
     <Segment.Group>
@@ -25,7 +38,19 @@ const ActivityListItem: React.FC<IProps> = ({ activity }) => {
             <Item.Image size="small" circular src="/assets/user.png" />
             <Item.Content>
               <Item.Header as="a">{title}</Item.Header>
-              <Item.Description>Hosted by Pako</Item.Description>
+              {host && (
+                <Item.Description>
+                  Hosted by {host.displayName}
+                </Item.Description>
+              )}
+              <Item.Description>
+                {isGoing && !isHosting && (
+                  <Label color="green" content="You are going to this event!" />
+                )}
+                {isHosting && (
+                  <Label color="orange" content="You are hosting this event!" />
+                )}
+              </Item.Description>
               <Item.Extra>
                 {category && <Label basic content={category} />}
               </Item.Extra>

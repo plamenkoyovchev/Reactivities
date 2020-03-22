@@ -1,9 +1,17 @@
+import { IUser } from "./../../../app/Models/User/IUser";
+import { RootStore } from "./../rootStore";
 import { observable, action, computed, runInAction } from "mobx";
 import { SyntheticEvent } from "react";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 import httpRequester from "../../axios/httpRequester";
 
 class ActivityStore {
+  rootStore: RootStore;
+
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
+  }
+
   @observable activityMap = new Map();
   @observable loading = false;
   @observable activity: IActivity | null = null;
@@ -14,9 +22,11 @@ class ActivityStore {
     this.loading = true;
     try {
       const activities = await httpRequester.activities.get();
+      const user = this.rootStore.userStore.currentUser!;
       runInAction(() => {
         activities.forEach(activity => {
           activity.date = activity.date.split(".")[0];
+          this.setActivityProps(activity, user);
           this.activityMap.set(activity.id, activity);
         });
         this.loading = false;
@@ -55,6 +65,7 @@ class ActivityStore {
         activity = await httpRequester.activities.details(id);
       }
 
+      this.setActivityProps(activity, this.rootStore.userStore.currentUser!);
       this.activity = activity;
     } catch (error) {
       console.warn(error);
@@ -130,6 +141,15 @@ class ActivityStore {
     } finally {
       this.submitting = false;
     }
+  };
+
+  setActivityProps = (activity: IActivity, user: IUser) => {
+    activity.isGoing = activity.attendees.some(
+      a => a.username === user?.username
+    );
+    activity.isHosting = activity.attendees.some(
+      a => a.username === user?.username && a.isHost
+    );
   };
 }
 

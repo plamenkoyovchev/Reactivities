@@ -35,6 +35,8 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     date: "",
     city: "",
     venue: "",
+    isGoing: false,
+    isHosting: false,
     attendees: []
   });
 

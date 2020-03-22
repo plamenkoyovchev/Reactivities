@@ -26,4 +26,4 @@ const ActivityList: React.FC = () => {
   );
 };
 
-export default observer(ActivityList);
+export default ActivityList;
