@@ -19,9 +19,8 @@ const ActivityDetailedSidebar: React.FC<{ attendees: IAttendee[] }> = ({
         inverted
         color="teal"
       >
-        {attendees && attendees.length === 1
-          ? `${attendees.length} Person Going`
-          : `${attendees.length} People Going`}
+        {attendees.length}
+        {attendees.length === 1 ? ` person` : ` people`} going
       </Segment>
       <Segment attached>
         <List relaxed divided>
