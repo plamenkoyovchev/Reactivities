@@ -6,6 +6,7 @@ import { observer } from "mobx-react-lite";
 import { RootStoreContext } from "../../../shared/stores/rootStore";
 
 import { IAttendee } from "../../../app/Models/Attendee/IAttendee";
+import { Link } from "react-router-dom";
 
 const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
   activity
@@ -76,7 +77,12 @@ const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
         )}
 
         {activity.isHosting && (
-          <Button color="orange" floated="right">
+          <Button
+            color="orange"
+            floated="right"
+            as={Link}
+            to={`/editActivity/${activity.id}`}
+          >
             Manage event
           </Button>
         )}
