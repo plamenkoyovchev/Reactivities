@@ -21,20 +21,10 @@ const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
 
   const joinActivityHandler = async () => {
     await joinActivity(activity);
-    var newAttendee = {
-      displayName: currentUser?.displayName,
-      username: currentUser?.username,
-      image: currentUser?.image,
-      isHost: false
-    } as IAttendee;
-    activity.attendees.push(newAttendee);
   };
 
   const unAttendHandler = async () => {
     await unattend(activity);
-    activity.attendees = activity.attendees.filter(
-      a => a.username !== currentUser?.username
-    );
   };
 
   return (

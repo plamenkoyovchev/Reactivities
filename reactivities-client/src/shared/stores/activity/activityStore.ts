@@ -1,9 +1,11 @@
+import { IAttendee } from "./../../../app/Models/Attendee/IAttendee";
 import { IUser } from "./../../../app/Models/User/IUser";
 import { RootStore } from "./../rootStore";
 import { observable, action, computed, runInAction } from "mobx";
 import { SyntheticEvent } from "react";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 import httpRequester from "../../axios/httpRequester";
+import { toast } from "react-toastify";
 
 class ActivityStore {
   rootStore: RootStore;
@@ -129,8 +131,21 @@ class ActivityStore {
     this.submitting = true;
     try {
       await httpRequester.activities.attend(activity.id);
+      const { currentUser } = this.rootStore.userStore;
+      var newAttendee = {
+        displayName: currentUser?.displayName,
+        username: currentUser?.username,
+        image: currentUser?.image,
+        isHost: false
+      } as IAttendee;
+
+      if (this.activity) {
+        this.activity.isGoing = true;
+        this.activity.attendees.push(newAttendee);
+        this.activityMap.set(this.activity.id, this.activity);
+      }
     } catch (error) {
-      console.warn(error);
+      toast.error("Unable to join activity");
     } finally {
       this.submitting = false;
     }
@@ -140,8 +155,17 @@ class ActivityStore {
     this.submitting = true;
     try {
       await httpRequester.activities.unattend(activity.id);
+
+      const { currentUser } = this.rootStore.userStore;
+      if (this.activity) {
+        this.activity.attendees = activity.attendees.filter(
+          a => a.username !== currentUser?.username
+        );
+        this.activity.isGoing = false;
+        this.activityMap.set(this.activity.id, this.activity);
+      }
     } catch (error) {
-      console.warn(error);
+      toast.error("Unable to cancel attendance");
     } finally {
       this.submitting = false;
     }
