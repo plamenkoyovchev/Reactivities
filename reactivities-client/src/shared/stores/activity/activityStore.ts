@@ -109,6 +109,28 @@ class ActivityStore {
 
     this.submitting = false;
   };
+
+  @action joinActivity = async (activity: IActivity) => {
+    this.submitting = true;
+    try {
+      await httpRequester.activities.attend(activity.id);
+    } catch (error) {
+      console.warn(error);
+    } finally {
+      this.submitting = false;
+    }
+  };
+
+  @action unattend = async (activity: IActivity) => {
+    this.submitting = true;
+    try {
+      await httpRequester.activities.unattend(activity.id);
+    } catch (error) {
+      console.warn(error);
+    } finally {
+      this.submitting = false;
+    }
+  };
 }
 
 export default ActivityStore;

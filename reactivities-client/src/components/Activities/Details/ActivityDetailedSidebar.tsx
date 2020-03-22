@@ -4,6 +4,7 @@ import { Segment, List } from "semantic-ui-react";
 import { IAttendee } from "../../../app/Models/Attendee/IAttendee";
 
 import ActivityDetailedSidebarListItem from "./ActivityDetailedSidebarListItem";
+import { observer } from "mobx-react-lite";
 
 const ActivityDetailedSidebar: React.FC<{ attendees: IAttendee[] }> = ({
   attendees
@@ -36,4 +37,4 @@ const ActivityDetailedSidebar: React.FC<{ attendees: IAttendee[] }> = ({
   );
 };
 
-export default ActivityDetailedSidebar;
+export default observer(ActivityDetailedSidebar);
