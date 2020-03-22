@@ -59,7 +59,7 @@ const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
         </Segment>
       </Segment>
       <Segment clearing attached="bottom">
-        {!joined ? (
+        {!joined && (
           <Button
             color="teal"
             onClick={joinActivityHandler}
@@ -67,14 +67,19 @@ const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
           >
             Join Activity
           </Button>
-        ) : (
+        )}
+
+        {joined && !activity.isHosting && (
           <Button onClick={unAttendHandler} loading={submitting}>
             Cancel attendee
           </Button>
         )}
-        <Button color="orange" floated="right">
-          Manage event
-        </Button>
+
+        {activity.isHosting && (
+          <Button color="orange" floated="right">
+            Manage event
+          </Button>
+        )}
       </Segment>
     </Segment.Group>
   );
