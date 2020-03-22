@@ -1,7 +1,7 @@
 import React from "react";
 
 import { IAttendee } from "../../../app/Models/Attendee/IAttendee";
-import { Segment, List, Item, Label, Image } from "semantic-ui-react";
+import { Item, Label, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 const ActivityDetailedSidebarListItem: React.FC<{ attendee: IAttendee }> = ({

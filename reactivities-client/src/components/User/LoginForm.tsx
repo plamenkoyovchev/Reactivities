@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import { RootStoreContext } from "../../shared/stores/rootStore";
 import { IUserFormValues } from "../../app/Models/User/IUserFormValues";
-import { Form, Button, Label, Header } from "semantic-ui-react";
+import { Form, Button, Header } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 
 import { FORM_ERROR } from "final-form";

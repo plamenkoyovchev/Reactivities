@@ -32,7 +32,7 @@ const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
   const unAttendHandler = async () => {
     await unattend(activity);
     activity.attendees = activity.attendees.filter(
-      a => a.username != currentUser?.username
+      a => a.username !== currentUser?.username
     );
   };
 
