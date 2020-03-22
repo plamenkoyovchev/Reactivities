@@ -103,10 +103,14 @@ class ActivityStore {
     try {
       if (activity.id !== "") {
         await httpRequester.activities.update(activity);
+        this.setActivityProps(activity, this.rootStore.userStore.currentUser!);
         this.activityMap.set(activity.id, activity);
       } else {
         const createdActivity = await httpRequester.activities.create(activity);
         activity.id = createdActivity.id;
+        activity.attendees = createdActivity.attendees;
+
+        this.setActivityProps(activity, this.rootStore.userStore.currentUser!);
         this.activityMap.set(activity.id, activity);
       }
 

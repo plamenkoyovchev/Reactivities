@@ -6,7 +6,6 @@ import { IActivity } from "../../../../app/Models/Activity/IActivity";
 import AttendeeList from "../../../Attendees/AttendeeList";
 
 import { observer } from "mobx-react-lite";
-import { toJS } from "mobx";
 import { Link } from "react-router-dom";
 
 interface IProps {
