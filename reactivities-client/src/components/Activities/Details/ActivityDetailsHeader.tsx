@@ -5,7 +5,6 @@ import { IActivity } from "../../../app/Models/Activity/IActivity";
 import { observer } from "mobx-react-lite";
 import { RootStoreContext } from "../../../shared/stores/rootStore";
 
-import { IAttendee } from "../../../app/Models/Attendee/IAttendee";
 import { Link } from "react-router-dom";
 
 const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({

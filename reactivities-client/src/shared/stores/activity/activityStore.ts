@@ -109,6 +109,7 @@ class ActivityStore {
         this.activityMap.set(activity.id, activity);
       } else {
         const createdActivity = await httpRequester.activities.create(activity);
+        activity.isHosting = true;
         activity.id = createdActivity.id;
         activity.attendees = createdActivity.attendees;
 
