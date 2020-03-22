@@ -70,7 +70,7 @@ const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
         ) : (
           <Button onClick={unAttendHandler}>Cancel attendee</Button>
         )}
-        <Button color="orange" floated="right"></Button>
+        <Button color="orange" floated="right">
           Manage event
         </Button>
       </Segment>
