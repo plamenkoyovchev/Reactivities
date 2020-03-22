@@ -35,7 +35,7 @@ class ActivityStore {
       });
     } catch (error) {
       this.loading = false;
-      console.warn(error);
+      toast.error("Unable to load activities");
     }
   };
 
@@ -70,7 +70,7 @@ class ActivityStore {
       this.setActivityProps(activity, this.rootStore.userStore.currentUser!);
       this.activity = activity;
     } catch (error) {
-      console.warn(error);
+      toast.error("Unable to load activity");
     } finally {
       this.loading = false;
     }
@@ -94,7 +94,7 @@ class ActivityStore {
         this.target = "";
       }
     } catch (error) {
-      console.warn(error);
+      toast.error("Unable to delete activity");
     } finally {
       this.submitting = false;
     }
@@ -121,7 +121,7 @@ class ActivityStore {
         this.activity = activity;
       });
     } catch (error) {
-      console.warn(error);
+      toast.error("Unable to save activity");
       this.activity = null;
     }
 
