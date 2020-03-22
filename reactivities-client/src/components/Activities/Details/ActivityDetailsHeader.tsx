@@ -68,7 +68,9 @@ const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
             Join Activity
           </Button>
         ) : (
-          <Button onClick={unAttendHandler}>Cancel attendee</Button>
+          <Button onClick={unAttendHandler} loading={submitting}>
+            Cancel attendee
+          </Button>
         )}
         <Button color="orange" floated="right">
           Manage event
