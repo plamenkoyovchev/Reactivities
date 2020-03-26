@@ -37,7 +37,8 @@ namespace Application.Common.Mappings
         {
             CreateMap<UserActivity, AttendeeDTO>()
                 .ForMember(a => a.Username, o => o.MapFrom(x => x.ReactivityUser.UserName))
-                .ForMember(a => a.DisplayName, o => o.MapFrom(x => x.ReactivityUser.DisplayName));
+                .ForMember(a => a.DisplayName, o => o.MapFrom(x => x.ReactivityUser.DisplayName))
+                .ForMember(a => a.Image, o => o.MapFrom(x => x.ReactivityUser.Photos.FirstOrDefault(p => p.IsMain).Url));
         }
     }
 }
