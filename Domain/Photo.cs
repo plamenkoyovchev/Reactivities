@@ -7,8 +7,5 @@ namespace Domain
         public string Url { get; set; }
 
         public bool IsMain { get; set; }
-
-        public string UserId { get; set; }
-        public ReactivityUser User { get; set; }
     }
 }
