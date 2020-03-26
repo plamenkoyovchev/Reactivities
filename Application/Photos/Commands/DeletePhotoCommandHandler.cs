@@ -47,7 +47,7 @@ namespace Application.Photos.Commands
                 throw new Exception("Problem occured while deleting photo");
             }
 
-            this.Context.Photo.Remove(photo);
+            this.Context.Photos.Remove(photo);
             if (await this.Context.SaveChangesAsync() > 0)
             {
                 return Unit.Value;

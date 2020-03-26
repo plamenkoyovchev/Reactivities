@@ -8,29 +8,29 @@ namespace Persistence.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_Photo_AspNetUsers_UserId",
-                table: "Photo");
+                table: "Photos");
 
             migrationBuilder.DropIndex(
                 name: "IX_Photo_UserId",
-                table: "Photo");
+                table: "Photos");
 
             migrationBuilder.DropColumn(
                 name: "UserId",
-                table: "Photo");
+                table: "Photos");
 
             migrationBuilder.AddColumn<string>(
                 name: "ReactivityUserId",
-                table: "Photo",
+                table: "Photos",
                 nullable: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photo_ReactivityUserId",
-                table: "Photo",
+                table: "Photos",
                 column: "ReactivityUserId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Photo_AspNetUsers_ReactivityUserId",
-                table: "Photo",
+                table: "Photos",
                 column: "ReactivityUserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
@@ -41,30 +41,30 @@ namespace Persistence.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_Photo_AspNetUsers_ReactivityUserId",
-                table: "Photo");
+                table: "Photos");
 
             migrationBuilder.DropIndex(
                 name: "IX_Photo_ReactivityUserId",
-                table: "Photo");
+                table: "Photos");
 
             migrationBuilder.DropColumn(
                 name: "ReactivityUserId",
-                table: "Photo");
+                table: "Photos");
 
             migrationBuilder.AddColumn<string>(
                 name: "UserId",
-                table: "Photo",
+                table: "Photos",
                 type: "varchar(255) CHARACTER SET utf8mb4",
                 nullable: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photo_UserId",
-                table: "Photo",
+                table: "Photos",
                 column: "UserId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Photo_AspNetUsers_UserId",
-                table: "Photo",
+                table: "Photos",
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",

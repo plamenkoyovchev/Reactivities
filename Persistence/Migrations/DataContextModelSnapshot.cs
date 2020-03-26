@@ -64,7 +64,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("ReactivityUserId");
 
-                    b.ToTable("Photo");
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("Domain.ReactivityUser", b =>
