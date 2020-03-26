@@ -34,7 +34,7 @@ namespace Application.UserProfile.Queries
 
             if (userProfile == null)
             {
-                throw new RestException(HttpStatusCode.BadRequest);
+                throw new RestException(HttpStatusCode.NotFound);
             }
 
             return userProfile;
