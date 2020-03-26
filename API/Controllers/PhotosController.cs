@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Application.Photos.Commands;
 using Domain;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -14,9 +15,9 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public Task Delete(string id)
+        public async Task<ActionResult<Unit>> Delete(DeletePhotoCommand command)
         {
-            return Task.FromResult(0);
+            return await this.Mediator.Send(command);
         }
     }
 }
