@@ -5,6 +5,11 @@ namespace Application.UserProfile.Queries
 {
     public class ProfileDetailsQuery : IRequest<UserProfileViewModel>
     {
-        public string Username { get; set; }
+        public ProfileDetailsQuery(string username)
+        {
+            this.Username = username;
+        }
+
+        public string Username { get; }
     }
 }

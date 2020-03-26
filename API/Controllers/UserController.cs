@@ -3,6 +3,7 @@ using Application.Authentication.CurrentUser;
 using Application.Authentication.Login;
 using Application.Authentication.Register;
 using Application.Common.ViewModels.User;
+using Application.UserProfile.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,6 +30,12 @@ namespace API.Controllers
         public async Task<ActionResult<UserViewModel>> GetCurrentUser()
         {
             return await this.Mediator.Send(new CurrentUserQuery());
+        }
+
+        [HttpGet("{username}/profile")]
+        public async Task<ActionResult<UserProfileViewModel>> Profile(string username)
+        {
+            return await this.Mediator.Send(new ProfileDetailsQuery(username));
         }
     }
 }
