@@ -24,6 +24,7 @@ namespace Application.Activities.List
             var dbActivities = await this.Context.Activities
                                         .Include(a => a.UserActivities)
                                         .ThenInclude(ua => ua.ReactivityUser)
+                                        .ThenInclude(u => u.Photos)
                                         .ToListAsync(cancellationToken);
 
             return mapper.Map<List<ActivityDTO>>(dbActivities);

@@ -26,6 +26,7 @@ namespace Application.Activities.Details
             var activity = await this.Context.Activities
                                                 .Include(a => a.UserActivities)
                                                 .ThenInclude(u => u.ReactivityUser)
+                                                .ThenInclude(u => u.Photos)
                                                 .FirstOrDefaultAsync(a => a.Id == request.Id);
             if (activity == null)
             {
