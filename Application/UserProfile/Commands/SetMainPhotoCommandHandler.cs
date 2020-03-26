@@ -33,6 +33,11 @@ namespace Application.UserProfile.Commands
                 throw new RestException(HttpStatusCode.BadRequest, new { Photo = "Photo not found" });
             }
 
+            if (mainPhotoCandidate.IsMain)
+            {
+                throw new RestException(HttpStatusCode.BadRequest, new { Photo = "This is already your main photo" });
+            }
+
             var currentMainPhoto = user.Photos.FirstOrDefault(p => p.IsMain);
             if (currentMainPhoto != null)
             {
@@ -40,7 +45,8 @@ namespace Application.UserProfile.Commands
             }
 
             mainPhotoCandidate.IsMain = true;
-            if (await this.Context.SaveChangesAsync() > 0)
+            var success = await this.Context.SaveChangesAsync() > 0;
+            if (success)
             {
                 return Unit.Value;
             }

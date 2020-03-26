@@ -16,15 +16,15 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Unit>> Delete(DeletePhotoCommand command)
+        public async Task<ActionResult<Unit>> Delete(string id)
         {
-            return await this.Mediator.Send(command);
+            return await this.Mediator.Send(new DeletePhotoCommand(id));
         }
 
         [HttpPost("{id}/setmain")]
-        public async Task<ActionResult<Unit>> SetMain(SetMainPhotoCommand command)
+        public async Task<ActionResult<Unit>> SetMain(string id)
         {
-            return await this.Mediator.Send(command);
+            return await this.Mediator.Send(new SetMainPhotoCommand(id));
         }
     }
 }

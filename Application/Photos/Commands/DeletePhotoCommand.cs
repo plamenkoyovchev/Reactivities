@@ -4,6 +4,11 @@ namespace Application.Photos.Commands
 {
     public class DeletePhotoCommand : IRequest
     {
-        public string Id { get; set; }
+        public DeletePhotoCommand(string id)
+        {
+            this.Id = id;
+        }
+
+        public string Id { get; }
     }
 }
