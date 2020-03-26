@@ -8,7 +8,7 @@ namespace API.Controllers
     public class PhotosController : BaseController
     {
         [HttpPost]
-        public async Task<ActionResult<Photo>> Add(AddPhotoCommand photo)
+        public async Task<ActionResult<Photo>> Add([FromForm]AddPhotoCommand photo)
         {
             return await this.Mediator.Send(photo);
         }
