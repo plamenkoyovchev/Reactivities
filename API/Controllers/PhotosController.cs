@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class PhotoController : BaseController
+    public class PhotosController : BaseController
     {
         [HttpPost]
-        public async Task<Photo> Create(AddPhotoCommand photo)
+        public async Task<ActionResult<Photo>> Add(AddPhotoCommand photo)
         {
             return await this.Mediator.Send(photo);
         }
