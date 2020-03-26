@@ -9,8 +9,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200326185243_RemoveUserFromPhoto")]
-    partial class RemoveUserFromPhoto
+    [Migration("20200326191034_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -66,7 +66,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("ReactivityUserId");
 
-                    b.ToTable("Photo");
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("Domain.ReactivityUser", b =>
