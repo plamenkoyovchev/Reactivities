@@ -1,4 +1,5 @@
 using System;
+using Application.Common.Constants.Photos;
 using Application.Common.Interfaces;
 using Application.Photos;
 using CloudinaryDotNet;
@@ -55,6 +56,15 @@ namespace Infrastructure.Photos
             }
 
             return result;
+        }
+
+        private Transformation SetCropSettings(int width = 500, int height = 500, string cropMode = CloudinaryCropModesConstants.Fill, string gravity = Gravity.Face)
+        {
+            return new Transformation()
+                        .Width(width)
+                        .Height(height)
+                        .Crop(cropMode)
+                        .Gravity(gravity);
         }
     }
 }
