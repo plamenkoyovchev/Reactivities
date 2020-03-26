@@ -30,7 +30,7 @@ namespace Application.Photos.Commands
                                         .Include(u => u.Photos)
                                         .FirstOrDefaultAsync(user => user.UserName == this.userAccessor.GetUsername());
 
-            var photo = user?.Photos.FirstOrDefault(p => p.Id == request.PublicId);
+            var photo = user?.Photos.FirstOrDefault(p => p.Id == request.Id);
             if (photo == null)
             {
                 throw new RestException(HttpStatusCode.NotFound, new { Photo = "Not found!" });
@@ -41,7 +41,7 @@ namespace Application.Photos.Commands
                 throw new RestException(HttpStatusCode.BadRequest, new { Photo = "You cannot delete your main photo" });
             }
 
-            var deletionResult = this.photoAcessor.DeletePhoto(request.PublicId);
+            var deletionResult = this.photoAcessor.DeletePhoto(photo.Id);
             if (string.IsNullOrWhiteSpace(deletionResult))
             {
                 throw new Exception("Problem occured while deleting photo");
