@@ -1,4 +1,7 @@
 import React, { useContext } from "react";
+
+import "./ActivityListItem.scss";
+
 import { RootStoreContext } from "../../../../shared/stores/rootStore";
 import { Item, Button, Label, Segment, Icon } from "semantic-ui-react";
 import { IActivity } from "../../../../app/Models/Activity/IActivity";
@@ -34,7 +37,12 @@ const ActivityListItem: React.FC<IProps> = ({ activity }) => {
       <Segment>
         <Item.Group>
           <Item>
-            <Item.Image size="small" circular src="/assets/user.png" />
+            <Item.Image
+              className="profile-picture"
+              size="tiny"
+              circular
+              src="/assets/user.png"
+            />
             <Item.Content>
               <Item.Header as="a">{title}</Item.Header>
               {host && (
