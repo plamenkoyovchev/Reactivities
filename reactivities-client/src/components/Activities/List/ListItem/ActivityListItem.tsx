@@ -41,7 +41,7 @@ const ActivityListItem: React.FC<IProps> = ({ activity }) => {
               className="profile-picture"
               size="tiny"
               circular
-              src="/assets/user.png"
+              src={host?.image || "/assets/user.png"}
             />
             <Item.Content>
               <Item.Header as="a">{title}</Item.Header>
