@@ -7,6 +7,7 @@ using Application.Common.Interfaces;
 using AutoMapper;
 using Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Activities.Create
@@ -37,7 +38,8 @@ namespace Application.Activities.Create
 
             this.Context.Add(newActivity);
 
-            var user = this.Context.Users.FirstOrDefault(u => u.UserName == this.userAccessor.GetUsername());
+            var user = this.Context.Users.Include(u => u.Photos)
+                                        .FirstOrDefault(u => u.UserName == this.userAccessor.GetUsername());
             this.Context.UserActivities.Add(new UserActivity() { Activity = newActivity, ReactivityUser = user, IsHost = true });
 
             var success = await this.Context.SaveChangesAsync() > 0;
