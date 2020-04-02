@@ -41,7 +41,7 @@ const Navigation = () => {
                 <Dropdown.Menu>
                   <Dropdown.Item
                     as={Link}
-                    to="/profile"
+                    to={`/profile/${currentUser.username}`}
                     text="My proflie"
                     icon="user"
                   />

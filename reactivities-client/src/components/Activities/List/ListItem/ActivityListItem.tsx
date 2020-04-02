@@ -47,7 +47,10 @@ const ActivityListItem: React.FC<IProps> = ({ activity }) => {
               <Item.Header as="a">{title}</Item.Header>
               {host && (
                 <Item.Description>
-                  Hosted by {host.displayName}
+                  Hosted by{" "}
+                  <Link to={`/profile/${host?.username}`}>
+                    {host.displayName}
+                  </Link>
                 </Item.Description>
               )}
               <Item.Description>

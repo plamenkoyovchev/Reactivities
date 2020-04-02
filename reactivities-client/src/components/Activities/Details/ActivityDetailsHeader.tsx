@@ -13,6 +13,7 @@ const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
   const rootStore = useContext(RootStoreContext);
   const { joinActivity, unattend, submitting } = rootStore.activityStore;
   const { currentUser } = rootStore.userStore;
+  const host = activity.attendees.filter(a => a.isHost)[0];
 
   const joined = activity.attendees.find(
     a => a.username === currentUser?.username
@@ -40,9 +41,14 @@ const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
               <Item.Content>
                 <Header size="huge" content={activity.title} id="header-text" />
                 <p>{activity.date}</p>
-                <p>
-                  Hosted by <strong>Pako</strong>
-                </p>
+                {host?.username && (
+                  <p>
+                    Hosted by{" "}
+                    <Link to={`/profie/${host?.username}`}>
+                      <strong>{host?.displayName}</strong>
+                    </Link>
+                  </p>
+                )}
               </Item.Content>
             </Item>
           </Item.Group>
