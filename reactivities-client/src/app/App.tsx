@@ -15,6 +15,8 @@ import HomePage from "../pages/HomePage";
 import NotFound from "../pages/NotFound";
 import ActivityForm from "../components/Activities/Form/ActivityForm";
 import ActivityDetails from "../components/Activities/Details/ActivityDetails";
+import ProfilePage from "../pages/ProfilePage";
+
 import { RootStoreContext } from "../shared/stores/rootStore";
 
 import { observer } from "mobx-react-lite";
@@ -57,6 +59,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
                   path={["/createActivity", "/editActivity/:id"]}
                   component={ActivityForm}
                 />
+                <Route path="/profile/:username" component={ProfilePage} />
                 <Route component={NotFound} />
               </Switch>
             </Container>
