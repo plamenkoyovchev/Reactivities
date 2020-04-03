@@ -44,7 +44,7 @@ const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
                 {host?.username && (
                   <p>
                     Hosted by{" "}
-                    <Link to={`/profie/${host?.username}`}>
+                    <Link to={`/profile/${host?.username}`}>
                       <strong>{host?.displayName}</strong>
                     </Link>
                   </p>
