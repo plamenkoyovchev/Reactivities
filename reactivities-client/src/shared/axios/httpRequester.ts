@@ -5,29 +5,30 @@ import { history } from "../..";
 import { toast } from "react-toastify";
 import { IUser } from "../../app/Models/User/IUser";
 import { IUserFormValues } from "../../app/Models/User/IUserFormValues";
+import { IProfile } from "../../app/Models/Profile/IProfile";
 
 const httpStatusCodes = {
   BAD_REQUEST: 400,
   NOT_FOUND: 404,
-  SERVER_ERROR: 500
+  SERVER_ERROR: 500,
 };
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
 axios.interceptors.request.use(
-  config => {
+  (config) => {
     const token = localStorage.getItem("jwt");
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
-  error => {
+  (error) => {
     return Promise.reject(error);
   }
 );
 
-axios.interceptors.response.use(undefined, error => {
+axios.interceptors.response.use(undefined, (error) => {
   if (error.message === "Network Error" && !error.response) {
     toast.error("Network error - check your connectivity");
     return;
@@ -61,7 +62,7 @@ const request = {
   get: (url: string) => axios.get(url).then(responseBody),
   post: (url: string, data: {}) => axios.post(url, data).then(responseBody),
   put: (url: string, data: {}) => axios.put(url, data).then(responseBody),
-  delete: (url: string) => axios.delete(url).then(responseBody)
+  delete: (url: string) => axios.delete(url).then(responseBody),
 };
 
 const activities = {
@@ -74,7 +75,7 @@ const activities = {
   attend: (activityId: string) =>
     request.post(`/activities/${activityId}/attend`, {}),
   unattend: (activityId: string) =>
-    request.delete(`/activities/${activityId}/attend`)
+    request.delete(`/activities/${activityId}/attend`),
 };
 
 const user = {
@@ -82,10 +83,16 @@ const user = {
   register: (user: IUserFormValues): Promise<boolean> =>
     request.post("/user/register", user),
   login: (user: IUserFormValues): Promise<IUser> =>
-    request.post("/user/login", user)
+    request.post("/user/login", user),
+};
+
+const profile = {
+  get: (username: string): Promise<IProfile> =>
+    request.get(`/user/${username}/profile`),
 };
 
 export default {
   activities,
-  user
+  user,
+  profile,
 };

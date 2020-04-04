@@ -18,6 +18,7 @@ interface IProps {
 }
 
 const ProfileHeader: React.FC<IProps> = ({ profile }) => {
+  const { photo, displayName } = profile;
   return (
     <Segment>
       <Grid>
@@ -27,10 +28,10 @@ const ProfileHeader: React.FC<IProps> = ({ profile }) => {
               <Item.Image
                 avatar
                 size="small"
-                src={profile.image || "/assets/user.png"}
+                src={photo?.url || "/assets/user.png"}
               />
               <Item.Content verticalAlign="middle">
-                <Header as="h1">{profile.displayName}</Header>
+                <Header as="h1">{displayName}</Header>
               </Item.Content>
             </Item>
           </Item.Group>
