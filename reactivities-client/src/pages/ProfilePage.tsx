@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 
 import ProfileHeader from "../components/User/Profile/ProfileHeader";
+import ProfileContent from "../components/User/Profile/ProfileContent";
+
 import { RootStoreContext } from "../shared/stores/rootStore";
 import { IProfile } from "../app/Models/Profile/IProfile";
 
@@ -10,6 +12,7 @@ const ProfilePage = () => {
   return (
     <>
       <ProfileHeader profile={currentUser} />
+      <ProfileContent />
     </>
   );
 };
