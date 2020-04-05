@@ -24,24 +24,24 @@ const ProfilePhotos = () => {
           )}
         </Grid.Column>
         <Grid.Column width={16}>
-          <Card.Group itemsPerRow={5}>
-            {addPhotoMode ? (
-              <PhotoUploadWidget />
-            ) : (
-              profile &&
-              profile.photos.map(({ id, url }) => (
-                <Card key={id}>
-                  <Image src={url} />
-                  {isCurrentUser && (
-                    <Button.Group>
-                      <Button basic positive content="Main" />
-                      <Button basic negative icon="trash" />
-                    </Button.Group>
-                  )}
-                </Card>
-              ))
-            )}
-          </Card.Group>
+          {addPhotoMode ? (
+            <PhotoUploadWidget />
+          ) : (
+            <Card.Group itemsPerRow={5}>
+              {profile &&
+                profile.photos.map(({ id, url }) => (
+                  <Card key={id}>
+                    <Image src={url} />
+                    {isCurrentUser && (
+                      <Button.Group>
+                        <Button basic positive content="Main" />
+                        <Button basic negative icon="trash" />
+                      </Button.Group>
+                    )}
+                  </Card>
+                ))}
+            </Card.Group>
+          )}
         </Grid.Column>
       </Grid>
     </Tab.Pane>
