@@ -13,14 +13,14 @@ class ProfileStore {
   @observable loading = true;
   @observable profile: IProfile | null = null;
 
-  @computed isCurrentUser = () => {
+  @computed get isCurrentUser() {
     const currentUser = this.rootStore.userStore.currentUser;
     if (currentUser && this.profile) {
       return currentUser.username === this.profile.username;
     }
 
     return false;
-  };
+  }
 
   @action getProfile = async (username: string) => {
     this.loading = true;
