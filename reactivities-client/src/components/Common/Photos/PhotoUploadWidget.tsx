@@ -4,9 +4,12 @@ import { observer } from "mobx-react-lite";
 import PhotoWidgetDropzone from "./PhotoWidgetDropzone";
 import PhotoWidgetCropper from "./PhotoWidgetCropper";
 
-interface IProps {}
+interface IProps {
+  loading: boolean;
+  uploadPhoto: (file: Blob) => void;
+}
 
-const PhotoUploadWidget: React.FC<IProps> = ({}) => {
+const PhotoUploadWidget: React.FC<IProps> = ({ loading, uploadPhoto }) => {
   const [files, setFiles] = useState<any[]>([]);
   const [image, setImage] = useState<Blob | null>(null);
 
@@ -43,8 +46,17 @@ const PhotoUploadWidget: React.FC<IProps> = ({}) => {
                 style={{ minHeight: "200px", overflow: "hidden" }}
               />
               <Button.Group widths={2}>
-                <Button positive icon="check" />
-                <Button icon="close" onClick={() => setFiles([])} />
+                <Button
+                  positive
+                  icon="check"
+                  loading={loading}
+                  onClick={() => uploadPhoto(image!)}
+                />
+                <Button
+                  icon="close"
+                  disabled={loading}
+                  onClick={() => setFiles([])}
+                />
               </Button.Group>
             </>
           )}
