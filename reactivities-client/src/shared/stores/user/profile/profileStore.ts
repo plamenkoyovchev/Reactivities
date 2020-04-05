@@ -1,5 +1,5 @@
 import { RootStore } from "./../../rootStore";
-import { observable, action, runInAction } from "mobx";
+import { observable, action, runInAction, computed } from "mobx";
 import { IProfile } from "../../../../app/Models/Profile/IProfile";
 import httpRequester from "../../../axios/httpRequester";
 
@@ -12,6 +12,15 @@ class ProfileStore {
 
   @observable loading = true;
   @observable profile: IProfile | null = null;
+
+  @computed isCurrentUser = () => {
+    const currentUser = this.rootStore.userStore.currentUser;
+    if (currentUser && this.profile) {
+      return currentUser.username === this.profile.username;
+    }
+
+    return false;
+  };
 
   @action getProfile = async (username: string) => {
     this.loading = true;
