@@ -103,6 +103,7 @@ const profile = {
   uploadPhoto: (photo: Blob): Promise<IPhoto> =>
     request.postFormData("/photos", photo),
   setMainPhoto: (id: string) => request.post(`/photos/${id}/setmain`, {}),
+  deletePhoto: (id: string) => request.delete(`/photos/${id}`),
 };
 
 export default {
