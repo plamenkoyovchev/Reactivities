@@ -17,7 +17,10 @@ const ProfilePhotos = () => {
     loading,
   } = rootStore.profileStore;
   const [addPhotoMode, setAddPhotoMode] = useState(false);
-  const [target, setTarget] = useState<string | undefined>(undefined);
+  const [mainTarget, setMainTarget] = useState<string | undefined>(undefined);
+  const [deleteTarget, setDeleteTarget] = useState<string | undefined>(
+    undefined
+  );
   const handleUploadImage = (photo: Blob) => {
     uploadPhoto(photo).then(() => setAddPhotoMode(false));
   };
@@ -51,28 +54,28 @@ const ProfilePhotos = () => {
                     {isCurrentUser && (
                       <Button.Group>
                         <Button
-                          name={`${photo.id}_main`}
+                          name={photo.id}
                           disabled={photo.isMain}
                           basic
                           positive
                           content="Main"
                           onClick={(e) => {
                             setMainPhoto(photo);
-                            setTarget(e.currentTarget.name);
+                            setMainTarget(e.currentTarget.name);
                           }}
-                          loading={loading && target === `${photo.id}_main`}
+                          loading={loading && mainTarget === photo.id}
                         />
                         <Button
-                          name={`${photo.id}_delete`}
+                          name={photo.id}
                           disabled={photo.isMain}
                           basic
                           negative
                           icon="trash"
                           onClick={(e) => {
                             deletePhoto(photo);
-                            setTarget(e.currentTarget.name);
+                            setDeleteTarget(e.currentTarget.name);
                           }}
-                          loading={loading && target === `${photo.id}_delete`}
+                          loading={loading && deleteTarget === photo.id}
                         />
                       </Button.Group>
                     )}
