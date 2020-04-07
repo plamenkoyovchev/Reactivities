@@ -102,6 +102,7 @@ const profile = {
     request.get(`/user/${username}/profile`),
   uploadPhoto: (photo: Blob): Promise<IPhoto> =>
     request.postFormData("/photos", photo),
+  setMainPhoto: (id: string) => request.post(`/photos/${id}/setmain`, {}),
 };
 
 export default {
