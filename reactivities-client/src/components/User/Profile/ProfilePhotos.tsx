@@ -12,6 +12,8 @@ const ProfilePhotos = () => {
     isCurrentUser,
     uploadPhoto,
     uploadingPhoto,
+    setMainPhoto,
+    loading,
   } = rootStore.profileStore;
   const [addPhotoMode, setAddPhotoMode] = useState(false);
 
@@ -42,12 +44,19 @@ const ProfilePhotos = () => {
           ) : (
             <Card.Group itemsPerRow={5}>
               {profile &&
-                profile.photos.map(({ id, url }) => (
-                  <Card key={id}>
-                    <Image src={url} />
+                profile.photos.map((photo) => (
+                  <Card key={photo.id}>
+                    <Image src={photo.url} />
                     {isCurrentUser && (
                       <Button.Group>
-                        <Button basic positive content="Main" />
+                        <Button
+                          disabled={photo.isMain}
+                          basic
+                          positive
+                          content="Main"
+                          onClick={() => setMainPhoto(photo)}
+                          loading={loading}
+                        />
                         <Button basic negative icon="trash" />
                       </Button.Group>
                     )}

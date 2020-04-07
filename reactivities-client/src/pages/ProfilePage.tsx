@@ -16,14 +16,14 @@ interface IProps extends RouteComponentProps<RouteParams> {}
 
 const ProfilePage: React.FC<IProps> = ({ match }) => {
   const rootStore = useContext(RootStoreContext);
-  const { getProfile, profile, loading } = rootStore.profileStore;
+  const { getProfile, profile, loadingProfile } = rootStore.profileStore;
   const { username } = match.params;
 
   useEffect(() => {
     getProfile(username);
   }, [getProfile, username]);
 
-  if (loading) {
+  if (loadingProfile) {
     return <Loader />;
   }
 

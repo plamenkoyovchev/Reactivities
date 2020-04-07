@@ -1,6 +1,6 @@
 import { RootStore } from "./../../rootStore";
 import { observable, action, runInAction, computed } from "mobx";
-import { IProfile } from "../../../../app/Models/Profile/IProfile";
+import { IProfile, IPhoto } from "../../../../app/Models/Profile/IProfile";
 import httpRequester from "../../../axios/httpRequester";
 import { toast } from "react-toastify";
 
@@ -11,7 +11,8 @@ class ProfileStore {
     this.rootStore = rootStore;
   }
 
-  @observable loading = true;
+  @observable loadingProfile = true;
+  @observable loading = false;
   @observable profile: IProfile | null = null;
   @observable uploadingPhoto = false;
 
@@ -25,7 +26,7 @@ class ProfileStore {
   }
 
   @action getProfile = async (username: string) => {
-    this.loading = true;
+    this.loadingProfile = true;
     try {
       const profile = await httpRequester.profile.get(username);
       runInAction(() => {
@@ -35,7 +36,7 @@ class ProfileStore {
       throw error;
     } finally {
       runInAction(() => {
-        this.loading = false;
+        this.loadingProfile = false;
       });
     }
   };
@@ -58,6 +59,35 @@ class ProfileStore {
     } finally {
       runInAction(() => {
         this.uploadingPhoto = false;
+      });
+    }
+  };
+
+  @action setMainPhoto = async (photo: IPhoto) => {
+    this.loading = true;
+    try {
+      await httpRequester.profile.setMainPhoto(photo.id);
+      runInAction(() => {
+        this.rootStore.userStore.currentUser!.image = photo.url;
+        var currentMainPhoto = this.profile?.photos.find((p) => p.isMain);
+        if (currentMainPhoto) {
+          currentMainPhoto.isMain = false;
+        }
+
+        var newPhotoToSetMain = this.profile?.photos.find(
+          (p) => p.id === photo.id
+        );
+        if (newPhotoToSetMain) {
+          newPhotoToSetMain.isMain = true;
+        }
+
+        this.profile!.photo = photo;
+      });
+    } catch (error) {
+      toast.error("There was an error while setting your main photo");
+    } finally {
+      runInAction(() => {
+        this.loading = false;
       });
     }
   };
