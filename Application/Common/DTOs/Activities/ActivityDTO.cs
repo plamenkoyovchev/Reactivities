@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Application.Common.DTOs.Attendee;
+using Application.Common.DTOs.Comments;
 using Application.Common.Mappings;
 using Domain;
 using Newtonsoft.Json;
@@ -25,5 +26,7 @@ namespace Application.Common.DTOs.Activities
 
         [JsonProperty("attendees")]
         public ICollection<AttendeeDTO> UserActivities { get; set; }
+
+        public ICollection<CommentDTO> Comments { get; set; }
     }
 }
