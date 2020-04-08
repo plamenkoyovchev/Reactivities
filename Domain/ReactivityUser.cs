@@ -9,6 +9,7 @@ namespace Domain
         {
             this.UserActivities = new HashSet<UserActivity>();
             this.Photos = new HashSet<Photo>();
+            this.Comments = new HashSet<Comment>();
         }
 
         public string DisplayName { get; set; }
@@ -18,5 +19,7 @@ namespace Domain
         public ICollection<UserActivity> UserActivities { get; set; }
 
         public ICollection<Photo> Photos { get; set; }
+
+        public ICollection<Comment> Comments { get; set; }
     }
 }

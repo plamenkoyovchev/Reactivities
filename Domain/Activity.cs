@@ -8,6 +8,7 @@ namespace Domain
         public Activity()
         {
             this.UserActivities = new HashSet<UserActivity>();
+            this.Commets = new HashSet<Comment>();
         }
 
         public Guid Id { get; set; }
@@ -19,5 +20,7 @@ namespace Domain
         public string Venue { get; set; }
 
         public ICollection<UserActivity> UserActivities { get; set; }
+
+        public ICollection<Comment> Commets { get; set; }
     }
 }
