@@ -17,7 +17,6 @@ namespace Application.Authentication.Login
 {
     public class LoginQueryHandler : HandlerBase, IRequestHandler<LoginQuery, UserViewModel>
     {
-        private readonly UserManager<ReactivityUser> userManager;
         private readonly SignInManager<ReactivityUser> signInManager;
         private readonly IMapper mapper;
         private readonly IJwtGenerator jwtGenerator;
