@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Application.Common.DTOs.Attendee;
+using Application.Common.DTOs.Comments;
 using AutoMapper;
 using Domain;
 
@@ -39,6 +40,11 @@ namespace Application.Common.Mappings
                 .ForMember(a => a.Username, o => o.MapFrom(x => x.ReactivityUser.UserName))
                 .ForMember(a => a.DisplayName, o => o.MapFrom(x => x.ReactivityUser.DisplayName))
                 .ForMember(a => a.Image, o => o.MapFrom(x => x.ReactivityUser.Photos.FirstOrDefault(p => p.IsMain).Url));
+
+            CreateMap<Comment, CommentDTO>()
+                .ForMember(c => c.Username, o => o.MapFrom(x => x.Author.UserName))
+                .ForMember(c => c.DisplayName, o => o.MapFrom(x => x.Author.DisplayName))
+                .ForMember(c => c.Photo, o => o.MapFrom(x => x.Author.Photos.FirstOrDefault(p => p.IsMain).Url));
         }
     }
 }
