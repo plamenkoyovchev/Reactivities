@@ -31,7 +31,7 @@ namespace Application.Comments.Create
                 throw new RestException(HttpStatusCode.NotFound, new { Activity = "Not found" });
             }
 
-            var user = await Context.Users.Include(u => u.Comments).FirstOrDefaultAsync(u => u.UserName == request.Username);
+            var user = await Context.Users.FirstOrDefaultAsync(u => u.UserName == request.Username);
             if (user == null)
             {
                 throw new RestException(HttpStatusCode.NotFound);
