@@ -7,7 +7,6 @@ namespace Application.Comments.Create
         public CreateCommentValidator()
         {
             RuleFor(c => c.Body).NotEmpty();
-            RuleFor(c => c.Username).NotEmpty();
             RuleFor(c => c.ActivityId).NotEmpty();
         }
     }
