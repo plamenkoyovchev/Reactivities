@@ -1,5 +1,6 @@
 using API.Extensions;
 using API.Middleware;
+using API.SignalR;
 using Application;
 using Application.Activities.Create;
 using Application.Common.Constants.System;
@@ -36,6 +37,8 @@ namespace API
 
             services.AllowCors();
             services.AddControllersConfig();
+
+            services.AddSignalR();
 
             services.ConfigureAspNetCoreIdentity();
             services.ConfigureJwtAuthentication(Configuration);
