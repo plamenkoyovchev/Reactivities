@@ -9,11 +9,11 @@ namespace API.SignalR
 {
     public class ChatHub : Hub
     {
-        private readonly IMediator metiator;
+        private readonly IMediator mediator;
 
-        public ChatHub(IMediator metiator)
+        public ChatHub(IMediator mediator)
         {
-            this.metiator = metiator;
+            this.mediator = mediator;
         }
 
         public async Task SendComment(CreateCommentCommand command)
@@ -21,7 +21,7 @@ namespace API.SignalR
             var username = Context.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             command.Username = username;
 
-            var comment = await this.metiator.Send(command);
+            var comment = await this.mediator.Send(command);
 
             await Clients.All.SendAsync("ReceiveComment", comment);
         }
