@@ -1,4 +1,5 @@
 using System.Text;
+using System.Threading.Tasks;
 using Application.Common.Constants.System;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -33,6 +34,21 @@ namespace API.Extensions
                         IssuerSigningKey = key,
                         ValidateAudience = false,
                         ValidateIssuer = false
+                    };
+
+                    opt.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"];
+                            var path = context.HttpContext.Request.Path;
+                            if (!string.IsNullOrWhiteSpace(accessToken) && path.StartsWithSegments("/chat"))
+                            {
+                                context.Token = accessToken;
+                            }
+
+                            return Task.CompletedTask;
+                        }
                     };
                 });
         }
