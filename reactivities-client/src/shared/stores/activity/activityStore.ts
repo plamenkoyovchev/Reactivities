@@ -42,11 +42,13 @@ class ActivityStore {
 
     this.hubConnection.on("ReceiveComment", (comment) => {
       runInAction(() => {
-        if (this.activity) {
-          this.activity.comments.push(comment);
-        }
+        this.activity?.comments.push(comment);
       });
     });
+  };
+
+  @action stopHubConnection = () => {
+    this.hubConnection?.stop();
   };
 
   @action loadActivities = async () => {
