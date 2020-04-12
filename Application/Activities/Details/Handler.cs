@@ -24,6 +24,7 @@ namespace Application.Activities.Details
         public async Task<ActivityDTO> Handle(Query request, CancellationToken cancellationToken)
         {
             var activity = await this.Context.Activities
+                                                .Include(a => a.Commets)
                                                 .Include(a => a.UserActivities)
                                                 .ThenInclude(u => u.ReactivityUser)
                                                 .ThenInclude(u => u.Photos)
