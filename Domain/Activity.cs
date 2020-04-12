@@ -8,7 +8,7 @@ namespace Domain
         public Activity()
         {
             this.UserActivities = new HashSet<UserActivity>();
-            this.Commets = new HashSet<Comment>();
+            this.Comments = new HashSet<Comment>();
         }
 
         public Guid Id { get; set; }
@@ -21,6 +21,6 @@ namespace Domain
 
         public ICollection<UserActivity> UserActivities { get; set; }
 
-        public ICollection<Comment> Commets { get; set; }
+        public ICollection<Comment> Comments { get; set; }
     }
 }
