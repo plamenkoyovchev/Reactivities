@@ -7,6 +7,12 @@ import { IActivity } from "../../../app/Models/Activity/IActivity";
 import httpRequester from "../../axios/httpRequester";
 import { toast } from "react-toastify";
 
+import {
+  HubConnection,
+  HubConnectionBuilder,
+  LogLevel,
+} from "@microsoft/signalr";
+
 class ActivityStore {
   rootStore: RootStore;
 
@@ -19,6 +25,29 @@ class ActivityStore {
   @observable activity: IActivity | null = null;
   @observable target = "";
   @observable submitting = false;
+  @observable.ref hubConnection: HubConnection | null = null;
+
+  @action createHubConnection = () => {
+    this.hubConnection = new HubConnectionBuilder()
+      .withUrl("http://localhost:5000/chat", {
+        accessTokenFactory: () => this.rootStore.commonStore.token!,
+      })
+      .configureLogging(LogLevel.Information)
+      .build();
+
+    this.hubConnection
+      .start()
+      .then(() => toast.success("Chat connection successful"))
+      .catch(() => toast.warn("Chat connection problem"));
+
+    this.hubConnection.on("ReceiveComment", (comment) => {
+      runInAction(() => {
+        if (this.activity) {
+          this.activity.comments.push(comment);
+        }
+      });
+    });
+  };
 
   @action loadActivities = async () => {
     this.loading = true;
@@ -26,7 +55,7 @@ class ActivityStore {
       const activities = await httpRequester.activities.get();
       const user = this.rootStore.userStore.currentUser!;
       runInAction(() => {
-        activities.forEach(activity => {
+        activities.forEach((activity) => {
           activity.date = activity.date.split(".")[0];
           this.setActivityProps(activity, user);
           this.activityMap.set(activity.id, activity);
@@ -137,7 +166,7 @@ class ActivityStore {
         displayName: currentUser?.displayName,
         username: currentUser?.username,
         image: currentUser?.image,
-        isHost: false
+        isHost: false,
       } as IAttendee;
 
       if (this.activity) {
@@ -160,7 +189,7 @@ class ActivityStore {
       const { currentUser } = this.rootStore.userStore;
       if (this.activity) {
         this.activity.attendees = activity.attendees.filter(
-          a => a.username !== currentUser?.username
+          (a) => a.username !== currentUser?.username
         );
         this.activity.isGoing = false;
         this.activityMap.set(this.activity.id, this.activity);
@@ -174,10 +203,10 @@ class ActivityStore {
 
   setActivityProps = (activity: IActivity, user: IUser) => {
     activity.isGoing = activity.attendees.some(
-      a => a.username === user?.username
+      (a) => a.username === user?.username
     );
     activity.isHosting = activity.attendees.some(
-      a => a.username === user?.username && a.isHost
+      (a) => a.username === user?.username && a.isHost
     );
   };
 }
