@@ -15,7 +15,7 @@ interface DetailParams {
 
 const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
   match,
-  history
+  history,
 }) => {
   const rootStore = useContext(RootStoreContext);
   const {
@@ -24,7 +24,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     loadActivity,
     cleanActivity,
     saveActivity,
-    submitting
+    submitting,
   } = rootStore.activityStore;
 
   const [activity, setActivity] = useState<IActivity>({
@@ -37,7 +37,8 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     venue: "",
     isGoing: false,
     isHosting: false,
-    attendees: []
+    attendees: [],
+    comments: [],
   });
 
   useEffect(() => {
@@ -55,7 +56,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     activity.id.length,
     loadActivity,
     initialFormActivity,
-    cleanActivity
+    cleanActivity,
   ]);
 
   const inputChangeHandler = (event: any) => {
@@ -65,7 +66,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
 
   const submitHandler = () => {
     const activityToSave = {
-      ...activity
+      ...activity,
     };
 
     saveActivity(activityToSave).then(() => {
