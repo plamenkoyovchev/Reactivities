@@ -45,7 +45,7 @@ namespace Application.Comments.Create
                 CreatedOn = DateTime.UtcNow
             };
 
-            activity.Commets.Add(comment);
+            activity.Comments.Add(comment);
 
             if (await Context.SaveChangesAsync() > 0)
             {
