@@ -2,8 +2,10 @@ import React, { Fragment, useContext, useEffect } from "react";
 import { Segment, Header, Form, Button, Comment } from "semantic-ui-react";
 
 import ActivityDetailedChatItem from "./ActivityDetailedChatItem";
-import { IComment } from "../../../app/Models/Comment/IComment";
 import { RootStoreContext } from "../../../shared/stores/rootStore";
+
+import { Form as FinalForm, Field } from "react-final-form";
+import { observer } from "mobx-react-lite";
 
 const ActivityDetailedChat = () => {
   const rootStore = useContext(RootStoreContext);
@@ -38,22 +40,34 @@ const ActivityDetailedChat = () => {
       <Segment attached>
         <Comment.Group>
           {comments &&
-            comments.map((comment) => {
-              <ActivityDetailedChatItem key={comment.id} comment={comment} />;
-            })}
-          <Form reply>
-            <Form.TextArea />
-            <Button
-              content="Add Reply"
-              labelPosition="left"
-              icon="edit"
-              primary
-            />
-          </Form>
+            comments.map((comment) => (
+              <ActivityDetailedChatItem key={comment.id} comment={comment} />
+            ))}
+
+          <FinalForm
+            onSubmit={addComment}
+            render={({ handleSubmit, submitting, form }) => (
+              <Form onSubmit={() => handleSubmit()?.then(() => form.reset())}>
+                <Field
+                  name="body"
+                  rows={2}
+                  placeholder="Add comment"
+                  component="textarea"
+                />
+                <Button
+                  content="Add Reply"
+                  labelPosition="left"
+                  icon="edit"
+                  primary
+                  loading={submitting}
+                />
+              </Form>
+            )}
+          />
         </Comment.Group>
       </Segment>
     </Fragment>
   );
 };
 
-export default ActivityDetailedChat;
+export default observer(ActivityDetailedChat);
