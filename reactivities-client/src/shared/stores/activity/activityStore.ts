@@ -1,7 +1,7 @@
 import { IAttendee } from "./../../../app/Models/Attendee/IAttendee";
 import { IUser } from "./../../../app/Models/User/IUser";
 import { RootStore } from "./../rootStore";
-import { observable, action, computed, runInAction } from "mobx";
+import { observable, action, computed, runInAction, values } from "mobx";
 import { SyntheticEvent } from "react";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 import httpRequester from "../../axios/httpRequester";
@@ -49,6 +49,16 @@ class ActivityStore {
 
   @action stopHubConnection = () => {
     this.hubConnection?.stop();
+  };
+
+  @action addComment = async (values: any) => {
+    values.activityId = this.activity?.id;
+
+    try {
+      await this.hubConnection?.invoke("SendComment", values);
+    } catch (error) {
+      toast.error("Unable to add comment");
+    }
   };
 
   @action loadActivities = async () => {
