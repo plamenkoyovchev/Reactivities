@@ -27,7 +27,7 @@ class ActivityStore {
   @observable submitting = false;
   @observable.ref hubConnection: HubConnection | null = null;
 
-  @action createHubConnection = async (activityId: string) => {
+  @action createHubConnection = (activityId: string) => {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl("http://localhost:5000/chat", {
         accessTokenFactory: () => this.rootStore.commonStore.token!,
@@ -35,13 +35,13 @@ class ActivityStore {
       .configureLogging(LogLevel.Information)
       .build();
 
-    try {
-      await this.hubConnection.start();
-      toast.success("Chat connection successful");
-      this.hubConnection?.invoke("AddToGroup", activityId);
-    } catch (error) {
-      toast.warn("Chat connection problem");
-    }
+    this.hubConnection
+      .start()
+      .then(() => {
+        this.hubConnection?.invoke("AddToGroup", activityId);
+        toast.success("Chat connection successful");
+      })
+      .catch(() => toast.warn("Chat connection problem"));
 
     this.hubConnection.on("ReceiveComment", (comment) => {
       runInAction(() => {
