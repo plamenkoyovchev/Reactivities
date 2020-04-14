@@ -27,7 +27,7 @@ class ActivityStore {
   @observable submitting = false;
   @observable.ref hubConnection: HubConnection | null = null;
 
-  @action createHubConnection = () => {
+  @action createHubConnection = async (activityId: string) => {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl("http://localhost:5000/chat", {
         accessTokenFactory: () => this.rootStore.commonStore.token!,
@@ -35,20 +35,32 @@ class ActivityStore {
       .configureLogging(LogLevel.Information)
       .build();
 
-    this.hubConnection
-      .start()
-      .then(() => toast.success("Chat connection successful"))
-      .catch(() => toast.warn("Chat connection problem"));
+    try {
+      await this.hubConnection.start();
+      toast.success("Chat connection successful");
+      this.hubConnection?.invoke("AddToGroup", activityId);
+    } catch (error) {
+      toast.warn("Chat connection problem");
+    }
 
     this.hubConnection.on("ReceiveComment", (comment) => {
       runInAction(() => {
         this.activity?.comments.push(comment);
       });
     });
+
+    this.hubConnection.on("Send", (message) => toast.info(message));
   };
 
   @action stopHubConnection = () => {
-    this.hubConnection?.stop();
+    this.hubConnection
+      ?.invoke("RemoveFromGroup", this.activity?.id)
+      .then(() => {
+        this.hubConnection?.stop().then(() => {
+          this.activity = null;
+        });
+      })
+      .catch();
   };
 
   @action addComment = async (values: any) => {
@@ -103,10 +115,7 @@ class ActivityStore {
   @action loadActivity = async (id: string) => {
     this.loading = true;
     try {
-      let activity = this.activityMap.get(id);
-      if (!activity) {
-        activity = await httpRequester.activities.details(id);
-      }
+      let activity = await httpRequester.activities.details(id);
 
       this.setActivityProps(activity, this.rootStore.userStore.currentUser!);
       this.activity = activity;
