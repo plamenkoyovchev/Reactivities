@@ -42,7 +42,7 @@ namespace Application.Comments.Create
                 Activity = activity,
                 Author = user,
                 Body = request.Body,
-                CreatedOn = DateTime.UtcNow
+                CreatedOn = DateTime.Now
             };
 
             activity.Comments.Add(comment);
