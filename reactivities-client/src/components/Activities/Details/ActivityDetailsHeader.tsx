@@ -5,18 +5,20 @@ import { IActivity } from "../../../app/Models/Activity/IActivity";
 import { observer } from "mobx-react-lite";
 import { RootStoreContext } from "../../../shared/stores/rootStore";
 
+import { formatDate } from "../../../shared/utils/date-utils";
+
 import { Link } from "react-router-dom";
 
 const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
-  activity
+  activity,
 }) => {
   const rootStore = useContext(RootStoreContext);
   const { joinActivity, unattend, submitting } = rootStore.activityStore;
   const { currentUser } = rootStore.userStore;
-  const host = activity.attendees.filter(a => a.isHost)[0];
+  const host = activity.attendees.filter((a) => a.isHost)[0];
 
   const joined = activity.attendees.find(
-    a => a.username === currentUser?.username
+    (a) => a.username === currentUser?.username
   );
 
   const joinActivityHandler = async () => {
@@ -40,7 +42,7 @@ const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
             <Item>
               <Item.Content>
                 <Header size="huge" content={activity.title} id="header-text" />
-                <p>{activity.date}</p>
+                <p>{formatDate(activity.date)}</p>
                 {host?.username && (
                   <p>
                     Hosted by{" "}

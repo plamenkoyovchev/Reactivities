@@ -4,6 +4,8 @@ import { IComment } from "../../../app/Models/Comment/IComment";
 import { Comment } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
+import { formatDate, formatAsDistance } from "../../../shared/utils/date-utils";
+
 interface IProps {
   comment: IComment;
 }
@@ -18,7 +20,7 @@ const ActivityDetailedChatItem: React.FC<IProps> = ({ comment }) => {
         <Comment.Author as={Link} to={`/profile/${username}`}>
           {displayName}
         </Comment.Author>
-        <Comment.Metadata>{createdOn}</Comment.Metadata>
+        <Comment.Metadata>{formatAsDistance(createdOn)}</Comment.Metadata>
         <Comment.Text>{body || "Empty"}</Comment.Text>
       </Comment.Content>
     </Comment>
