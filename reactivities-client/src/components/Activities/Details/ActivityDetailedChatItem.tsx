@@ -4,7 +4,7 @@ import { IComment } from "../../../app/Models/Comment/IComment";
 import { Comment } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
-import { formatDate, formatAsDistance } from "../../../shared/utils/date-utils";
+import { formatAsDistance } from "../../../shared/utils/date-utils";
 
 interface IProps {
   comment: IComment;
