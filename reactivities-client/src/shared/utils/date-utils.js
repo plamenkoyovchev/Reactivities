@@ -5,12 +5,12 @@ import {
 
 const dateFormat = "dd-MM-yyyy HH:mm";
 
-export const formatDate = (date) => {
+export const formatDate = (date, customFormat) => {
   if (!date) {
     throw Error("Invalid date");
   }
 
-  return format(new Date(date), dateFormat);
+  return format(new Date(date), customFormat || dateFormat);
 };
 
 export const formatAsDistance = (date) => {
