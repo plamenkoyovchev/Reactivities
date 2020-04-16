@@ -11,6 +11,8 @@ import AttendeeList from "../../../Attendees/AttendeeList";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 
+import { formatDate } from "../../../../shared/utils/date-utils";
+
 interface IProps {
   activity: IActivity;
 }
@@ -27,10 +29,10 @@ const ActivityListItem: React.FC<IProps> = ({ activity }) => {
     category,
     attendees,
     isGoing,
-    isHosting
+    isHosting,
   } = activity;
 
-  const host = attendees.filter(a => a.isHost)[0];
+  const host = attendees.filter((a) => a.isHost)[0];
 
   return (
     <Segment.Group>
@@ -69,7 +71,7 @@ const ActivityListItem: React.FC<IProps> = ({ activity }) => {
         </Item.Group>
       </Segment>
       <Segment>
-        <Icon name="clock" /> {date}
+        <Icon name="clock" /> {formatDate(date)}
         <Icon name="marker" /> {venue}
       </Segment>
       <Segment secondary>
@@ -91,7 +93,7 @@ const ActivityListItem: React.FC<IProps> = ({ activity }) => {
           floated="right"
           content="Delete"
           color="red"
-          onClick={e => deleteActivity(e, id)}
+          onClick={(e) => deleteActivity(e, id)}
         />
       </Segment>
     </Segment.Group>
