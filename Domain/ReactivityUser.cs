@@ -10,6 +10,8 @@ namespace Domain
             this.UserActivities = new HashSet<UserActivity>();
             this.Photos = new HashSet<Photo>();
             this.Comments = new HashSet<Comment>();
+            this.Followings = new HashSet<UserFollower>();
+            this.Followers = new HashSet<UserFollower>();
         }
 
         public string DisplayName { get; set; }
@@ -21,5 +23,9 @@ namespace Domain
         public ICollection<Photo> Photos { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
+
+        public ICollection<UserFollower> Followings { get; set; }
+
+        public ICollection<UserFollower> Followers { get; set; }
     }
 }
