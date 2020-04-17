@@ -36,20 +36,24 @@ namespace Persistence
                     new Value { Id = 3, Name = "Value 3" }
                 });
 
-            modelBuilder.Entity<UserActivity>()
-                .HasKey(x => new { x.ReactivityUserId, x.ActivityId });
-
-            modelBuilder.Entity<UserActivity>()
-                .HasOne(a => a.ReactivityUser)
-                .WithMany(ua => ua.UserActivities)
-                .HasForeignKey(r => r.ReactivityUserId);
-
-            modelBuilder.Entity<UserActivity>()
-                .HasOne(u => u.Activity)
-                .WithMany(ua => ua.UserActivities)
-                .HasForeignKey(a => a.ActivityId);
-
+            BuildUserActivity(modelBuilder);
             BuildUserFollower(modelBuilder);
+        }
+
+        private static void BuildUserActivity(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserActivity>(b =>
+            {
+                b.HasKey(x => new { x.ReactivityUserId, x.ActivityId });
+
+                b.HasOne(a => a.ReactivityUser)
+                 .WithMany(ua => ua.UserActivities)
+                 .HasForeignKey(r => r.ReactivityUserId);
+
+                b.HasOne(u => u.Activity)
+                 .WithMany(ua => ua.UserActivities)
+                 .HasForeignKey(a => a.ActivityId);
+            });
         }
 
         private static void BuildUserFollower(ModelBuilder modelBuilder)
