@@ -1,7 +1,12 @@
+using FluentValidation;
+
 namespace Application.Users.Follow
 {
-    public class FollowCommandValidator
+    public class FollowCommandValidator : AbstractValidator<FollowCommand>
     {
-        
+        public FollowCommandValidator()
+        {
+            RuleFor(u => u.Username).NotEmpty();
+        }
     }
 }
