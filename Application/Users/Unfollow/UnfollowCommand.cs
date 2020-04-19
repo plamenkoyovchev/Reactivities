@@ -1,7 +1,9 @@
+using MediatR;
+
 namespace Application.Users.Unfollow
 {
-    public class UnfollowCommand
+    public class UnfollowCommand : IRequest
     {
-        
+        public string Username { get; set; }
     }
 }
