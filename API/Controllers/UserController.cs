@@ -4,6 +4,8 @@ using Application.Authentication.Login;
 using Application.Authentication.Register;
 using Application.Common.ViewModels.User;
 using Application.UserProfile.Queries;
+using Application.Users.Follow;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,6 +38,12 @@ namespace API.Controllers
         public async Task<ActionResult<UserProfileViewModel>> Profile(string username)
         {
             return await this.Mediator.Send(new ProfileDetailsQuery(username));
+        }
+
+        [HttpPost("{username}/follow")]
+        public async Task<ActionResult<Unit>> Follow(FollowCommand command)
+        {
+            return await this.Mediator.Send(command);
         }
     }
 }
