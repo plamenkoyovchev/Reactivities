@@ -8,6 +8,7 @@ using Application.Common.Interfaces;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Users.Follow
@@ -42,6 +43,11 @@ namespace Application.Users.Follow
             if (target == null)
             {
                 throw new RestException(HttpStatusCode.NotFound, new { User = "Followee not found" });
+            }
+
+            if (await this.Context.Followings.AnyAsync(f => f.ObserverId == observer.Id && f.TargetId == target.Id))
+            {
+                throw new RestException(HttpStatusCode.BadRequest, new { User = $"You're already following {target.UserName}" });
             }
 
             this.Context.Followings.Add(new UserFollower
