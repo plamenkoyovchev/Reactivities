@@ -5,6 +5,7 @@ using Application.Authentication.Register;
 using Application.Common.ViewModels.User;
 using Application.UserProfile.Queries;
 using Application.Users.Follow;
+using Application.Users.Unfollow;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,12 @@ namespace API.Controllers
 
         [HttpPost("{username}/follow")]
         public async Task<ActionResult<Unit>> Follow(FollowCommand command)
+        {
+            return await this.Mediator.Send(command);
+        }
+
+        [HttpPost("{username}/unfollow")]
+        public async Task<ActionResult<Unit>> Unfollow(UnfollowCommand command)
         {
             return await this.Mediator.Send(command);
         }
