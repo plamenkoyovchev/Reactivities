@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -42,6 +44,27 @@ namespace Application.UserProfile
             }
 
             return userProfile;
+        }
+
+        public async Task<List<UserProfileViewModel>> ReadProfiles(IEnumerable<string> userIds)
+        {
+            var currentUser = await this.context.Users.FirstOrDefaultAsync(x => x.UserName == this.userAccessor.GetUsername());
+            var userProfiles = await this.context.Users
+                                        .Where(u => userIds.Any(uId => u.Id == uId))
+                                        .Select(u => new UserProfileViewModel
+                                        {
+                                            DisplayName = u.DisplayName,
+                                            Username = u.UserName,
+                                            Bio = u.Bio,
+                                            Photo = u.Photos.FirstOrDefault(p => p.IsMain),
+                                            Photos = u.Photos,
+                                            FollowersCount = u.Followers.Count,
+                                            FollowingsCount = u.Followings.Count,
+                                            Following = u.Followers.Any(f => f.ObserverId == currentUser.Id)
+                                        })
+                                        .ToListAsync();
+
+            return userProfiles;
         }
     }
 }
