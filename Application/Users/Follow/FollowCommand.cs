@@ -4,6 +4,10 @@ namespace Application.Users.Follow
 {
     public class FollowCommand : IRequest
     {
-        public string Username { get; set; }
+        public FollowCommand(string username)
+        {
+            this.Username = username;
+        }
+        public string Username { get; }
     }
 }

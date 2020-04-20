@@ -44,15 +44,15 @@ namespace API.Controllers
         }
 
         [HttpPost("{username}/follow")]
-        public async Task<ActionResult<Unit>> Follow(FollowCommand command)
+        public async Task<ActionResult<Unit>> Follow(string username)
         {
-            return await this.Mediator.Send(command);
+            return await this.Mediator.Send(new FollowCommand(username));
         }
 
         [HttpPost("{username}/unfollow")]
-        public async Task<ActionResult<Unit>> Unfollow(UnfollowCommand command)
+        public async Task<ActionResult<Unit>> Unfollow(string username)
         {
-            return await this.Mediator.Send(command);
+            return await this.Mediator.Send(new UnfollowCommand(username));
         }
 
         [HttpGet("{username}/followings")]
