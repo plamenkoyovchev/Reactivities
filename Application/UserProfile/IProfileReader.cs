@@ -6,8 +6,8 @@ namespace Application.UserProfile
 {
     public interface IProfileReader
     {
-        Task<UserProfileViewModel> ReadProfile(string username);
+        Task<UserProfileViewModel> ReadProfileAsync(string username);
 
-        Task<List<UserProfileViewModel>> ReadProfiles(IEnumerable<string> userIds);
+        Task<List<UserProfileViewModel>> ReadProfilesAsync(IEnumerable<string> userIds);
     }
 }

@@ -21,7 +21,7 @@ namespace Application.UserProfile.Queries
 
         public async Task<UserProfileViewModel> Handle(ProfileDetailsQuery request, CancellationToken cancellationToken)
         {
-            var userProfile = await profileReader.ReadProfile(request.Username);
+            var userProfile = await profileReader.ReadProfileAsync(request.Username);
 
             return userProfile;
         }

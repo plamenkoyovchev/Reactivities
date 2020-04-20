@@ -21,7 +21,7 @@ namespace Application.UserProfile
             this.context = context;
             this.userAccessor = userAccessor;
         }
-        public async Task<UserProfileViewModel> ReadProfile(string username)
+        public async Task<UserProfileViewModel> ReadProfileAsync(string username)
         {
             var currentUser = await this.context.Users.FirstOrDefaultAsync(x => x.UserName == this.userAccessor.GetUsername());
             var userProfile = await this.context.Users
@@ -46,7 +46,7 @@ namespace Application.UserProfile
             return userProfile;
         }
 
-        public async Task<List<UserProfileViewModel>> ReadProfiles(IEnumerable<string> userIds)
+        public async Task<List<UserProfileViewModel>> ReadProfilesAsync(IEnumerable<string> userIds)
         {
             var currentUser = await this.context.Users.FirstOrDefaultAsync(x => x.UserName == this.userAccessor.GetUsername());
             var userProfiles = await this.context.Users

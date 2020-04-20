@@ -35,11 +35,11 @@ namespace Application.Users.FollowersList
             {
                 case FollowingType.Followers:
                     userFollowings = await query.Where(f => f.Target.UserName == request.Username).ToListAsync();
-                    profiles.AddRange(await this.profileReader.ReadProfiles(userFollowings.Select(u => u.ObserverId)));
+                    profiles.AddRange(await this.profileReader.ReadProfilesAsync(userFollowings.Select(u => u.ObserverId)));
                     break;
                 case FollowingType.Followings:
                     userFollowings = await query.Where(f => f.Observer.UserName == request.Username).ToListAsync();
-                    profiles.AddRange(await this.profileReader.ReadProfiles(userFollowings.Select(u => u.TargetId)));
+                    profiles.AddRange(await this.profileReader.ReadProfilesAsync(userFollowings.Select(u => u.TargetId)));
                     break;
                 default:
                     throw new RestException(HttpStatusCode.BadRequest);
