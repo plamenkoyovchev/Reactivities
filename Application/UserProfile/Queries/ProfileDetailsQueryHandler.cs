@@ -11,31 +11,17 @@ using Persistence;
 
 namespace Application.UserProfile.Queries
 {
-    public class ProfileDetailsQueryHandler : HandlerBase, IRequestHandler<ProfileDetailsQuery, UserProfileViewModel>
+    public class ProfileDetailsQueryHandler : IRequestHandler<ProfileDetailsQuery, UserProfileViewModel>
     {
-        public ProfileDetailsQueryHandler(DataContext context)
-            : base(context)
+        private readonly IProfileReader profileReader;
+        public ProfileDetailsQueryHandler(IProfileReader profileReader)
         {
+            this.profileReader = profileReader;
         }
 
         public async Task<UserProfileViewModel> Handle(ProfileDetailsQuery request, CancellationToken cancellationToken)
         {
-            var userProfile = await this.Context.Users
-                                        .Where(u => u.UserName == request.Username)
-                                        .Select(u => new UserProfileViewModel
-                                        {
-                                            DisplayName = u.DisplayName,
-                                            Username = u.UserName,
-                                            Bio = u.Bio,
-                                            Photo = u.Photos.FirstOrDefault(p => p.IsMain),
-                                            Photos = u.Photos
-                                        })
-                                        .FirstOrDefaultAsync();
-
-            if (userProfile == null)
-            {
-                throw new RestException(HttpStatusCode.NotFound);
-            }
+            var userProfile = await profileReader.ReadProfile(request.Username);
 
             return userProfile;
         }
