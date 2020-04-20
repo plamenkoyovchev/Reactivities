@@ -6,8 +6,14 @@ namespace Application.Users.FollowersList
 {
     public class FollowersListQuery : IRequest<List<UserProfileViewModel>>
     {
-        public string Username { get; set; }
+        public FollowersListQuery(string username, FollowingType followingType)
+        {
+            this.Username = username;
+            this.FollowingType = followingType;
+        }
 
-        public FollowingType FollowingType { get; set; }
+        public string Username { get; }
+
+        public FollowingType FollowingType { get; }
     }
 }

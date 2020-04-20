@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Authentication.CurrentUser;
 using Application.Authentication.Login;
@@ -5,6 +6,7 @@ using Application.Authentication.Register;
 using Application.Common.ViewModels.User;
 using Application.UserProfile.Queries;
 using Application.Users.Follow;
+using Application.Users.FollowersList;
 using Application.Users.Unfollow;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -51,6 +53,12 @@ namespace API.Controllers
         public async Task<ActionResult<Unit>> Unfollow(UnfollowCommand command)
         {
             return await this.Mediator.Send(command);
+        }
+
+        [HttpGet("{username}/followings")]
+        public async Task<ActionResult<List<UserProfileViewModel>>> Followings(string username, FollowingType followingType)
+        {
+            return await this.Mediator.Send(new FollowersListQuery(username, followingType));
         }
     }
 }
