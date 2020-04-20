@@ -5,6 +5,7 @@ using Application;
 using Application.Activities.Create;
 using Application.Common.Constants.System;
 using Application.Common.Interfaces;
+using Application.UserProfile;
 using FluentValidation.AspNetCore;
 using Infrastructure.Photos;
 using Infrastructure.Security;
@@ -46,6 +47,7 @@ namespace API
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            services.AddScoped<IProfileReader, ProfileReader>();
 
             services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
         }
