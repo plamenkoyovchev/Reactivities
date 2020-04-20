@@ -56,7 +56,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{username}/followings")]
-        public async Task<ActionResult<List<UserProfileViewModel>>> Followings(string username, FollowingType followingType)
+        public async Task<ActionResult<List<UserProfileViewModel>>> GetFollowings(string username, FollowingType followingType)
         {
             return await this.Mediator.Send(new FollowersListQuery(username, followingType));
         }
