@@ -13,6 +13,17 @@ namespace Application.Common.ViewModels.User
 
         public string Bio { get; set; }
 
+
+        /// <summary>
+        /// Is following current user
+        /// </summary>
+        /// <value></value>
+        public bool Following { get; set; }
+
+        public int FollowersCount { get; set; }
+
+        public int FollowingsCount { get; set; }
+
         public ICollection<Photo> Photos { get; set; } = new List<Photo>();
     }
 }
