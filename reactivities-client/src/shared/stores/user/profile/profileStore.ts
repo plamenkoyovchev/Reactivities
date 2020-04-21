@@ -109,6 +109,44 @@ class ProfileStore {
       });
     }
   };
+
+  @action follow = async (username: string) => {
+    this.loading = true;
+    try {
+      await httpRequester.profile.follow(username);
+      runInAction(() => {
+        if (this.profile) {
+          this.profile.following = true;
+          this.profile.followersCount++;
+        }
+      });
+    } catch (error) {
+      toast.error(`Unable to follow ${username}`);
+    } finally {
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
+  };
+
+  @action unfollow = async (username: string) => {
+    this.loading = true;
+    try {
+      await httpRequester.profile.unfollow(username);
+      runInAction(() => {
+        if (this.profile) {
+          this.profile.following = false;
+          this.profile.followersCount--;
+        }
+      });
+    } catch (error) {
+      toast.error(`Unable to unfollow ${username}`);
+    } finally {
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
+  };
 }
 
 export default ProfileStore;
