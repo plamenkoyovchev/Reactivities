@@ -49,7 +49,7 @@ namespace API.Controllers
             return await this.Mediator.Send(new FollowCommand(username));
         }
 
-        [HttpPost("{username}/unfollow")]
+        [HttpDelete("{username}/unfollow")]
         public async Task<ActionResult<Unit>> Unfollow(string username)
         {
             return await this.Mediator.Send(new UnfollowCommand(username));
