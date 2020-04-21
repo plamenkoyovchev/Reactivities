@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Application.Common.DTOs.Attendee;
 using Application.Common.DTOs.Comments;
+using Application.Common.Mappings.Resolvers;
 using AutoMapper;
 using Domain;
 
@@ -39,7 +40,8 @@ namespace Application.Common.Mappings
             CreateMap<UserActivity, AttendeeDTO>()
                 .ForMember(a => a.Username, o => o.MapFrom(x => x.ReactivityUser.UserName))
                 .ForMember(a => a.DisplayName, o => o.MapFrom(x => x.ReactivityUser.DisplayName))
-                .ForMember(a => a.Image, o => o.MapFrom(x => x.ReactivityUser.Photos.FirstOrDefault(p => p.IsMain).Url));
+                .ForMember(a => a.Image, o => o.MapFrom(x => x.ReactivityUser.Photos.FirstOrDefault(p => p.IsMain).Url))
+                .ForMember(a => a.Following, o => o.MapFrom<UserActivityFollowingResolver>());
 
             CreateMap<Comment, CommentDTO>()
                 .ForMember(c => c.Username, o => o.MapFrom(x => x.Author.UserName))
