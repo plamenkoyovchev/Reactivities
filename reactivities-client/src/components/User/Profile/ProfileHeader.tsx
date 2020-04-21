@@ -15,10 +15,25 @@ import { observer } from "mobx-react-lite";
 
 interface IProps {
   profile: IProfile;
+  follow: (username: string) => void;
+  unfollow: (username: string) => void;
+  isCurrentUser: boolean;
 }
 
-const ProfileHeader: React.FC<IProps> = ({ profile }) => {
-  const { photo, displayName, followersCount, followingsCount } = profile;
+const ProfileHeader: React.FC<IProps> = ({
+  profile,
+  follow,
+  unfollow,
+  isCurrentUser,
+}) => {
+  const {
+    photo,
+    displayName,
+    followersCount,
+    followingsCount,
+    following,
+    username,
+  } = profile;
   return (
     <Segment>
       <Grid>
@@ -42,19 +57,28 @@ const ProfileHeader: React.FC<IProps> = ({ profile }) => {
             <Statistic label="Following" value={followingsCount} />
           </Statistic.Group>
           <Divider />
-          <Reveal animated="move">
-            <Reveal.Content visible style={{ width: "100%" }}>
-              <Button fluid color="teal" content="Following" />
-            </Reveal.Content>
-            <Reveal.Content hidden>
-              <Button
-                fluid
-                basic
-                color={true ? "red" : "green"}
-                content={true ? "Unfollow" : "Follow"}
-              />
-            </Reveal.Content>
-          </Reveal>
+          {!isCurrentUser && (
+            <Reveal animated="move">
+              <Reveal.Content visible style={{ width: "100%" }}>
+                <Button
+                  fluid
+                  color="teal"
+                  content={following ? "Following" : "Not following"}
+                />
+              </Reveal.Content>
+              <Reveal.Content hidden>
+                <Button
+                  fluid
+                  basic
+                  color={following ? "red" : "green"}
+                  content={following ? "Unfollow" : "Follow"}
+                  onClick={() =>
+                    following ? unfollow(username) : follow(username)
+                  }
+                />
+              </Reveal.Content>
+            </Reveal>
+          )}
         </Grid.Column>
       </Grid>
     </Segment>
