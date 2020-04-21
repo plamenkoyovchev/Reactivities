@@ -29,7 +29,7 @@ namespace Application.Common.Mappings.Resolvers
         /// <returns></returns>
         public bool Resolve(UserActivity source, AttendeeDTO destination, bool destMember, ResolutionContext context)
         {
-            var currentUser = this.context.Users.FirstOrDefaultAsync(u => u.UserName == this.userAccessor.GetUsername()).Result;
+            var currentUser = this.context.Users.Include(u => u.Followings).FirstOrDefaultAsync(u => u.UserName == this.userAccessor.GetUsername()).Result;
             if (currentUser != null && currentUser.Followings.Any(x => x.TargetId == source.ReactivityUserId))
             {
                 return true;
