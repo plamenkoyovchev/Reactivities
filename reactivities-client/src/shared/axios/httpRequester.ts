@@ -104,6 +104,8 @@ const profile = {
     request.postFormData("/photos", photo),
   setMainPhoto: (id: string) => request.post(`/photos/${id}/setmain`, {}),
   deletePhoto: (id: string) => request.delete(`/photos/${id}`),
+  follow: (username: string) => request.post(`/user/${username}/follow`, {}),
+  unfollow: (username: string) => request.delete(`/user/${username}/unfollow`),
 };
 
 export default {
