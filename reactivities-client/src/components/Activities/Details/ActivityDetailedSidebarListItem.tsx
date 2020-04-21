@@ -5,23 +5,24 @@ import { Item, Label, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 const ActivityDetailedSidebarListItem: React.FC<{ attendee: IAttendee }> = ({
-  attendee
+  attendee,
 }) => {
+  const { isHost, image, username, displayName, following } = attendee;
   return (
     <Item style={{ position: "relative" }}>
-      {attendee.isHost && (
+      {isHost && (
         <Label style={{ position: "absolute" }} color="orange" ribbon="right">
           Host
         </Label>
       )}
-      <Image size="tiny" src={attendee.image || "/assets/user.png"} />
+      <Image size="tiny" src={image || "/assets/user.png"} />
       <Item.Content verticalAlign="middle">
         <Item.Header as="h3">
-          <Link to={`/profile/${attendee.username}`}>
-            {attendee.displayName}
-          </Link>
+          <Link to={`/profile/${username}`}>{displayName}</Link>
         </Item.Header>
-        <Item.Extra style={{ color: "orange" }}>Following</Item.Extra>
+        {following && (
+          <Item.Extra style={{ color: "orange" }}>Following</Item.Extra>
+        )}
       </Item.Content>
     </Item>
   );
