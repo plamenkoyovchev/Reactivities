@@ -3,4 +3,5 @@ export interface IAttendee {
   username: string;
   image: string;
   isHost: boolean;
+  following?: boolean;
 }
