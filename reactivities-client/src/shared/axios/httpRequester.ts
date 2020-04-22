@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { IUser } from "../../app/Models/User/IUser";
 import { IUserFormValues } from "../../app/Models/User/IUserFormValues";
 import { IProfile, IPhoto } from "../../app/Models/Profile/IProfile";
+import { FollowingType } from "../../app/Models/Profile/FollowingsType";
 
 const httpStatusCodes = {
   BAD_REQUEST: 400,
@@ -106,6 +107,8 @@ const profile = {
   deletePhoto: (id: string) => request.delete(`/photos/${id}`),
   follow: (username: string) => request.post(`/user/${username}/follow`, {}),
   unfollow: (username: string) => request.delete(`/user/${username}/unfollow`),
+  getFollowings: (username: string, followingType: FollowingType) =>
+    request.get(`/user/${username}/followings?followingType=${followingType}`),
 };
 
 export default {
