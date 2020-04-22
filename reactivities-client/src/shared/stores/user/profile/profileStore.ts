@@ -140,6 +140,7 @@ class ProfileStore {
     this.loading = true;
     try {
       await httpRequester.profile.follow(username);
+      await this.updateFollowings();
       runInAction(() => {
         if (this.profile) {
           this.profile.following = true;
@@ -159,6 +160,7 @@ class ProfileStore {
     this.loading = true;
     try {
       await httpRequester.profile.unfollow(username);
+      await this.updateFollowings();
       runInAction(() => {
         if (this.profile) {
           this.profile.following = false;
@@ -192,6 +194,19 @@ class ProfileStore {
       runInAction(() => {
         this.loading = false;
       });
+    }
+  };
+
+  updateFollowings = async () => {
+    switch (this.activeTab) {
+      case this.profileFollowingTabs.followers:
+        await this.getFollowings(FollowingType.Followers);
+        break;
+      case this.profileFollowingTabs.followings:
+        await this.getFollowings(FollowingType.Followings);
+        break;
+      default:
+        break;
     }
   };
 }
