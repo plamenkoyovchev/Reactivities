@@ -1,20 +1,42 @@
+import { FollowingType } from "./../../../../app/Models/Profile/FollowingsType";
 import { RootStore } from "./../../rootStore";
-import { observable, action, runInAction, computed } from "mobx";
+import { observable, action, runInAction, computed, reaction } from "mobx";
 import { IProfile, IPhoto } from "../../../../app/Models/Profile/IProfile";
 import httpRequester from "../../../axios/httpRequester";
 import { toast } from "react-toastify";
 
 class ProfileStore {
   rootStore: RootStore;
+  profileFollowingTabs = {
+    followers: 3,
+    followings: 4,
+  };
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
+
+    reaction(
+      () => this.activeTab,
+      (activeTab) => {
+        if (Object.values(this.profileFollowingTabs).includes(activeTab)) {
+          const ft =
+            activeTab === this.profileFollowingTabs.followers
+              ? FollowingType.Followers
+              : FollowingType.Followings;
+          this.getFollowings(ft);
+        } else {
+          this.followings = [];
+        }
+      }
+    );
   }
 
   @observable loadingProfile = true;
   @observable loading = false;
   @observable profile: IProfile | null = null;
   @observable uploadingPhoto = false;
+  @observable followings: IProfile[] = [];
+  @observable activeTab: number = 0;
 
   @computed get isCurrentUser() {
     const currentUser = this.rootStore.userStore.currentUser;
@@ -24,6 +46,10 @@ class ProfileStore {
 
     return false;
   }
+
+  @action setActiveTab = (activeIndex: number) => {
+    this.activeTab = activeIndex;
+  };
 
   @action getProfile = async (username: string) => {
     this.loadingProfile = true;
@@ -141,6 +167,27 @@ class ProfileStore {
       });
     } catch (error) {
       toast.error(`Unable to unfollow ${username}`);
+    } finally {
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
+  };
+
+  @action getFollowings = async (followingType: FollowingType) => {
+    this.loading = true;
+    const { username } = this.profile!;
+    try {
+      const profiles = await httpRequester.profile.getFollowings(
+        username,
+        followingType
+      );
+
+      runInAction(() => {
+        this.followings = profiles;
+      });
+    } catch (error) {
+      toast.error("Cannot load followings");
     } finally {
       runInAction(() => {
         this.loading = false;
