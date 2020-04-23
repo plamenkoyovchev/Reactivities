@@ -4,10 +4,11 @@ import { observer } from "mobx-react-lite";
 
 import { RootStoreContext } from "../../../shared/stores/rootStore";
 
-import { Grid, Button } from "semantic-ui-react";
+import { Grid, Loader as SemanticLoader } from "semantic-ui-react";
 import ActivityList from "../List/ActivityList";
 
 import Loader from "../../UI/Loader/Loader";
+import InfiniteScroller from "react-infinite-scroller";
 
 const ActivityDashboard = () => {
   const rootStore = useContext(RootStoreContext);
@@ -39,18 +40,22 @@ const ActivityDashboard = () => {
       <Grid>
         <Grid.Row>
           <Grid.Column width={10}>
-            <ActivityList />
-            <Button
-              loading={fetchingNext}
-              positive
-              content="More"
-              floated="right"
-              disabled={totalPages === page + 1}
-              onClick={onFetchNextHandler}
-            />
+            <InfiniteScroller
+              pageStart={0}
+              loadMore={onFetchNextHandler}
+              hasMore={!fetchingNext && page + 1 < totalPages}
+              initialLoad={false}
+            >
+              <ActivityList />
+            </InfiniteScroller>
           </Grid.Column>
           <Grid.Column width={6}>
             <h2>Activity Filters</h2>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={10}>
+            <SemanticLoader active={fetchingNext} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
