@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common;
@@ -10,7 +11,7 @@ using Persistence;
 
 namespace Application.Activities.List
 {
-    public class Handler : HandlerBase, IRequestHandler<Query, List<ActivityDTO>>
+    public class Handler : HandlerBase, IRequestHandler<Query, ActivitiesContainer>
     {
         private readonly IMapper mapper;
 
@@ -19,15 +20,24 @@ namespace Application.Activities.List
             this.mapper = mapper;
         }
 
-        public async Task<List<ActivityDTO>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<ActivitiesContainer> Handle(Query request, CancellationToken cancellationToken)
         {
-            var dbActivities = await this.Context.Activities
+            var query = this.Context.Activities
                                         .Include(a => a.UserActivities)
                                         .ThenInclude(ua => ua.ReactivityUser)
                                         .ThenInclude(u => u.Photos)
-                                        .ToListAsync(cancellationToken);
+                                        .AsNoTracking()
+                                        .AsQueryable();
 
-            return mapper.Map<List<ActivityDTO>>(dbActivities);
+            var dbActivities = await query
+                                .Skip(request.Offset)
+                                .Take(request.Limit)
+                                .ToListAsync(cancellationToken);
+
+            var activitiesCount = await query.CountAsync();
+            var activities = mapper.Map<List<ActivityDTO>>(dbActivities);
+
+            return new ActivitiesContainer(activities, activitiesCount);
         }
     }
 }
