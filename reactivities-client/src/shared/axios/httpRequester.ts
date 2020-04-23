@@ -7,6 +7,7 @@ import { IUser } from "../../app/Models/User/IUser";
 import { IUserFormValues } from "../../app/Models/User/IUserFormValues";
 import { IProfile, IPhoto } from "../../app/Models/Profile/IProfile";
 import { FollowingType } from "../../app/Models/Profile/FollowingsType";
+import { IActivityContainer } from "../../app/Models/Activity/IActivityContainer";
 
 const httpStatusCodes = {
   BAD_REQUEST: 400,
@@ -78,7 +79,8 @@ const request = {
 };
 
 const activities = {
-  get: (): Promise<IActivity[]> => request.get("/activities"),
+  get: (limit: number, page: number): Promise<IActivityContainer> =>
+    request.get(`/activities?limit=${limit}&offset=${limit * page}`),
   details: (id: string): Promise<IActivity> => request.get(`/activities/${id}`),
   create: (activity: IActivity) => request.post("/activities", activity),
   update: (activity: IActivity) =>

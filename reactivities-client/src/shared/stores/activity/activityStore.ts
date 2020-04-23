@@ -6,12 +6,13 @@ import { SyntheticEvent } from "react";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 import httpRequester from "../../axios/httpRequester";
 import { toast } from "react-toastify";
-
 import {
   HubConnection,
   HubConnectionBuilder,
   LogLevel,
 } from "@microsoft/signalr";
+
+const LIMIT = 10;
 
 class ActivityStore {
   rootStore: RootStore;
@@ -26,6 +27,16 @@ class ActivityStore {
   @observable target = "";
   @observable submitting = false;
   @observable.ref hubConnection: HubConnection | null = null;
+  @observable activitiesCount: number = 0;
+  @observable page: number = 0;
+
+  @computed get totalPages() {
+    return Math.ceil(this.activitiesCount / LIMIT);
+  }
+
+  @action setPage = (page: number) => {
+    this.page = page;
+  };
 
   @action createHubConnection = (activityId: string) => {
     this.hubConnection = new HubConnectionBuilder()
@@ -76,7 +87,12 @@ class ActivityStore {
   @action loadActivities = async () => {
     this.loading = true;
     try {
-      const activities = await httpRequester.activities.get();
+      const activitiesContainer = await httpRequester.activities.get(
+        LIMIT,
+        this.page
+      );
+      const { activities, activitiesCount } = activitiesContainer;
+
       const user = this.rootStore.userStore.currentUser!;
       runInAction(() => {
         activities.forEach((activity) => {
@@ -84,6 +100,7 @@ class ActivityStore {
           this.setActivityProps(activity, user);
           this.activityMap.set(activity.id, activity);
         });
+        this.activitiesCount = activitiesCount;
         this.loading = false;
       });
     } catch (error) {
