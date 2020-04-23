@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -26,6 +27,8 @@ namespace Application.Activities.List
                                         .Include(a => a.UserActivities)
                                         .ThenInclude(ua => ua.ReactivityUser)
                                         .ThenInclude(u => u.Photos)
+                                        .Where(a => a.Date >= DateTime.Now)
+                                        .OrderBy(a => a.Date)
                                         .AsNoTracking()
                                         .AsQueryable();
 
