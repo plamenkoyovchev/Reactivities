@@ -9,6 +9,7 @@ import ActivityList from "../List/ActivityList";
 
 import Loader from "../../UI/Loader/Loader";
 import InfiniteScroller from "react-infinite-scroller";
+import ActivityFilters from "../Filters/ActivityFilters";
 
 const ActivityDashboard = () => {
   const rootStore = useContext(RootStoreContext);
@@ -50,7 +51,7 @@ const ActivityDashboard = () => {
             </InfiniteScroller>
           </Grid.Column>
           <Grid.Column width={6}>
-            <h2>Activity Filters</h2>
+            <ActivityFilters />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
