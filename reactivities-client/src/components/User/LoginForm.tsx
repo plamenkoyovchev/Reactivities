@@ -9,10 +9,11 @@ import { FORM_ERROR } from "final-form";
 import { Form as FinalForm, Field } from "react-final-form";
 import { combineValidators, isRequired } from "revalidate";
 import ErrorMessage from "../Common/ErrorMessage";
+import TextInput from "../UI/Form/TextInput";
 
 const validate = combineValidators({
   email: isRequired("email"),
-  password: isRequired("password")
+  password: isRequired("password"),
 });
 
 const LoginForm = () => {
@@ -25,8 +26,8 @@ const LoginForm = () => {
       onSubmit={(values: IUserFormValues) =>
         login(values)
           .then(close)
-          .catch(error => ({
-            [FORM_ERROR]: error
+          .catch((error) => ({
+            [FORM_ERROR]: error,
           }))
       }
       validate={validate}
@@ -36,21 +37,20 @@ const LoginForm = () => {
         submitError,
         invalid,
         pristine,
-        dirtySinceLastSubmit
+        dirtySinceLastSubmit,
       }) => (
         <Form onSubmit={handleSubmit}>
           <Header as="h2" content="Login for Reactivities" textAlign="center" />
-          <Field name="email" placeholder="Email" component="input" />
+          <Field name="email" placeholder="Email" component={TextInput} />
           <Field
             name="password"
             placeholder="Password"
             type="password"
-            component="input"
+            component={TextInput}
           />
           {submitError && !dirtySinceLastSubmit && (
             <ErrorMessage error={submitError} />
           )}
-          <br />
           <Button
             positive
             content="Login"
