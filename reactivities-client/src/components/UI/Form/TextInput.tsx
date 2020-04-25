@@ -1,16 +1,17 @@
 import React from "react";
 import { FieldRenderProps } from "react-final-form";
 import { FormFieldProps, Form, Label } from "semantic-ui-react";
+
 interface IProps
-  extends FieldRenderProps<string, HTMLInputElement>,
+  extends FieldRenderProps<string, HTMLElement>,
     FormFieldProps {}
 
 const TextInput: React.FC<IProps> = ({
   input,
-  type,
   width,
+  type,
   placeholder,
-  meta: { error, touched },
+  meta: { touched, error },
 }) => {
   return (
     <Form.Field error={touched && !!error} type={type} width={width}>
