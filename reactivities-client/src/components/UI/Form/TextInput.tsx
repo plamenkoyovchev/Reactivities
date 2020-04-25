@@ -1,6 +1,7 @@
 import React from "react";
 import { FieldRenderProps } from "react-final-form";
 import { FormFieldProps, Form, Label } from "semantic-ui-react";
+import "./TextInput.scss";
 
 interface IProps
   extends FieldRenderProps<string, HTMLElement>,
@@ -17,7 +18,7 @@ const TextInput: React.FC<IProps> = ({
     <Form.Field error={touched && !!error} type={type} width={width}>
       <input {...input} placeholder={placeholder} />
       {touched && error && (
-        <Label basic color="red">
+        <Label className="error-message" basic color="red">
           {error}
         </Label>
       )}
