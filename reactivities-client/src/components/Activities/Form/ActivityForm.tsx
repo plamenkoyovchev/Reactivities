@@ -84,11 +84,6 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     time: isRequired("Time"),
   });
 
-  const inputChangeHandler = (event: any) => {
-    const { name, value } = event.target;
-    setActivity({ ...activity, [name]: value });
-  };
-
   const submitHandler = () => {
     const activityToSave = {
       ...activity,
