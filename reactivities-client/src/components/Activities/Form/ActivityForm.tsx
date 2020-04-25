@@ -10,6 +10,7 @@ import { observer } from "mobx-react-lite";
 import { RouteComponentProps } from "react-router-dom";
 import Loader from "../../UI/Loader/Loader";
 import TextInput from "../../UI/Form/TextInput";
+import TextAreaInput from "../../UI/Form/TextAreaInput";
 
 import {
   combineValidators,
@@ -121,8 +122,9 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
                 <Field
                   name="description"
                   placeholder="Description"
+                  rows={3}
                   value={activity.description}
-                  component={TextInput}
+                  component={TextAreaInput}
                 />
                 <Field
                   component={TextInput}
