@@ -8,12 +8,13 @@ import { isRequired, combineValidators } from "revalidate";
 import { Form, Button, Header } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 import ErrorMessage from "../Common/ErrorMessage";
+import TextInput from "../UI/Form/TextInput";
 
 const validate = combineValidators({
   username: isRequired("username"),
   displayName: isRequired("displayName"),
   email: isRequired("email"),
-  password: isRequired("password")
+  password: isRequired("password"),
 });
 
 const RegisterForm = () => {
@@ -26,7 +27,7 @@ const RegisterForm = () => {
       onSubmit={(value: IUserFormValues) =>
         register(value)
           .then(close)
-          .catch(error => ({ [FORM_ERROR]: error }))
+          .catch((error) => ({ [FORM_ERROR]: error }))
       }
       validate={validate}
       render={({
@@ -35,7 +36,7 @@ const RegisterForm = () => {
         submitError,
         invalid,
         pristine,
-        dirtySinceLastSubmit
+        dirtySinceLastSubmit,
       }) => (
         <Form onSubmit={handleSubmit}>
           <Header
@@ -43,20 +44,19 @@ const RegisterForm = () => {
             content="Register for Reactivities"
             textAlign="center"
           />
-          <Field name="email" placeholder="Email" component="input" />
-          <Field name="username" placeholder="Username" component="input" />
+          <Field name="email" placeholder="Email" component={TextInput} />
+          <Field name="username" placeholder="Username" component={TextInput} />
           <Field
             name="displayName"
             placeholder="Display Name"
-            component="input"
+            component={TextInput}
           />
           <Field
             name="password"
             type="password"
             placeholder="Password"
-            component="input"
+            component={TextInput}
           />
-          <br />
           <Button
             positive
             content="Register"
