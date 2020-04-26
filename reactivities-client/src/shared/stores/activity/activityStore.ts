@@ -10,6 +10,7 @@ import {
   HubConnection,
   HubConnectionBuilder,
   LogLevel,
+  HubConnectionState,
 } from "@microsoft/signalr";
 
 const LIMIT = 10;
@@ -38,7 +39,7 @@ class ActivityStore {
     this.page = page;
   };
 
-  @action createHubConnection = (activityId: string) => {
+  @action createHubConnection = () => {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl("http://localhost:5000/chat", {
         accessTokenFactory: () => this.rootStore.commonStore.token!,
@@ -49,8 +50,10 @@ class ActivityStore {
     this.hubConnection
       .start()
       .then(() => {
-        this.hubConnection?.invoke("AddToGroup", activityId);
-        toast.success("Chat connection successful");
+        if (this.hubConnection?.state === HubConnectionState.Connected) {
+          this.hubConnection?.invoke("AddToGroup", this.activity?.id);
+          toast.success("Chat connection successful");
+        }
       })
       .catch(() => toast.warn("Chat connection problem"));
 
@@ -64,14 +67,16 @@ class ActivityStore {
   };
 
   @action stopHubConnection = () => {
-    this.hubConnection
-      ?.invoke("RemoveFromGroup", this.activity?.id)
-      .then(() => {
-        this.hubConnection?.stop().then(() => {
-          this.activity = null;
-        });
-      })
-      .catch();
+    if (this.hubConnection?.state === HubConnectionState.Connected) {
+      this.hubConnection
+        ?.invoke("RemoveFromGroup", this.activity?.id)
+        .then(() => {
+          this.hubConnection?.stop().then(() => {
+            this.activity = null;
+          });
+        })
+        .catch();
+    }
   };
 
   @action addComment = async (values: any) => {
@@ -187,10 +192,6 @@ class ActivityStore {
         this.setActivityProps(activity, this.rootStore.userStore.currentUser!);
         this.activityMap.set(activity.id, activity);
       }
-
-      runInAction(() => {
-        this.activity = activity;
-      });
     } catch (error) {
       toast.error("Unable to save activity");
       this.activity = null;
