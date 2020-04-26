@@ -101,7 +101,7 @@ class ActivityStore {
       const user = this.rootStore.userStore.currentUser!;
       runInAction(() => {
         activities.forEach((activity) => {
-          activity.date = new Date(activity.date!);
+          activity.date = new Date(activity.date);
           this.setActivityProps(activity, user);
           this.activityMap.set(activity.id, activity);
         });
@@ -120,12 +120,12 @@ class ActivityStore {
 
   groupActivitiesByDate = (activities: IActivity[]) => {
     const sortedActivities = activities.sort(
-      (a, b) => a.date!.getTime() - b.date!.getTime()
+      (a, b) => a.date.getTime() - b.date.getTime()
     );
 
     return Object.entries(
       sortedActivities.reduce((activities, activity) => {
-        const date = activity.date!.toISOString().split("T")[0];
+        const date = activity.date.toISOString().split("T")[0];
         activities[date] = activities[date]
           ? [...activities[date], activity]
           : [activity];
@@ -140,7 +140,7 @@ class ActivityStore {
       let activity = await httpRequester.activities.details(id);
       runInAction(() => {
         this.setActivityProps(activity, this.rootStore.userStore.currentUser!);
-        activity.date = new Date(activity.date!);
+        activity.date = new Date(activity.date);
         this.activity = activity;
       });
 
