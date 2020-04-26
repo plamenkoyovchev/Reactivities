@@ -180,7 +180,8 @@ class ActivityStore {
     this.submitting = true;
     try {
       if (activity.id) {
-        await httpRequester.activities.update(activity);
+        const updatedActivity = await httpRequester.activities.update(activity);
+        activity.attendees = updatedActivity.attendees;
         this.setActivityProps(activity, this.rootStore.userStore.currentUser!);
         this.activityMap.set(activity.id, activity);
       } else {

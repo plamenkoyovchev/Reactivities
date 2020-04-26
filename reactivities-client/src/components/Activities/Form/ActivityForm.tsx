@@ -66,7 +66,15 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
 
   const submitHandler = (values: any) => {
     const dateAndTime = combineDateAndTime(values.date, values.time);
-    const { date, time, ...activity } = values;
+    const {
+      date,
+      time,
+      attendees,
+      comments,
+      isGoing,
+      isHosting,
+      ...activity
+    } = values;
     activity.date = dateAndTime;
 
     saveActivity(activity).then(() =>
