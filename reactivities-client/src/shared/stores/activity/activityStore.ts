@@ -182,6 +182,7 @@ class ActivityStore {
       if (activity.id) {
         const updatedActivity = await httpRequester.activities.update(activity);
         activity.attendees = updatedActivity.attendees;
+        activity.comments = updatedActivity.comments;
         this.setActivityProps(activity, this.rootStore.userStore.currentUser!);
         this.activityMap.set(activity.id, activity);
       } else {
@@ -189,10 +190,14 @@ class ActivityStore {
         activity.isHosting = true;
         activity.id = createdActivity.id;
         activity.attendees = createdActivity.attendees;
-
+        activity.comments = [];
         this.setActivityProps(activity, this.rootStore.userStore.currentUser!);
         this.activityMap.set(activity.id, activity);
       }
+
+      runInAction(() => {
+        this.activity = activity;
+      });
     } catch (error) {
       toast.error("Unable to save activity");
       this.activity = null;
