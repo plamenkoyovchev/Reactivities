@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import "./ActivityForm.scss";
 import { Segment, Button, Grid, Form } from "semantic-ui-react";
-import { IActivity } from "../../../app/Models/Activity/IActivity";
+import { ActivityFormValues } from "../../../app/Models/Activity/IActivity";
 
 import { Form as FinalForm, Field } from "react-final-form";
 import { RootStoreContext } from "../../../shared/stores/rootStore";
@@ -20,6 +20,8 @@ import {
 } from "revalidate";
 import SelectInput from "../../UI/Form/SelectInput";
 import { categories } from "../../../shared/common/options/categoryOptions";
+import DateInput from "../../UI/Form/DateInput";
+import { combineDateAndTime } from "../../../shared/utils/date-utils";
 
 interface DetailParams {
   id: string;
@@ -31,45 +33,21 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
 }) => {
   const rootStore = useContext(RootStoreContext);
   const {
-    activity: initialFormActivity,
     loading,
     loadActivity,
-    cleanActivity,
     saveActivity,
     submitting,
   } = rootStore.activityStore;
 
-  const [activity, setActivity] = useState<IActivity>({
-    id: "",
-    title: "",
-    category: "",
-    description: "",
-    date: "",
-    city: "",
-    venue: "",
-    isGoing: false,
-    isHosting: false,
-    attendees: [],
-    comments: [],
-  });
+  const [activity, setActivity] = useState(new ActivityFormValues());
 
   useEffect(() => {
-    if (match.params.id && activity.id.length === 0) {
-      loadActivity(match.params.id).then(
-        () => initialFormActivity && setActivity(initialFormActivity)
+    if (match.params.id) {
+      loadActivity(match.params.id).then((activity) =>
+        setActivity(new ActivityFormValues(activity))
       );
     }
-
-    return () => {
-      cleanActivity();
-    };
-  }, [
-    match.params.id,
-    activity.id.length,
-    loadActivity,
-    initialFormActivity,
-    cleanActivity,
-  ]);
+  }, [match.params.id, loadActivity]);
 
   const validate = combineValidators({
     title: isRequired({ message: "The event title is required" }),
@@ -86,14 +64,14 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     time: isRequired("Time"),
   });
 
-  const submitHandler = () => {
-    const activityToSave = {
-      ...activity,
-    };
+  const submitHandler = (values: any) => {
+    const dateAndTime = combineDateAndTime(values.date, values.time);
+    const { date, time, ...activity } = values;
+    activity.date = dateAndTime;
 
-    saveActivity(activityToSave).then(() => {
-      history.push(`/activities/${activityToSave.id}`);
-    });
+    saveActivity(activity).then(() =>
+      history.push(`/activities/${activity.id}`)
+    );
   };
 
   if (loading) {
@@ -132,15 +110,17 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
                 />
                 <Form.Group widths="equal">
                   <Field
-                    component={TextInput}
+                    component={DateInput}
                     name="date"
                     date={true}
+                    value={activity.date}
                     placeholder="Date"
                   />
                   <Field
-                    component={TextInput}
+                    component={DateInput}
                     name="time"
                     time={true}
+                    value={activity.time}
                     placeholder="Time"
                   />
                 </Form.Group>

@@ -18,13 +18,14 @@ interface DetailParams {
 
 const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
   match,
+  history,
 }) => {
   const rootStore = useContext(RootStoreContext);
   const { activity, loadActivity, loading } = rootStore.activityStore;
 
   useEffect(() => {
     loadActivity(match.params.id);
-  }, [loadActivity, match.params.id]);
+  }, [loadActivity, match.params.id, history]);
 
   if (loading) {
     return <Loader />;

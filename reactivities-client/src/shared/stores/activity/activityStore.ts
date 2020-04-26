@@ -96,7 +96,7 @@ class ActivityStore {
       const user = this.rootStore.userStore.currentUser!;
       runInAction(() => {
         activities.forEach((activity) => {
-          activity.date = activity.date.split(".")[0];
+          activity.date = new Date(activity.date!);
           this.setActivityProps(activity, user);
           this.activityMap.set(activity.id, activity);
         });
@@ -115,12 +115,12 @@ class ActivityStore {
 
   groupActivitiesByDate = (activities: IActivity[]) => {
     const sortedActivities = activities.sort(
-      (a, b) => Date.parse(a.date) - Date.parse(b.date)
+      (a, b) => a.date!.getTime() - b.date!.getTime()
     );
 
     return Object.entries(
       sortedActivities.reduce((activities, activity) => {
-        const date = activity.date.split("T")[0];
+        const date = activity.date!.toISOString().split("T")[0];
         activities[date] = activities[date]
           ? [...activities[date], activity]
           : [activity];
@@ -133,9 +133,13 @@ class ActivityStore {
     this.loading = true;
     try {
       let activity = await httpRequester.activities.details(id);
+      runInAction(() => {
+        this.setActivityProps(activity, this.rootStore.userStore.currentUser!);
+        activity.date = new Date(activity.date!);
+        this.activity = activity;
+      });
 
-      this.setActivityProps(activity, this.rootStore.userStore.currentUser!);
-      this.activity = activity;
+      return activity;
     } catch (error) {
       toast.error("Unable to load activity");
     } finally {
@@ -170,7 +174,7 @@ class ActivityStore {
   @action saveActivity = async (activity: IActivity) => {
     this.submitting = true;
     try {
-      if (activity.id !== "") {
+      if (activity.id) {
         await httpRequester.activities.update(activity);
         this.setActivityProps(activity, this.rootStore.userStore.currentUser!);
         this.activityMap.set(activity.id, activity);
