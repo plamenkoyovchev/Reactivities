@@ -30,6 +30,8 @@ namespace Application.Activities.Edit
         {
             var activityToEdit = await this.Context.Activities
                                             .Include(a => a.UserActivities)
+                                            .Include(a => a.Comments)
+                                            .ThenInclude(c => c.Author.Photos)
                                             .FirstOrDefaultAsync(a => a.Id == request.Id);
             if (activityToEdit == null)
             {
