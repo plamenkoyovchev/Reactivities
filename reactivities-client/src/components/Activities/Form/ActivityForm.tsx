@@ -18,6 +18,8 @@ import {
   composeValidators,
   hasLengthGreaterThan,
 } from "revalidate";
+import SelectInput from "../../UI/Form/SelectInput";
+import { categories } from "../../../shared/common/options/categoryOptions";
 
 interface DetailParams {
   id: string;
@@ -122,7 +124,8 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
                   component={TextAreaInput}
                 />
                 <Field
-                  component={TextInput}
+                  component={SelectInput}
+                  options={categories}
                   name="category"
                   placeholder="Category"
                   value={activity.category}
