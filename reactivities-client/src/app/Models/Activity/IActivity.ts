@@ -24,7 +24,7 @@ export class ActivityFormValues implements IActivityFormValues {
   title: string = "";
   category: string = "";
   description: string = "";
-  date?: Date = undefined;
+  date: Date = new Date();
   time?: Date = undefined;
   city: string = "";
   venue: string = "";

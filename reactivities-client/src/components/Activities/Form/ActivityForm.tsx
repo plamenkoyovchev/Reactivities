@@ -122,6 +122,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
                     time={true}
                     value={activity.time}
                     placeholder="Time"
+                    dateFormat={"HH:mm"}
                   />
                 </Form.Group>
 

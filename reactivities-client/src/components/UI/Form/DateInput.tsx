@@ -12,6 +12,7 @@ const DateInput: React.FC<IProps> = ({
   meta: { touched, error },
   date = false,
   time = false,
+  dateFormat,
 }) => {
   return (
     <Form.Field error={touched && !!error} width={width}>
@@ -23,6 +24,7 @@ const DateInput: React.FC<IProps> = ({
         onKeyDown={(e) => e.preventDefault()}
         date={date}
         time={time}
+        format={dateFormat}
       />
       {touched && error && (
         <Label className="error-message" basic color="red">
