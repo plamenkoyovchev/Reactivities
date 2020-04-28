@@ -11,7 +11,7 @@ namespace Application.Activities.List
         {
             this.IsHost = isHost;
             this.IsGoing = isGoing;
-            this.StartDate = startDate;
+            this.StartDate = startDate ?? DateTime.Now;
             this.Limit = limit;
             this.Offset = offset;
         }
