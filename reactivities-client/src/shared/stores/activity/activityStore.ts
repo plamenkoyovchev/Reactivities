@@ -1,7 +1,7 @@
 import { IAttendee } from "./../../../app/Models/Attendee/IAttendee";
 import { IUser } from "./../../../app/Models/User/IUser";
 import { RootStore } from "./../rootStore";
-import { observable, action, computed, runInAction } from "mobx";
+import { observable, action, computed, runInAction, reaction } from "mobx";
 import { SyntheticEvent } from "react";
 import { IActivity } from "../../../app/Models/Activity/IActivity";
 import httpRequester from "../../axios/httpRequester";
@@ -20,6 +20,15 @@ class ActivityStore {
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
+
+    reaction(
+      () => this.filter.keys(),
+      () => {
+        this.page = 0;
+        this.activityMap.clear();
+        this.loadActivities();
+      }
+    );
   }
 
   @observable activityMap = new Map();
@@ -30,6 +39,31 @@ class ActivityStore {
   @observable.ref hubConnection: HubConnection | null = null;
   @observable activitiesCount: number = 0;
   @observable page: number = 0;
+  @observable filter = new Map();
+
+  @action setFilter = (filter: string, value: string | Date) => {
+    this.filter.clear();
+    if (filter !== "all") {
+      this.filter.set(filter, value);
+    }
+  };
+
+  @computed get activityFilterParams() {
+    const params = new URLSearchParams();
+
+    params.append("limit", String(LIMIT));
+    params.append("offset", `${this.page ? this.page * LIMIT : 0}`);
+
+    this.filter.forEach((value, key) => {
+      if (key === "startDate") {
+        params.append(key, value.toISOString());
+      } else {
+        params.append(key, value);
+      }
+    });
+
+    return params;
+  }
 
   @computed get totalPages() {
     return Math.ceil(this.activitiesCount / LIMIT);
@@ -93,8 +127,7 @@ class ActivityStore {
     this.loading = true;
     try {
       const activitiesContainer = await httpRequester.activities.get(
-        LIMIT,
-        this.page
+        this.activityFilterParams
       );
       const { activities, activitiesCount } = activitiesContainer;
 

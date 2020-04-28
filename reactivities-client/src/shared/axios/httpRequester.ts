@@ -79,8 +79,14 @@ const request = {
 };
 
 const activities = {
-  get: (limit: number, page: number): Promise<IActivityContainer> =>
-    request.get(`/activities?limit=${limit}&offset=${limit * page}`),
+  get: (params: URLSearchParams): Promise<IActivityContainer> =>
+    request.get(
+      `/activities?limit=${params.get("limit")}&offset=${params.get(
+        "offset"
+      )}&isGoing=${params.get("isGoing")}&isHost=${params.get(
+        "isHost"
+      )}&startDate=${params.get("startDate")}`
+    ),
   details: (id: string): Promise<IActivity> => request.get(`/activities/${id}`),
   create: (activity: IActivity) => request.post("/activities", activity),
   update: (activity: IActivity) =>
