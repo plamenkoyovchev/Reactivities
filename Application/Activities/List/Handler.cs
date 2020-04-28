@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common;
 using Application.Common.DTOs.Activities;
+using Application.Common.Interfaces;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +16,13 @@ namespace Application.Activities.List
     public class Handler : HandlerBase, IRequestHandler<Query, ActivitiesContainer>
     {
         private readonly IMapper mapper;
+        private readonly IUserAccessor userAccessor;
 
-        public Handler(DataContext context, IMapper mapper) : base(context)
+        public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
+            : base(context)
         {
             this.mapper = mapper;
+            this.userAccessor = userAccessor;
         }
 
         public async Task<ActivitiesContainer> Handle(Query request, CancellationToken cancellationToken)
@@ -27,10 +31,23 @@ namespace Application.Activities.List
                                         .Include(a => a.UserActivities)
                                         .ThenInclude(ua => ua.ReactivityUser)
                                         .ThenInclude(u => u.Photos)
-                                        .Where(a => a.Date >= DateTime.Now)
+                                        .Where(a => a.Date >= request.StartDate)
                                         .OrderBy(a => a.Date)
                                         .AsNoTracking()
                                         .AsQueryable();
+
+            if (request.IsGoing && !request.IsHost)
+            {
+                query = query.Where(u => u.UserActivities.Any(
+                                     ua => ua.ReactivityUser.UserName == userAccessor.GetUsername()));
+            }
+
+            if (request.IsHost && !request.IsGoing)
+            {
+                query = query.Where(u => u.UserActivities.Any(
+                                    ua => ua.ReactivityUser.UserName == userAccessor.GetUsername() &&
+                                          ua.IsHost));
+            }
 
             var dbActivities = await query
                                 .Skip(request.Offset)
