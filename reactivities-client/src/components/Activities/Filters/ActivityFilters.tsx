@@ -1,7 +1,6 @@
 import React from "react";
 import { Menu, Header } from "semantic-ui-react";
 import { Calendar } from "react-widgets";
-import { observer } from "mobx-react-lite";
 
 const ActivityFilters = () => {
   return (
@@ -23,4 +22,4 @@ const ActivityFilters = () => {
   );
 };
 
-export default observer(ActivityFilters);
+export default ActivityFilters;
