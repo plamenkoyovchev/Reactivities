@@ -18,6 +18,7 @@ const ActivityFilters = () => {
         color={"teal"}
         content={"Select Date"}
       />
+      <Calendar />
     </>
   );
 };
