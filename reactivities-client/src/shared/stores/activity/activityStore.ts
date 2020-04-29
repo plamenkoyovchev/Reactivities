@@ -41,7 +41,7 @@ class ActivityStore {
   @observable page: number = 0;
   @observable filter = new Map();
 
-  @action setFilter = (filter: string, value: string | Date) => {
+  @action setFilter = (filter: string, value: boolean | Date) => {
     this.filter.clear();
     if (filter !== "all") {
       this.filter.set(filter, value);
