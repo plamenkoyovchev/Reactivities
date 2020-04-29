@@ -8,7 +8,10 @@ interface IProps {
 }
 
 const ErrorMessage: React.FC<IProps> = ({ error, text }) => {
-  console.log(error);
+  if (!error.data && !text) {
+    return null;
+  }
+
   return (
     <Message color="red">
       <Message.Header>{error.statusText}</Message.Header>
