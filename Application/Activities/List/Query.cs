@@ -7,23 +7,14 @@ namespace Application.Activities.List
 {
     public class Query : IRequest<ActivitiesContainer>
     {
-        public Query(bool isGoing, bool isHost, DateTime? startDate, int limit = 10, int offset = 0)
-        {
-            this.IsHost = isHost;
-            this.IsGoing = isGoing;
-            this.StartDate = startDate ?? DateTime.Now;
-            this.Limit = limit;
-            this.Offset = offset;
-        }
+        public bool IsHost { get; set; }
 
-        public bool IsHost { get; }
+        public bool IsGoing { get; set; }
 
-        public bool IsGoing { get; }
+        public DateTime? StartDate { get; set; }
 
-        public DateTime? StartDate { get; }
+        public int Limit { get; set; }
 
-        public int Limit { get; }
-
-        public int Offset { get; }
+        public int Offset { get; set; }
     }
 }
