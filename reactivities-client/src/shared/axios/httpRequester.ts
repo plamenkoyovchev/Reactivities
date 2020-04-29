@@ -83,9 +83,9 @@ const activities = {
     request.get(
       `/activities?limit=${params.get("limit")}&offset=${params.get(
         "offset"
-      )}&isGoing=${params.get("isGoing")}&isHost=${params.get(
-        "isHost"
-      )}&startDate=${params.get("startDate")}`
+      )}&isGoing=${params.get("isGoing") || false}&isHost=${
+        params.get("isHost") || false
+      }&startDate=${params.get("startDate") || new Date().toISOString()}`
     ),
   details: (id: string): Promise<IActivity> => request.get(`/activities/${id}`),
   create: (activity: IActivity) => request.post("/activities", activity),
