@@ -55,7 +55,8 @@ class UserStore {
     try {
       this.currentUser = await httpRequester.user.getCurrent();
     } catch (error) {
-      throw error;
+      toast.warn("Please login!");
+      history.push("/");
     } finally {
       this.loading = false;
     }
