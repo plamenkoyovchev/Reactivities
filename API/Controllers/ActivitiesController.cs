@@ -15,9 +15,9 @@ namespace API.Controllers
 
     public class ActivitiesController : BaseController
     {
-        public async Task<IActionResult> Get(int limit, int offset, bool isHost, bool isGoing, DateTime? startDate)
+        public async Task<IActionResult> Get([FromQuery] ActivitiesQuery query)
         {
-            var activities = await this.Mediator.Send(new ActivitiesQuery(isHost, isGoing, startDate, limit, offset));
+            var activities = await this.Mediator.Send(query);
 
             return Ok(activities);
         }
