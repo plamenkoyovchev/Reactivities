@@ -8,6 +8,7 @@ import { IUserFormValues } from "../../app/Models/User/IUserFormValues";
 import { IProfile, IPhoto } from "../../app/Models/Profile/IProfile";
 import { FollowingType } from "../../app/Models/Profile/FollowingsType";
 import { IActivityContainer } from "../../app/Models/Activity/IActivityContainer";
+import { formatDate } from "../utils/date-utils";
 
 const httpStatusCodes = {
   BAD_REQUEST: 400,
@@ -85,7 +86,10 @@ const activities = {
         "offset"
       )}&isGoing=${params.get("isGoing") || false}&isHost=${
         params.get("isHost") || false
-      }&startDate=${params.get("startDate") || new Date().toISOString()}`
+      }&startDate=${formatDate(
+        params.get("startDate") || new Date(),
+        "yyyy-MM-dd"
+      )}`
     ),
   details: (id: string): Promise<IActivity> => request.get(`/activities/${id}`),
   create: (activity: IActivity) => request.post("/activities", activity),
