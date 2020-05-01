@@ -5,9 +5,10 @@ import ProfilePhotos from "../Profile/ProfilePhotos";
 
 import ProfileFollowings from "./ProfileFollowings";
 import ProfileActivities from "./ProfileActivities";
+import ProfileAbout from "./ProfileAbout";
 
 const panes = [
-  { menuItem: "About", render: () => <Tab.Pane>About</Tab.Pane> },
+  { menuItem: "About", render: () => <ProfileAbout /> },
   { menuItem: "Photos", render: () => <ProfilePhotos /> },
   { menuItem: "Activities", render: () => <ProfileActivities /> },
   {
