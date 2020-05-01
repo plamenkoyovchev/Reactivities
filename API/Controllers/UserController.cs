@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Application.Authentication.CurrentUser;
 using Application.Authentication.Login;
 using Application.Authentication.Register;
+using Application.Common.DTOs.Activities;
 using Application.Common.ViewModels.User;
 using Application.UserProfile.Queries;
 using Application.Users.Follow;
@@ -59,6 +60,12 @@ namespace API.Controllers
         public async Task<ActionResult<List<UserProfileViewModel>>> GetFollowings(string username, FollowingType followingType)
         {
             return await this.Mediator.Send(new FollowersListQuery(username, followingType));
+        }
+
+        [HttpGet("{username}/activities")]
+        public async Task<ActionResult<List<UserActivityDTO>>> GetActivities([FromQuery] UserActivitiesQuery query)
+        {
+            return await this.Mediator.Send(query);
         }
     }
 }
