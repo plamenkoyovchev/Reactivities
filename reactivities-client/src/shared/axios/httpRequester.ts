@@ -9,6 +9,7 @@ import { IProfile, IPhoto } from "../../app/Models/Profile/IProfile";
 import { FollowingType } from "../../app/Models/Profile/FollowingsType";
 import { IActivityContainer } from "../../app/Models/Activity/IActivityContainer";
 import { formatDate } from "../utils/date-utils";
+import { FilterType } from "../../app/Models/Profile/FilterType";
 
 const httpStatusCodes = {
   BAD_REQUEST: 400,
@@ -121,6 +122,8 @@ const profile = {
   unfollow: (username: string) => request.delete(`/user/${username}/unfollow`),
   getFollowings: (username: string, followingType: FollowingType) =>
     request.get(`/user/${username}/followings?followingType=${followingType}`),
+  getActivities: (username: string, filter: FilterType) =>
+    request.get(`/user/${username}/activities`),
 };
 
 export default {
