@@ -4,6 +4,8 @@ import { observable, action, runInAction, computed, reaction } from "mobx";
 import { IProfile, IPhoto } from "../../../../app/Models/Profile/IProfile";
 import httpRequester from "../../../axios/httpRequester";
 import { toast } from "react-toastify";
+import { IUserActivity } from "../../../../app/Models/Profile/IUserActivity";
+import { FilterType } from "../../../../app/Models/Profile/FilterType";
 
 class ProfileStore {
   rootStore: RootStore;
@@ -37,6 +39,8 @@ class ProfileStore {
   @observable uploadingPhoto = false;
   @observable followings: IProfile[] = [];
   @observable activeTab: number = 0;
+  @observable activities: IUserActivity[] = [];
+  @observable loadingActivities: boolean = false;
 
   @computed get isCurrentUser() {
     const currentUser = this.rootStore.userStore.currentUser;
@@ -152,6 +156,26 @@ class ProfileStore {
     } finally {
       runInAction(() => {
         this.loading = false;
+      });
+    }
+  };
+
+  @action loadActivities = async (username: string, filter: FilterType) => {
+    this.loadingActivities = true;
+    try {
+      const activities = await httpRequester.profile.getActivities(
+        username,
+        filter
+      );
+
+      runInAction(() => {
+        this.activities = activities;
+      });
+    } catch (error) {
+      toast.error("Unable to load activities");
+    } finally {
+      runInAction(() => {
+        this.loadingActivities = false;
       });
     }
   };
