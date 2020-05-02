@@ -6,8 +6,14 @@ namespace Application.UserProfile.Queries
 {
     public class UserActivitiesQuery : IRequest<List<UserActivityDTO>>
     {
-        public string Username { get; set; }
+        public UserActivitiesQuery(string username, ActivityFilterType filter)
+        {
+            this.Username = username;
+            this.Filter = filter;
+        }
 
-        public ActivityFilterType Filter { get; set; }
+        public string Username { get; }
+
+        public ActivityFilterType Filter { get; }
     }
 }

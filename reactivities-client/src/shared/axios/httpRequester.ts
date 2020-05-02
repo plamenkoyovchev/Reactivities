@@ -123,7 +123,7 @@ const profile = {
   getFollowings: (username: string, followingType: FollowingType) =>
     request.get(`/user/${username}/followings?followingType=${followingType}`),
   getActivities: (username: string, filter: FilterType) =>
-    request.get(`/user/${username}/activities`),
+    request.get(`/user/${username}/activities?filter=${filter}`),
 };
 
 export default {

@@ -63,9 +63,9 @@ namespace API.Controllers
         }
 
         [HttpGet("{username}/activities")]
-        public async Task<ActionResult<List<UserActivityDTO>>> GetActivities([FromQuery] UserActivitiesQuery query)
+        public async Task<ActionResult<List<UserActivityDTO>>> GetActivities(string username, ActivityFilterType filter)
         {
-            return await this.Mediator.Send(query);
+            return await this.Mediator.Send(new UserActivitiesQuery(username, filter));
         }
     }
 }
