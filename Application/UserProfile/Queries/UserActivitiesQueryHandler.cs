@@ -31,7 +31,7 @@ namespace Application.UserProfile.Queries
                 throw new RestException(HttpStatusCode.NotFound, new { User = "Not found" });
             }
 
-            var queryable = user.UserActivities.OrderBy(a => a.Date).AsQueryable().AsNoTracking();
+            var queryable = user.UserActivities.OrderBy(a => a.Activity.Date).AsQueryable().AsNoTracking();
             switch (request.Filter)
             {
                 case ActivityFilterType.Past:
