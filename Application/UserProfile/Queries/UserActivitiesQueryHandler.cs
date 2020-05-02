@@ -22,7 +22,10 @@ namespace Application.UserProfile.Queries
 
         public async Task<List<UserActivityDTO>> Handle(UserActivitiesQuery request, CancellationToken cancellationToken)
         {
-            var user = await this.Context.Users.Include(u => u.UserActivities).FirstOrDefaultAsync(u => u.UserName == request.Username);
+            var user = await this.Context.Users
+                                    .Include(u => u.UserActivities)
+                                    .ThenInclude(ua => ua.Activity)
+                                    .FirstOrDefaultAsync(u => u.UserName == request.Username);
             if (user == null)
             {
                 throw new RestException(HttpStatusCode.NotFound, new { User = "Not found" });
@@ -32,13 +35,13 @@ namespace Application.UserProfile.Queries
             switch (request.Filter)
             {
                 case ActivityFilterType.Past:
-                    queryable = queryable.Where(a => a.Date <= DateTime.Now);
+                    queryable = queryable.Where(a => a.Activity.Date <= DateTime.Now);
                     break;
                 case ActivityFilterType.Hosting:
                     queryable = queryable.Where(a => a.IsHost);
                     break;
                 default:
-                    queryable = queryable.Where(a => a.Date >= DateTime.Now);
+                    queryable = queryable.Where(a => a.Activity.Date >= DateTime.Now);
                     break;
             }
 
