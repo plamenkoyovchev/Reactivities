@@ -10,6 +10,7 @@ import ActivityList from "../List/ActivityList";
 import Loader from "../../UI/Loader/Loader";
 import InfiniteScroller from "react-infinite-scroller";
 import ActivityFilters from "../Filters/ActivityFilters";
+import ActivityListItemPlaceholder from "../List/ListItem/ActivityListItemPlaceholder";
 
 const ActivityDashboard = () => {
   const rootStore = useContext(RootStoreContext);
@@ -32,23 +33,23 @@ const ActivityDashboard = () => {
     loadActivities();
   }, [loadActivities]);
 
-  if (loading && page === 0) {
-    return <Loader />;
-  }
-
   return (
     <>
       <Grid>
         <Grid.Row>
           <Grid.Column width={10}>
-            <InfiniteScroller
-              pageStart={0}
-              loadMore={onFetchNextHandler}
-              hasMore={!fetchingNext && page + 1 < totalPages}
-              initialLoad={false}
-            >
-              <ActivityList />
-            </InfiniteScroller>
+            {loading && page === 0 ? (
+              <ActivityListItemPlaceholder />
+            ) : (
+              <InfiniteScroller
+                pageStart={0}
+                loadMore={onFetchNextHandler}
+                hasMore={!fetchingNext && page + 1 < totalPages}
+                initialLoad={false}
+              >
+                <ActivityList />
+              </InfiniteScroller>
+            )}
           </Grid.Column>
           <Grid.Column width={6}>
             <ActivityFilters />
