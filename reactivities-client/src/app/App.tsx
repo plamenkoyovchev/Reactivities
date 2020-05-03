@@ -9,7 +9,7 @@ import {
   Route,
   RouteComponentProps,
   withRouter,
-  Switch
+  Switch,
 } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import NotFound from "../pages/NotFound";
