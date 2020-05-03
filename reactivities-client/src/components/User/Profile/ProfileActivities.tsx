@@ -1,9 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import { observer } from "mobx-react-lite";
-import { Tab, Grid, Header, Card, Image, TabProps } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Tab, Grid, Header, Card, TabProps } from "semantic-ui-react";
 import { IUserActivity } from "../../../app/Models/Profile/IUserActivity";
-import { format } from "date-fns";
 import { RootStoreContext } from "../../../shared/stores/rootStore";
 import { FilterType } from "../../../app/Models/Profile/FilterType";
 import ProfileActivityItem from "./ProfileActivityItem";

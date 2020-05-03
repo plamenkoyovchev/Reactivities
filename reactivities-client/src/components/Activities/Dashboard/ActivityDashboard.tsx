@@ -7,7 +7,6 @@ import { RootStoreContext } from "../../../shared/stores/rootStore";
 import { Grid, Loader as SemanticLoader } from "semantic-ui-react";
 import ActivityList from "../List/ActivityList";
 
-import Loader from "../../UI/Loader/Loader";
 import InfiniteScroller from "react-infinite-scroller";
 import ActivityFilters from "../Filters/ActivityFilters";
 import ActivityListItemPlaceholder from "../List/ListItem/ActivityListItemPlaceholder";
