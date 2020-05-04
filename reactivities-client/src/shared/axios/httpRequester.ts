@@ -13,6 +13,7 @@ import { FilterType } from "../../app/Models/Profile/FilterType";
 
 const httpStatusCodes = {
   BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
   NOT_FOUND: 404,
   SERVER_ERROR: 500,
 };
@@ -38,9 +39,19 @@ axios.interceptors.response.use(undefined, (error) => {
     return;
   }
 
-  const { status, config, data } = error.response;
+  const { status, config, data, headers } = error.response;
   if (status === httpStatusCodes.NOT_FOUND) {
     history.push("/notfound");
+    return;
+  }
+
+  if (
+    status === httpStatusCodes.UNAUTHORIZED &&
+    headers["www-authenticate"].includes("expired")
+  ) {
+    localStorage.removeItem("jwt");
+    history.push("/");
+    toast.info("Your session has expired, please login again!");
     return;
   }
 
