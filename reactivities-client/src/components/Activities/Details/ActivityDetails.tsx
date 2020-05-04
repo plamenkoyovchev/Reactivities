@@ -23,10 +23,10 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
   const { activity, loadActivity, loading } = rootStore.activityStore;
 
   useEffect(() => {
-    if (match.params.id && !activity?.id) {
+    if (match.params.id) {
       loadActivity(match.params.id);
     }
-  }, [loadActivity, match.params.id, activity]);
+  }, [loadActivity, match.params.id]);
 
   if (loading) {
     return <Loader />;

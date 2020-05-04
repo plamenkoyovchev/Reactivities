@@ -12,6 +12,7 @@ import {
   LogLevel,
   HubConnectionState,
 } from "@microsoft/signalr";
+import { history } from "../../..";
 
 const LIMIT = 10;
 
@@ -218,6 +219,8 @@ class ActivityStore {
         activity.comments = updatedActivity.comments;
         this.setActivityProps(activity, this.rootStore.userStore.currentUser!);
         this.activityMap.set(activity.id, activity);
+
+        history.push(`/activities/${activity.id}`);
       } else {
         const createdActivity = await httpRequester.activities.create(activity);
         activity.isHosting = true;
@@ -226,6 +229,8 @@ class ActivityStore {
         activity.comments = [];
         this.setActivityProps(activity, this.rootStore.userStore.currentUser!);
         this.activityMap.set(activity.id, activity);
+
+        history.push(`/activities/${activity.id}`);
       }
 
       runInAction(() => {
