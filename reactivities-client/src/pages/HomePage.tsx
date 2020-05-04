@@ -9,12 +9,13 @@ import LoginForm from "../components/User/LoginForm";
 import RegisterForm from "../components/User/RegisterForm";
 
 function HomePage() {
+  const token = localStorage.getItem("jwt");
   const rootStore = useContext(RootStoreContext);
   const { loggedIn, currentUser } = rootStore.userStore;
   const { open } = rootStore.modalStore;
 
   const actionButtons =
-    loggedIn && currentUser ? (
+    loggedIn && currentUser && token ? (
       <Button as={Link} to="/activities" size="huge" inverted>
         Go to activities
       </Button>
