@@ -37,6 +37,7 @@ namespace API.Extensions
             {
                 policy.AllowAnyHeader()
                       .AllowAnyMethod()
+                      .WithExposedHeaders("WWW-Authenticate")
                       .WithOrigins("http://localhost:3000")
                       .AllowCredentials();
             }));
