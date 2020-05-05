@@ -62,12 +62,12 @@ namespace API
             app.UseXXssProtection(o => o.EnabledWithBlockMode());
             app.UseXfo(o => o.Deny());
             app.UseCspReportOnly(o => o.BlockAllMixedContent()
-                                        .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com"))
-                                        .FontSources(f => f.Self().CustomSources("https://fonts.gstatic.com", "data:"))
+                                        .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com", "http://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/"))
+                                        .FontSources(f => f.Self().CustomSources("https://fonts.gstatic.com", "data:", "http://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/"))
                                         .FormActions(a => a.Self())
                                         .FrameAncestors(fa => fa.Self())
                                         .ImageSources(s => s.Self().CustomSources("https://res.cloudinary.com"))
-                                        .ScriptSources(s => s.Self()));
+                                        .ScriptSources(s => s.Self().CustomSources("sha256-BnXnI7/nKsgNyEHOLIM+eNRyEK27ss9YDOsYjyhLqPE=")));
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
