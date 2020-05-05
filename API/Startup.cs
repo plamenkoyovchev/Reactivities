@@ -61,7 +61,7 @@ namespace API
             app.UseReferrerPolicy(o => o.NoReferrer());
             app.UseXXssProtection(o => o.EnabledWithBlockMode());
             app.UseXfo(o => o.Deny());
-            app.UseCspReportOnly(o => o.BlockAllMixedContent()
+            app.UseCsp(o => o.BlockAllMixedContent()
                                         .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com", "http://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/"))
                                         .FontSources(f => f.Self().CustomSources("https://fonts.gstatic.com", "data:", "http://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/"))
                                         .FormActions(a => a.Self())
