@@ -57,6 +57,9 @@ namespace API
         {
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseRouting();
             app.UseCors("CorsPolicy");
 
