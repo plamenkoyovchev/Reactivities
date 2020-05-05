@@ -3,3 +3,4 @@ obj
 .vscode
 .DS_Store
 appsettings.json
+wwwroot
