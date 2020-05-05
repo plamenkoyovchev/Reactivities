@@ -57,6 +57,18 @@ namespace API
         {
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
+            app.UseXContentTypeOptions();
+            app.UseReferrerPolicy(o => o.NoReferrer());
+            app.UseXXssProtection(o => o.EnabledWithBlockMode());
+            app.UseXfo(o => o.Deny());
+            app.UseCspReportOnly(o => o.BlockAllMixedContent()
+                                        .StyleSources(s => s.Self())
+                                        .FontSources(f => f.Self())
+                                        .FormActions(a => a.Self())
+                                        .FrameAncestors(fa => fa.Self())
+                                        .ImageSources(s => s.Self())
+                                        .ScriptSources(s => s.Self()));
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
