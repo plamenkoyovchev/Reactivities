@@ -62,11 +62,11 @@ namespace API
             app.UseXXssProtection(o => o.EnabledWithBlockMode());
             app.UseXfo(o => o.Deny());
             app.UseCspReportOnly(o => o.BlockAllMixedContent()
-                                        .StyleSources(s => s.Self())
-                                        .FontSources(f => f.Self())
+                                        .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com"))
+                                        .FontSources(f => f.Self().CustomSources("https://fonts.gstatic.com", "data:"))
                                         .FormActions(a => a.Self())
                                         .FrameAncestors(fa => fa.Self())
-                                        .ImageSources(s => s.Self())
+                                        .ImageSources(s => s.Self().CustomSources("https://res.cloudinary.com"))
                                         .ScriptSources(s => s.Self()));
 
             app.UseDefaultFiles();
