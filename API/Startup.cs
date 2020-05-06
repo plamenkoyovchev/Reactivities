@@ -34,7 +34,7 @@ namespace API
         {
             services.AddApplication();
             services.AddDbContextPool<DataContext>(
-                opt => opt.UseMySql(Configuration.GetConnectionString(ReactivitiesAppConstants.CsKey)));
+                opt => opt.UseSqlServer(Configuration.GetConnectionString(ReactivitiesAppConstants.CsKey)));
 
             services.AllowCors();
             services.AddControllersConfig();
