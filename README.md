@@ -1,4 +1,4 @@
 # Reactivities
 DotNetCore + React + TypeScript + MobX
 
-https://eventsbg.azurewebsites.net/
+Published App: https://eventsbg.azurewebsites.net/
