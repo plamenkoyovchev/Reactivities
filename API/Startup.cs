@@ -2,20 +2,17 @@ using API.Extensions;
 using API.Middleware;
 using API.SignalR;
 using Application;
-using Application.Activities.Create;
 using Application.Common.Constants.System;
 using Application.Common.Interfaces;
 using Application.UserProfile;
-using FluentValidation.AspNetCore;
 using Infrastructure.Photos;
 using Infrastructure.Security;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Persistence;
 
 namespace API
@@ -57,11 +54,16 @@ namespace API
         {
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
+            if (!env.IsDevelopment())
+            {
+                app.UseHsts();
+            }
+
             app.UseXContentTypeOptions();
             app.UseReferrerPolicy(o => o.NoReferrer());
             app.UseXXssProtection(o => o.EnabledWithBlockMode());
             app.UseXfo(o => o.Deny());
-            app.UseCspReportOnly(o => o.BlockAllMixedContent()
+            app.UseCsp(o => o.BlockAllMixedContent()
                                         .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com", "http://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/"))
                                         .FontSources(f => f.Self().CustomSources("https://fonts.gstatic.com", "data:", "http://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/"))
                                         .FormActions(a => a.Self())
