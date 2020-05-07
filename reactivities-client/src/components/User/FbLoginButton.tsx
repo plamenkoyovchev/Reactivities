@@ -6,7 +6,7 @@ interface IProps {
   fbCallback: (response: any) => void;
 }
 
-const FbLogin: React.FC<IProps> = (fbCallback) => {
+const FbLoginButton: React.FC<IProps> = ({ fbCallback }) => {
   return (
     <>
       <FacebookLogin
@@ -29,4 +29,4 @@ const FbLogin: React.FC<IProps> = (fbCallback) => {
   );
 };
 
-export default FbLogin;
+export default FbLoginButton;

@@ -11,7 +11,7 @@ import { combineValidators, isRequired } from "revalidate";
 import ErrorMessage from "../Common/ErrorMessage";
 import TextInput from "../UI/Form/TextInput";
 
-import FbLogin from "./FbLogin";
+import FbLoginButton from "./FbLoginButton";
 
 const validate = combineValidators({
   email: isRequired("email"),
@@ -61,7 +61,7 @@ const LoginForm = () => {
             fluid
           />
           <Divider horizontal>Or</Divider>
-          <FbLogin fbCallback={fbLogin} />
+          <FbLoginButton fbCallback={fbLogin} />
         </Form>
       )}
     />
