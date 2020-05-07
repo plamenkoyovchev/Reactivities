@@ -50,6 +50,10 @@ class UserStore {
     history.push("/");
   };
 
+  @action fbLogin = async (response: any) => {
+    console.log(response);
+  };
+
   @action getCurrentUser = async () => {
     this.loading = true;
     try {
