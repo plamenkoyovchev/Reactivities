@@ -47,6 +47,7 @@ namespace API
             services.AddScoped<IProfileReader, ProfileReader>();
 
             services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
+            services.Configure<FacebookAppSettings>(Configuration.GetSection("Authentication:Facebook"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,8 +69,8 @@ namespace API
                                         .FontSources(f => f.Self().CustomSources("https://fonts.gstatic.com", "data:", "http://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/"))
                                         .FormActions(a => a.Self())
                                         .FrameAncestors(fa => fa.Self())
-                                        .ImageSources(s => s.Self().CustomSources("https://res.cloudinary.com", "blob:", "data:"))
-                                        .ScriptSources(s => s.Self().CustomSources("sha256-BnXnI7/nKsgNyEHOLIM+eNRyEK27ss9YDOsYjyhLqPE=")));
+                                        .ImageSources(s => s.Self().CustomSources("https://res.cloudinary.com", "blob:", "data:", "https://www.facebook.com/impression"))
+                                        .ScriptSources(s => s.Self().CustomSources("sha256-BnXnI7/nKsgNyEHOLIM+eNRyEK27ss9YDOsYjyhLqPE=", "https://connect.facebook.net/en_US/sdk.js")));
 
             app.UseDefaultFiles();
             app.UseStaticFiles();

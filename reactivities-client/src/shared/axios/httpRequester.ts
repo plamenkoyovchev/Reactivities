@@ -120,6 +120,8 @@ const user = {
     request.post("/user/register", user),
   login: (user: IUserFormValues): Promise<IUser> =>
     request.post("/user/login", user),
+  fbLogin: (accessToken: string) =>
+    request.post(`/user/fblogin`, { accessToken }),
 };
 
 const profile = {

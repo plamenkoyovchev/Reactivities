@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import { RootStoreContext } from "../../shared/stores/rootStore";
 import { IUserFormValues } from "../../app/Models/User/IUserFormValues";
-import { Form, Button, Header } from "semantic-ui-react";
+import { Form, Button, Header, Divider } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 
 import { FORM_ERROR } from "final-form";
@@ -11,6 +11,8 @@ import { combineValidators, isRequired } from "revalidate";
 import ErrorMessage from "../Common/ErrorMessage";
 import TextInput from "../UI/Form/TextInput";
 
+import FbLoginButton from "./FbLoginButton";
+
 const validate = combineValidators({
   email: isRequired("email"),
   password: isRequired("password"),
@@ -18,7 +20,7 @@ const validate = combineValidators({
 
 const LoginForm = () => {
   const rootStore = useContext(RootStoreContext);
-  const { login } = rootStore.userStore;
+  const { login, fbLogin } = rootStore.userStore;
   const { close } = rootStore.modalStore;
 
   return (
@@ -58,6 +60,8 @@ const LoginForm = () => {
             disabled={(invalid && !dirtySinceLastSubmit) || pristine}
             fluid
           />
+          <Divider horizontal>Or</Divider>
+          <FbLoginButton fbCallback={fbLogin} />
         </Form>
       )}
     />
