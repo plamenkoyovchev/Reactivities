@@ -12,7 +12,9 @@ namespace Infrastructure.Security
     public class FacebookAccessor : IFacebookAccessor
     {
         private readonly HttpClient httpClient;
+
         private readonly IOptions<FacebookAppSettings> fbConfig;
+
         public FacebookAccessor(IOptions<FacebookAppSettings> fbConfig)
         {
             this.fbConfig = fbConfig;
