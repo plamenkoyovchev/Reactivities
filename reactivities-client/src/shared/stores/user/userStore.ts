@@ -51,6 +51,7 @@ class UserStore {
   };
 
   @action fbLogin = async (response: any) => {
+    this.loading = true;
     try {
       const user = await httpRequester.user.fbLogin(response.accessToken);
       runInAction(() => {
@@ -61,6 +62,8 @@ class UserStore {
       history.push("/activities");
     } catch (error) {
       toast.error("Login with Facebook failed!");
+    } finally {
+      this.loading = false;
     }
   };
 

@@ -20,7 +20,7 @@ const validate = combineValidators({
 
 const LoginForm = () => {
   const rootStore = useContext(RootStoreContext);
-  const { login, fbLogin } = rootStore.userStore;
+  const { login, fbLogin, loading } = rootStore.userStore;
   const { close } = rootStore.modalStore;
 
   return (
@@ -61,7 +61,7 @@ const LoginForm = () => {
             fluid
           />
           <Divider horizontal>Or</Divider>
-          <FbLoginButton fbCallback={fbLogin} />
+          <FbLoginButton loading={loading} fbCallback={fbLogin} />
         </Form>
       )}
     />
