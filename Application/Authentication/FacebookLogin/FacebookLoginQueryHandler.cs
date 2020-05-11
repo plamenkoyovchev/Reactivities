@@ -27,7 +27,7 @@ namespace Application.Authentication.FacebookLogin
 
         public async Task<UserViewModel> Handle(FacebookLoginQuery request, CancellationToken cancellationToken)
         {
-            var userInfo = await this.fbAccessor.FacebookLogin(request.AccessToken);
+            var userInfo = await this.fbAccessor.FacebookLoginAsync(request.AccessToken);
             if (userInfo == null)
             {
                 throw new RestException(HttpStatusCode.BadRequest, new { User = "Login failed!" });
