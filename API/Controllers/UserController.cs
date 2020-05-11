@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Authentication.CurrentUser;
+using Application.Authentication.FacebookLogin;
 using Application.Authentication.Login;
 using Application.Authentication.Register;
 using Application.Common.DTOs.Activities;
@@ -21,6 +22,13 @@ namespace API.Controllers
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<UserViewModel>> Login(LoginQuery query)
+        {
+            return await Mediator.Send(query);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("fblogin")]
+        public async Task<ActionResult<UserViewModel>> FbLogin(FacebookLoginQuery query)
         {
             return await Mediator.Send(query);
         }
