@@ -28,7 +28,7 @@ namespace Infrastructure.Security
                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async Task<FacebookUserInfo> FacebookLogin(string accessToken)
+        public async Task<FacebookUserInfo> FacebookLoginAsync(string accessToken)
         {
             var verifyToken = await this.httpClient
                 .GetAsync($"debug_token?input_token={accessToken}&accessToken={fbConfig.Value.AppId}|{fbConfig.Value.AppSecret}");

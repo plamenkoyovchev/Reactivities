@@ -1,4 +1,4 @@
-import { observable, action, computed } from "mobx";
+import { observable, action, computed, runInAction } from "mobx";
 import { IUser } from "../../../app/Models/User/IUser";
 import httpRequester from "../../axios/httpRequester";
 import { IUserFormValues } from "../../../app/Models/User/IUserFormValues";
@@ -51,7 +51,20 @@ class UserStore {
   };
 
   @action fbLogin = async (response: any) => {
-    console.log(response);
+    this.loading = true;
+    try {
+      const user = await httpRequester.user.fbLogin(response.accessToken);
+      runInAction(() => {
+        this.currentUser = user;
+      });
+      this.rootStore.commonStore.setToken(user.token);
+      this.rootStore.modalStore.close();
+      history.push("/activities");
+    } catch (error) {
+      toast.error("Login with Facebook failed!");
+    } finally {
+      this.loading = false;
+    }
   };
 
   @action getCurrentUser = async () => {

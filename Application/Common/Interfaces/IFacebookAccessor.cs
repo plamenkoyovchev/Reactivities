@@ -5,6 +5,6 @@ namespace Application.Common.Interfaces
 {
     public interface IFacebookAccessor
     {
-        Task<FacebookUserInfo> FacebookLogin(string accessToken);
+        Task<FacebookUserInfo> FacebookLoginAsync(string accessToken);
     }
 }
