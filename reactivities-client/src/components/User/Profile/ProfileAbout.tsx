@@ -10,7 +10,13 @@ const ProfileAbout = () => {
     return null;
   }
 
-  return <div>{profile.bio}</div>;
+  return (
+    <div>
+      <h2>About</h2>
+      <hr />
+      <h4>{profile.bio}</h4>
+    </div>
+  );
 };
 
 export default ProfileAbout;
