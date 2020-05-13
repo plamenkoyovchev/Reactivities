@@ -16,19 +16,15 @@ const Navigation = () => {
         <Container>
           <Menu.Item header as={NavLink} exact to="/">
             <img className="Logo" src="/assets/logo.png" alt="logo" />
-            Reactivities
+            Eventy
           </Menu.Item>
-          <Menu.Item
-            name="Activities"
-            as={NavLink}
-            to="/activities"
-          ></Menu.Item>
+          <Menu.Item name="Events" as={NavLink} to="/activities" />
           <Menu.Item>
             <Button
               as={Link}
               to="/createActivity"
               positive
-              content="Create Activity"
+              content="Create Event"
             />
           </Menu.Item>
           {loggedIn && currentUser && (

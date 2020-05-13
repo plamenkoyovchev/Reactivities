@@ -17,7 +17,7 @@ function HomePage() {
   const actionButtons =
     loggedIn && currentUser && token ? (
       <Button as={Link} to="/activities" size="huge" inverted>
-        Go to activities
+        Go to events
       </Button>
     ) : (
       <>
@@ -40,9 +40,17 @@ function HomePage() {
             alt="logo"
             style={{ marginBottom: 12 }}
           />
-          Reactivities
+          Eventy
         </Header>
-        <Header as="h2" inverted content="Welcome to Reactivities" />
+        <Header
+          as="h2"
+          inverted
+          content={
+            loggedIn
+              ? `Welcome ${currentUser?.displayName}`
+              : "Welcome to Eventy"
+          }
+        />
         {actionButtons}
       </Container>
     </Segment>
