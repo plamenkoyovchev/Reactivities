@@ -10,7 +10,7 @@ import ProfileAbout from "./ProfileAbout";
 const panes = [
   { menuItem: "About", render: () => <ProfileAbout /> },
   { menuItem: "Photos", render: () => <ProfilePhotos /> },
-  { menuItem: "Activities", render: () => <ProfileActivities /> },
+  { menuItem: "Events", render: () => <ProfileActivities /> },
   {
     menuItem: "Followers",
     render: () => <ProfileFollowings />,

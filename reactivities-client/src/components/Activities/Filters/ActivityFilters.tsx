@@ -17,7 +17,7 @@ const ActivityFilters = () => {
           onClick={() => setFilter("all", true)}
           color={"blue"}
           name={"all"}
-          content={"All Activities"}
+          content={"All Events"}
         />
         <Menu.Item
           active={filter.has("isGoing")}
