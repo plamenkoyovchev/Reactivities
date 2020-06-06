@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Application.Common.Constants.System;
 using Application.Common.Interfaces;
@@ -34,6 +35,15 @@ namespace Infrastructure.Security
             return token;
         }
 
+        public string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+
+            return Convert.ToBase64String(randomNumber);
+        }
+
         private string GenerateToken(SecurityTokenDescriptor tokenDescriptor)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -55,7 +65,7 @@ namespace Infrastructure.Security
             return new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(3),
+                Expires = DateTime.Now.AddMinutes(1),
                 SigningCredentials = credentials
             };
         }
