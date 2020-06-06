@@ -5,5 +5,7 @@
         public const string TokenKey = nameof(TokenKey);
 
         public const string CsKey = "Reactivities";
+
+        public const int RefreshTokenExpiryInDays = 30;
     }
 }

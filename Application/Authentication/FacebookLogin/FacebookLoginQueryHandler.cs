@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Constants.System;
 using Application.Common.DTOs.Auth;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
@@ -44,7 +45,7 @@ namespace Application.Authentication.FacebookLogin
                     Email = userInfo.Email,
                     UserName = $"fb_{userInfo.Id}",
                     RefreshToken = jwtGenerator.GenerateRefreshToken(),
-                    RefreshTokenExpiryDate = DateTime.Now.AddDays(30)
+                    RefreshTokenExpiryDate = DateTime.Now.AddDays(ReactivitiesAppConstants.RefreshTokenExpiryInDays)
                 };
 
                 var photo = new Photo

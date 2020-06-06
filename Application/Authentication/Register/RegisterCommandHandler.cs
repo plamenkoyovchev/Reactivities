@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Constants.System;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain;
@@ -48,7 +49,7 @@ namespace Application.Authentication.Register
                     UserName = request.Username,
                     DisplayName = request.DisplayName,
                     RefreshToken = jwtGenerator.GenerateRefreshToken(),
-                    RefreshTokenExpiryDate = DateTime.Now.AddDays(30)
+                    RefreshTokenExpiryDate = DateTime.Now.AddDays(ReactivitiesAppConstants.RefreshTokenExpiryInDays)
                 },
                 request.Password
             );

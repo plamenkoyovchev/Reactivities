@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common;
+using Application.Common.Constants.System;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.ViewModels.User;
@@ -48,7 +49,7 @@ namespace Application.Authentication.Login
                 if (signInResult.Succeeded)
                 {
                     user.RefreshToken = jwtGenerator.GenerateRefreshToken();
-                    user.RefreshTokenExpiryDate = DateTime.Now.AddDays(30);
+                    user.RefreshTokenExpiryDate = DateTime.Now.AddDays(ReactivitiesAppConstants.RefreshTokenExpiryInDays);
 
                     await this.userManager.UpdateAsync(user);
 
