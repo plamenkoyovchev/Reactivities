@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -41,7 +42,9 @@ namespace Application.Authentication.FacebookLogin
                     DisplayName = userInfo.Name,
                     Id = userInfo.Id,
                     Email = userInfo.Email,
-                    UserName = $"fb_{userInfo.Id}"
+                    UserName = $"fb_{userInfo.Id}",
+                    RefreshToken = jwtGenerator.GenerateRefreshToken(),
+                    RefreshTokenExpiryDate = DateTime.Now.AddDays(30)
                 };
 
                 var photo = new Photo
@@ -64,7 +67,8 @@ namespace Application.Authentication.FacebookLogin
                 DisplayName = user.DisplayName,
                 Token = this.jwtGenerator.CreateToken(user),
                 Username = user.UserName,
-                Image = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
+                Image = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+                RefreshToken = user.RefreshToken
             };
         }
     }
