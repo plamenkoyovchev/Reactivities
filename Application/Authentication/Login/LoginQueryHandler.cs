@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -18,17 +19,20 @@ namespace Application.Authentication.Login
     public class LoginQueryHandler : HandlerBase, IRequestHandler<LoginQuery, UserViewModel>
     {
         private readonly SignInManager<ReactivityUser> signInManager;
+        private readonly UserManager<ReactivityUser> userManager;
         private readonly IMapper mapper;
         private readonly IJwtGenerator jwtGenerator;
 
         public LoginQueryHandler(
             DataContext context,
             SignInManager<ReactivityUser> signInManager,
+            UserManager<ReactivityUser> userManager,
             IMapper mapper,
             IJwtGenerator jwtGenerator)
                 : base(context)
         {
             this.signInManager = signInManager;
+            this.userManager = userManager;
             this.mapper = mapper;
             this.jwtGenerator = jwtGenerator;
         }
@@ -43,6 +47,11 @@ namespace Application.Authentication.Login
                 var signInResult = await this.signInManager.CheckPasswordSignInAsync(user, request.Password, false);
                 if (signInResult.Succeeded)
                 {
+                    user.RefreshToken = jwtGenerator.GenerateRefreshToken();
+                    user.RefreshTokenExpiryDate = DateTime.Now.AddDays(30);
+
+                    await this.userManager.UpdateAsync(user);
+
                     var loggedUser = mapper.Map<UserViewModel>(user);
                     loggedUser.Token = this.jwtGenerator.CreateToken(user);
                     loggedUser.Image = user.Photos?.FirstOrDefault(p => p.IsMain)?.Url;

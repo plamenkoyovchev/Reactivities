@@ -14,5 +14,7 @@ namespace Application.Common.ViewModels.User
         public string Image { get; set; }
 
         public string Token { get; set; }
+
+        public string RefreshToken { get; set; }
     }
 }
