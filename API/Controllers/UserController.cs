@@ -1,9 +1,16 @@
+using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Application.Authentication.CurrentUser;
 using Application.Authentication.FacebookLogin;
 using Application.Authentication.Login;
+using Application.Authentication.RefreshToken;
 using Application.Authentication.Register;
+using Application.Common.Constants.System;
 using Application.Common.DTOs.Activities;
 using Application.Common.ViewModels.User;
 using Application.UserProfile.Queries;
@@ -13,12 +20,21 @@ using Application.Users.Unfollow;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API.Controllers
 {
     [Authorize]
     public class UserController : BaseController
     {
+        private readonly IConfiguration config;
+
+        public UserController(IConfiguration config)
+        {
+            this.config = config;
+        }
+
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<UserViewModel>> Login(LoginQuery query)
@@ -40,10 +56,14 @@ namespace API.Controllers
             return await Mediator.Send(command);
         }
 
+        [AllowAnonymous]
         [HttpPost("refreshToken")]
-        public async Task<ActionResult<string>> RefreshToken()
+        public async Task<ActionResult<UserViewModel>> RefreshToken(RefreshTokenQuery query)
         {
-            return this.Ok();
+            var principal = GetPrincipalFromExpiredToken(query.Token);
+            query.Username = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            return await this.Mediator.Send(query);
         }
 
         [HttpGet]
@@ -80,6 +100,30 @@ namespace API.Controllers
         public async Task<ActionResult<List<UserActivityDTO>>> GetActivities(string username, ActivityFilterType filter)
         {
             return await this.Mediator.Send(new UserActivitiesQuery(username, filter));
+        }
+
+        private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            var tokenValidationParams = new TokenValidationParameters
+            {
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config[ReactivitiesAppConstants.TokenKey])),
+                ValidateLifetime = false
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParams, out var securityToken);
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+            if (jwtSecurityToken == null ||
+                !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha512, StringComparison.InvariantCultureIgnoreCase)
+            )
+            {
+                throw new SecurityTokenException("Invalid token");
+            }
+
+            return principal;
         }
     }
 }
