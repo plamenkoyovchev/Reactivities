@@ -40,6 +40,12 @@ namespace API.Controllers
             return await Mediator.Send(command);
         }
 
+        [HttpPost("refreshToken")]
+        public async Task<ActionResult<string>> RefreshToken()
+        {
+            return this.Ok();
+        }
+
         [HttpGet]
         public async Task<ActionResult<UserViewModel>> GetCurrentUser()
         {
