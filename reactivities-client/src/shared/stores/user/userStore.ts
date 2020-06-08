@@ -37,6 +37,8 @@ class UserStore {
     try {
       this.currentUser = await httpRequester.user.login(userValues);
       this.rootStore.commonStore.setToken(this.currentUser.token);
+      this.rootStore.commonStore.setRefreshToken(this.currentUser.refreshToken);
+
       history.push("/activities");
     } catch (error) {
       throw error;
@@ -45,6 +47,7 @@ class UserStore {
 
   @action logout = () => {
     this.rootStore.commonStore.setToken(null);
+    this.rootStore.commonStore.setRefreshToken(null);
     this.currentUser = null;
 
     history.push("/");
