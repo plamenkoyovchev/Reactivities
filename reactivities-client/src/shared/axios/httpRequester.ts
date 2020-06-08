@@ -40,7 +40,7 @@ axios.interceptors.response.use(undefined, (error) => {
     return;
   }
 
-  const { status, config, data, headers } = error.response;
+  const { status, config, data } = error.response;
   if (status === httpStatusCodes.NOT_FOUND) {
     history.push("/notfound");
     return;
