@@ -127,9 +127,11 @@ class ProfileStore {
     try {
       await httpRequester.profile.deletePhoto(photo.id);
       runInAction(() => {
-        this.profile!.photos = this.profile?.photos!.filter(
-          (p) => p.id !== photo.id
-        );
+        if (this.profile) {
+          this.profile.photos = this.profile?.photos!.filter(
+            (p) => p.id !== photo.id
+          );
+        }
       });
     } catch (error) {
       toast.error("There was an error while deleting photo");
