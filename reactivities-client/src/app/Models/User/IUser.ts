@@ -3,5 +3,6 @@ export interface IUser {
   displayName: string;
   username: string;
   token: string;
+  refreshToken: string;
   image?: string;
 }
