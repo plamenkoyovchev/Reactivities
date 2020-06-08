@@ -34,6 +34,7 @@ axios.interceptors.request.use(
 );
 
 axios.interceptors.response.use(undefined, (error) => {
+  const originalRequest = error.config;
   if (error.message === "Network Error" && !error.response) {
     toast.error("Network error - check your connectivity");
     return;
@@ -47,12 +48,32 @@ axios.interceptors.response.use(undefined, (error) => {
 
   if (
     status === httpStatusCodes.UNAUTHORIZED &&
-    headers["www-authenticate"].includes("expired")
+    originalRequest.url.endsWith("refreshToken")
   ) {
     localStorage.removeItem("jwt");
+    localStorage.removeItem("refreshToken");
     history.push("/");
     toast.info("Your session has expired, please login again!");
-    return;
+
+    return Promise.reject(error);
+  }
+
+  if (status === httpStatusCodes.UNAUTHORIZED && !originalRequest._retry) {
+    originalRequest._retry = true;
+    return axios
+      .post("user/refreshToken", {
+        token: localStorage.getItem("jwt"),
+        refreshToken: localStorage.getItem("refreshToken"),
+      })
+      .then((response) => {
+        localStorage.setItem("jwt", response.data.token);
+        localStorage.setItem("refreshToken", response.data.refreshToken);
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${response.data.token}`;
+
+        return axios(originalRequest);
+      });
   }
 
   if (
