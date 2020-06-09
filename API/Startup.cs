@@ -35,12 +35,12 @@ namespace API
 
             services.AllowCors();
             services.AddControllersConfig();
+            services.ConfigureVersioning();
 
             services.AddSignalR();
 
             services.ConfigureAspNetCoreIdentity();
             services.ConfigureJwtAuthentication(Configuration);
-            services.ConfigureVersioning();
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
