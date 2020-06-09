@@ -40,6 +40,7 @@ namespace API
 
             services.ConfigureAspNetCoreIdentity();
             services.ConfigureJwtAuthentication(Configuration);
+            services.ConfigureVersioning();
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();

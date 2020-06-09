@@ -1,7 +1,9 @@
 using Application.Activities.Create;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
@@ -41,6 +43,22 @@ namespace API.Extensions
                       .WithOrigins("http://localhost:3000")
                       .AllowCredentials();
             }));
+
+            return services;
+        }
+
+        public static IServiceCollection ConfigureVersioning(this IServiceCollection services)
+        {
+            services.AddApiVersioning(opt =>
+            {
+                opt.ReportApiVersions = true;
+                opt.AssumeDefaultVersionWhenUnspecified = true;
+                opt.DefaultApiVersion = new ApiVersion(2, 0);
+
+                opt.ApiVersionReader = ApiVersionReader.Combine(
+                    new QueryStringApiVersionReader("api-version"),
+                    new HeaderApiVersionReader("api-version"));
+            });
 
             return services;
         }
