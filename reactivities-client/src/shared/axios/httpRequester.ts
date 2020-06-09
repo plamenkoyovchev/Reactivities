@@ -115,7 +115,7 @@ const request = {
 const activities = {
   get: (params: URLSearchParams): Promise<IActivityContainer> =>
     request.get(
-      `/activities?limit=${params.get("limit")}&offset=${params.get(
+      `/v2/activities?limit=${params.get("limit")}&offset=${params.get(
         "offset"
       )}&isGoing=${params.get("isGoing") || false}&isHost=${
         params.get("isHost") || false
