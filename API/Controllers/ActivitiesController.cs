@@ -13,6 +13,8 @@ namespace API.Controllers
     using ActivitiesQuery = Application.Activities.List.Query;
     using ActivityDetailsQuery = Application.Activities.Details.Query;
 
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class ActivitiesController : BaseController
     {
         public async Task<IActionResult> Get([FromQuery] ActivitiesQuery query)
