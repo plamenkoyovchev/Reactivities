@@ -1,3 +1,4 @@
+import { Comment } from "semantic-ui-react";
 import axios, { AxiosResponse } from "axios";
 import { IActivity } from "../../app/Models/Activity/IActivity";
 
@@ -10,6 +11,7 @@ import { FollowingType } from "../../app/Models/Profile/FollowingsType";
 import { IActivityContainer } from "../../app/Models/Activity/IActivityContainer";
 import { formatDate } from "../utils/date-utils";
 import { FilterType } from "../../app/Models/Profile/FilterType";
+import jwt from "jsonwebtoken";
 
 const httpStatusCodes = {
   BAD_REQUEST: 400,
@@ -143,6 +145,19 @@ const user = {
     request.post("/user/login", user),
   fbLogin: (accessToken: string) =>
     request.post(`/user/fblogin`, { accessToken }),
+  refreshToken: (token: string, refreshToken: string) => {
+    return axios
+      .post(`/user/refreshToken`, { token, refreshToken })
+      .then((response) => {
+        const { token, refreshToken } = response.data;
+        localStorage.setItem("jwt", token);
+        localStorage.setItem("refreshToken", refreshToken);
+
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+        return token;
+      });
+  },
 };
 
 const profile = {
