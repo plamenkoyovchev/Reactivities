@@ -1,3 +1,4 @@
+import { jwt } from "jsonwebtoken";
 import { IAttendee } from "./../../../app/Models/Attendee/IAttendee";
 import { IUser } from "./../../../app/Models/User/IUser";
 import { RootStore } from "./../rootStore";
@@ -77,7 +78,7 @@ class ActivityStore {
   @action createHubConnection = () => {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(process.env.REACT_APP_API_CHAT_URL!, {
-        accessTokenFactory: () => this.rootStore.commonStore.token!,
+        accessTokenFactory: () => this.checkIfTokenExpired(),
       })
       .configureLogging(LogLevel.Information)
       .build();
@@ -99,6 +100,25 @@ class ActivityStore {
     });
 
     this.hubConnection.on("Send", (message) => toast.info(message));
+  };
+
+  checkIfTokenExpired = async () => {
+    const token = localStorage.getItem("jwt");
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (token && refreshToken) {
+      const decodedToken: any = jwt.decode(token);
+      if (
+        decodedToken &&
+        // give it some time if it is just about to expire
+        Date.now() >= decodedToken.exp * 1000 - 5000
+      ) {
+        try {
+          return await httpRequester.user.refreshToken(token, refreshToken);
+        } catch (error) {
+          toast.error("Problem while establishing chat connection");
+        }
+      }
+    }
   };
 
   @action stopHubConnection = () => {
