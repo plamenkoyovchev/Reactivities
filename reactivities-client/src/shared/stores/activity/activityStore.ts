@@ -1,4 +1,3 @@
-import { jwt } from "jsonwebtoken";
 import { IAttendee } from "./../../../app/Models/Attendee/IAttendee";
 import { IUser } from "./../../../app/Models/User/IUser";
 import { RootStore } from "./../rootStore";
@@ -14,6 +13,7 @@ import {
   HubConnectionState,
 } from "@microsoft/signalr";
 import { history } from "../../..";
+import jwt from "jsonwebtoken";
 
 const LIMIT = 10;
 

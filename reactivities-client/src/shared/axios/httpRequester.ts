@@ -11,7 +11,6 @@ import { FollowingType } from "../../app/Models/Profile/FollowingsType";
 import { IActivityContainer } from "../../app/Models/Activity/IActivityContainer";
 import { formatDate } from "../utils/date-utils";
 import { FilterType } from "../../app/Models/Profile/FilterType";
-import jwt from "jsonwebtoken";
 
 const httpStatusCodes = {
   BAD_REQUEST: 400,
