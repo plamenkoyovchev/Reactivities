@@ -4,6 +4,20 @@ import { Calendar } from "react-widgets";
 import { RootStoreContext } from "../../../shared/stores/rootStore";
 import { observer } from "mobx-react-lite";
 
+const dates = [
+  new Date(2020, 5, 12).getTime(),
+  new Date(2020, 5, 18).getTime(),
+  new Date(2020, 6, 11).getTime(),
+];
+
+const CustomDayComponent: React.FC<any> = ({ date, label }) => {
+  const currentStyles = dates.includes(date.getTime())
+    ? { color: "#F57B7B", "font-weight": "bold" }
+    : {};
+
+  return <div style={currentStyles}>{label}</div>;
+};
+
 const ActivityFilters = () => {
   const rootStore = useContext(RootStoreContext);
   const { filter, setFilter } = rootStore.activityStore;
@@ -43,6 +57,7 @@ const ActivityFilters = () => {
       <Calendar
         onChange={(date) => setFilter("startDate", date!)}
         value={filter.get("startDate") || new Date()}
+        dayComponent={CustomDayComponent}
       />
     </>
   );
