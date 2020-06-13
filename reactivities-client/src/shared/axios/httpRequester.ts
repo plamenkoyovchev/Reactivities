@@ -125,15 +125,17 @@ const activities = {
         "yyyy-MM-dd"
       )}`
     ),
-  details: (id: string): Promise<IActivity> => request.get(`/activities/${id}`),
-  create: (activity: IActivity) => request.post("/activities", activity),
+  details: (id: string): Promise<IActivity> =>
+    request.get(`/v2/activities/${id}`),
+  create: (activity: IActivity) => request.post("/v2/activities", activity),
   update: (activity: IActivity) =>
-    request.put(`/activities/${activity.id}`, activity),
-  delete: (id: string) => request.delete(`/activities/${id}`),
+    request.put(`/v2/activities/${activity.id}`, activity),
+  delete: (id: string) => request.delete(`/v2/activities/${id}`),
   attend: (activityId: string) =>
-    request.post(`/activities/${activityId}/attend`, {}),
+    request.post(`/v2/activities/${activityId}/attend`, {}),
   unattend: (activityId: string) =>
-    request.delete(`/activities/${activityId}/attend`),
+    request.delete(`/v2/activities/${activityId}/attend`),
+  getDates: (): Promise<Date[]> => request.get("/v2/activities/dates"),
 };
 
 const user = {
