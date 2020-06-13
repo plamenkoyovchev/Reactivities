@@ -1,4 +1,3 @@
-import { Comment } from "semantic-ui-react";
 import axios, { AxiosResponse } from "axios";
 import { IActivity } from "../../app/Models/Activity/IActivity";
 
