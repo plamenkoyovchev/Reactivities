@@ -92,7 +92,10 @@ class ActivityStore {
           toast.success("Chat connection successful");
         }
       })
-      .catch(() => toast.warn("Chat connection problem"));
+      .catch((err) => {
+        toast.warn("Chat connection problem");
+        console.log(err);
+      });
 
     this.hubConnection.on("ReceiveComment", (comment) => {
       runInAction(() => {
@@ -118,6 +121,8 @@ class ActivityStore {
         } catch (error) {
           toast.error("Problem while establishing chat connection");
         }
+      } else {
+        return token;
       }
     }
   };
