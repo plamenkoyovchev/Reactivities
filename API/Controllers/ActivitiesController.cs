@@ -25,10 +25,10 @@ namespace API.Controllers
             return Ok(activities);
         }
 
-        [HttpGet("/dates")]
-        public async Task<IActionResult> GetDates(DatesListQuery query)
+        [HttpGet("dates")]
+        public async Task<IActionResult> GetDates()
         {
-            var activityDates = await this.Mediator.Send(query);
+            var activityDates = await this.Mediator.Send(new DatesListQuery());
 
             return Ok(activityDates);
         }
