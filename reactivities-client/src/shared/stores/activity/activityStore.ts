@@ -42,6 +42,7 @@ class ActivityStore {
   @observable activitiesCount: number = 0;
   @observable page: number = 0;
   @observable filter = new Map();
+  @observable activityDates: number[] = [];
 
   @action setFilter = (filter: string, value: boolean | Date) => {
     this.filter.clear();
@@ -151,7 +152,7 @@ class ActivityStore {
         this.activityFilterParams
       );
       const { activities, activitiesCount } = activitiesContainer;
-
+      const dates = await httpRequester.activities.getDates();
       const user = this.rootStore.userStore.currentUser!;
       runInAction(() => {
         activities.forEach((activity) => {
@@ -161,6 +162,7 @@ class ActivityStore {
         });
         this.activitiesCount = activitiesCount;
         this.loading = false;
+        this.activityDates = dates.map((d) => new Date(d).getTime());
       });
     } catch (error) {
       this.loading = false;
