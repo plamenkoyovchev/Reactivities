@@ -7,6 +7,7 @@ using Application.Activities.Edit;
 using Microsoft.AspNetCore.Authorization;
 using Application.Activities.Attend;
 using Application.Activities.Unattend;
+using Application.Activities.FutureEventDatesList;
 
 namespace API.Controllers
 {
@@ -22,6 +23,14 @@ namespace API.Controllers
             var activities = await this.Mediator.Send(query);
 
             return Ok(activities);
+        }
+
+        [HttpGet("/dates")]
+        public async Task<IActionResult> GetDates(DatesListQuery query)
+        {
+            var activityDates = await this.Mediator.Send(query);
+
+            return Ok(activityDates);
         }
 
         [HttpGet("{id}")]
