@@ -39,11 +39,7 @@ const RegisterForm = () => {
         dirtySinceLastSubmit,
       }) => (
         <Form onSubmit={handleSubmit}>
-          <Header
-            as="h2"
-            content="Register for Reactivities"
-            textAlign="center"
-          />
+          <Header as="h2" content="Register for Eventy" textAlign="center" />
           <Field name="email" placeholder="Email" component={TextInput} />
           <Field name="username" placeholder="Username" component={TextInput} />
           <Field
