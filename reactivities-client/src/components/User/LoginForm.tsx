@@ -42,7 +42,7 @@ const LoginForm = () => {
         dirtySinceLastSubmit,
       }) => (
         <Form onSubmit={handleSubmit}>
-          <Header as="h2" content="Login for Reactivities" textAlign="center" />
+          <Header as="h2" content="Login for Eventy" textAlign="center" />
           <Field name="email" placeholder="Email" component={TextInput} />
           <Field
             name="password"
